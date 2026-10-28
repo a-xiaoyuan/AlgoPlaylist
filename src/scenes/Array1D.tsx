@@ -1,7 +1,7 @@
 import { useId } from 'react'
 import type { StoryStep } from '../story/schema'
 
-export function Array1D({ nums, frame, boundsMode = 'exclude' }: { nums: number[], frame: StoryStep, boundsMode?: 'exclude' | 'mark' }) {
+export function Array1D({ nums, frame, boundsMode = 'exclude' }: { nums: (number | string)[], frame: StoryStep, boundsMode?: 'exclude' | 'mark' }) {
   nums = frame.values ?? nums
   const titleId = useId()
   const cellWidth = 96
@@ -27,7 +27,7 @@ export function Array1D({ nums, frame, boundsMode = 'exclude' }: { nums: number[
           {pointers.map((pointer, row) => <text key={pointer.label} x={x + 44} y={115 - (pointers.length - 1 - row) * 22} textAnchor="middle" fill="var(--text-2)" fontSize="18">{pointer.label}</text>)}
           {pointers.length > 0 && <path d={`M${x + 44} 124v16m-5-5 5 5 5-5`} stroke="var(--text-2)" fill="none" />}
           <rect x={x + 4} y="152" width="80" height="64" fill={active ? 'var(--accent)' : excluded ? 'var(--bg)' : 'var(--surface-2)'} stroke="var(--border)" />
-          <text x={x + 44} y="191" textAnchor="middle" fill={active ? 'var(--bg)' : 'var(--text)'} fontSize={String(value).length > 5 ? 15 : 22}>{value}</text>
+          <text x={x + 44} y="191" textAnchor="middle" fill={active ? 'var(--bg)' : 'var(--text)'} fontSize={String(value).length > 5 ? 15 : 22}>{value === ' ' ? '␠' : value}</text>
           {excluded && <path d={`M${x + 24} 226h40`} stroke="var(--text-2)" />}
           <text x={x + 44} y="245" textAnchor="middle" fill="var(--text-2)" fontSize="16">{index}</text>
           {marks.map((mark, row) => <text key={mark.label} x={x + 44} y={279 + row * 20} textAnchor="middle" fill="var(--text-2)" fontSize="13">{mark.label}</text>)}
