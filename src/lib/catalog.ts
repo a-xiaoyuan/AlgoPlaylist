@@ -13,6 +13,13 @@ const pointerTracks: Track[] = [{
   complexity: '时间 O(n) · 空间 O(1)',
   remix: '双指针',
 }, {
+  id: 'trapping-rain-water',
+  title: '42 接雨水',
+  subtitle: '从两端维护最高柱，逐格累计能够接住的雨水。',
+  duration: '00:38',
+  complexity: '时间 O(n) · 空间 O(1)',
+  remix: '双指针',
+}, {
   id: 'three-sum',
   title: '15 三数之和',
   subtitle: '排序后固定 i，用左右指针寻找零和，跳过重复值。',
@@ -26,7 +33,7 @@ const pointerPlaylist: Playlist = {
   title: pointerNight.titleZh,
   description: pointerNight.subtitle,
   category: pointerNight.tags.join(' / '),
-  duration: '1 分 16 秒',
+  duration: '1 分 54 秒',
   tracks: pointerNight.trackIds.map((id: string) => {
     const track = tracks.get(id)
     if (!track) throw new Error(`歌单引用了未登记曲目：${id}`)

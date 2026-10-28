@@ -6,6 +6,7 @@ const target = z.number().int().min(-2_000_000).max(2_000_000)
 export const twoSumInputSchema = z.object({ nums: numbers.min(2), target }).strict()
 export const stockInputSchema = z.object({ nums: z.array(integer.nonnegative()).min(1).max(12) }).strict()
 export const containerInputSchema = z.object({ nums: z.array(integer.nonnegative()).min(2).max(12) }).strict()
+export const trappingRainWaterInputSchema = z.object({ nums: z.array(integer.nonnegative()).min(2).max(12) }).strict()
 export const threeSumInputSchema = z.object({ nums: numbers.min(3) }).strict()
 export const longestSubstringInputSchema = z.object({
   text: z.string().max(24).refine((text) => Array.from(text).length <= 12, '最多支持 12 个 Unicode 码点。')
@@ -51,6 +52,7 @@ export const storySchema = z.discriminatedUnion('problem', [
   z.object({ ...base, problem: z.literal('longest-substring-without-repeating-characters'), remix: z.literal('sliding-window'), scene: z.literal('array-2ptrs'), input: longestSubstringInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('three-sum'), remix: z.literal('sort-two-pointers'), scene: z.literal('array-2ptrs'), input: threeSumInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('container-with-most-water'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: containerInputSchema }).strict(),
+  z.object({ ...base, problem: z.literal('trapping-rain-water'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: trappingRainWaterInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('two-sum'), remix: z.enum(['hash', 'brute']), scene: arraySceneSchema, input: twoSumInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('best-time-to-buy-and-sell-stock'), remix: z.literal('one-pass'), scene: arraySceneSchema, input: stockInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('maximum-subarray'), remix: z.literal('kadane'), scene: arraySceneSchema, input: kadaneInputSchema }).strict(),
@@ -116,6 +118,7 @@ export const storySchema = z.discriminatedUnion('problem', [
 
 export type TwoSumInput = z.infer<typeof twoSumInputSchema>
 export type ContainerInput = z.infer<typeof containerInputSchema>
+export type TrappingRainWaterInput = z.infer<typeof trappingRainWaterInputSchema>
 export type ThreeSumInput = z.infer<typeof threeSumInputSchema>
 export type LongestSubstringInput = z.infer<typeof longestSubstringInputSchema>
 export type StoryStep = z.infer<typeof stepSchema>

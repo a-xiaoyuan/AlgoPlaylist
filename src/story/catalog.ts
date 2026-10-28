@@ -8,12 +8,14 @@ import binary from '../../data/stories/binary-search.json'
 import brackets from '../../data/stories/valid-parentheses.json'
 import reverse from '../../data/stories/reverse-linked-list.json'
 import container from '../../data/stories/container-with-most-water.json'
+import trappingRainWaterStory from '../../data/stories/trapping-rain-water.json'
 import threeSumStory from '../../data/stories/three-sum.json'
-import { containerInputSchema, storySchema, threeSumInputSchema, twoSumInputSchema } from './schema'
+import { containerInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema } from './schema'
 import type { Story } from './schema'
 import { twoSumHash } from '../steppers/twoSumHash'
 import { twoSumBrute } from '../steppers/twoSumBrute'
 import { containerWithMostWater } from '../steppers/containerWithMostWater'
+import { trappingRainWater } from '../steppers/trappingRainWater'
 import { threeSum } from '../steppers/threeSum'
 
 export const stories: Record<string, Story> = {
@@ -27,6 +29,7 @@ export const stories: Record<string, Story> = {
   'valid-parentheses': storySchema.parse(brackets),
   'reverse-linked-list': storySchema.parse(reverse),
   'container-with-most-water': storySchema.parse(container),
+  'trapping-rain-water': storySchema.parse(trappingRainWaterStory),
   'three-sum': storySchema.parse(threeSumStory),
 }
 
@@ -40,6 +43,10 @@ export function recordStory(id: string, rawInput: unknown): Story {
   if (source.problem === 'container-with-most-water') {
     const input = containerInputSchema.parse(rawInput)
     return storySchema.parse({ ...source, input, steps: containerWithMostWater(input) })
+  }
+  if (source.problem === 'trapping-rain-water') {
+    const input = trappingRainWaterInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: trappingRainWater(input) })
   }
   if (source.problem === 'three-sum') {
     const input = threeSumInputSchema.parse(rawInput)
