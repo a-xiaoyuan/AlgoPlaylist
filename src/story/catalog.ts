@@ -10,6 +10,7 @@ import zeroes from '../../data/stories/move-zeroes.json'
 import merge from '../../data/stories/merge-sorted-array.json'
 import binary from '../../data/stories/binary-search.json'
 import brackets from '../../data/stories/valid-parentheses.json'
+import mergeListsStory from '../../data/stories/merge-two-lists.json'
 import reverse from '../../data/stories/reverse-linked-list.json'
 import container from '../../data/stories/container-with-most-water.json'
 import trappingRainWaterStory from '../../data/stories/trapping-rain-water.json'
@@ -18,8 +19,9 @@ import longestSubstringStory from '../../data/stories/longest-substring.json'
 import findAnagramsStory from '../../data/stories/find-anagrams.json'
 import minWindowStory from '../../data/stories/min-window.json'
 import minSubarraySumStory from '../../data/stories/min-subarray-sum.json'
-import { reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
+import { mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
 import type { Story } from './schema'
+import { mergeTwoLists } from '../steppers/mergeTwoLists'
 import { reverseLinkedList } from '../steppers/reverseLinkedList'
 import { validPalindrome } from '../steppers/validPalindrome'
 import { sortColors } from '../steppers/sortColors'
@@ -49,6 +51,7 @@ export const stories: Record<string, Story> = {
   'binary-search': storySchema.parse(binary),
   'valid-parentheses': storySchema.parse(brackets),
   'reverse-linked-list': storySchema.parse(reverse),
+  'merge-two-lists': storySchema.parse(mergeListsStory),
   'container-with-most-water': storySchema.parse(container),
   'trapping-rain-water': storySchema.parse(trappingRainWaterStory),
   'three-sum': storySchema.parse(threeSumStory),
@@ -61,6 +64,10 @@ export const stories: Record<string, Story> = {
 export function recordStory(id: string, rawInput: unknown): Story {
   const source = stories[id]
   if (!source) throw new Error('没有找到这首曲目的分镜。')
+  if (source.problem === 'merge-two-lists') {
+    const input = mergeTwoListsInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: mergeTwoLists(input) })
+  }
   if (source.problem === 'reverse-linked-list') {
     const input = reverseListInputSchema.parse(rawInput)
     return storySchema.parse({ ...source, input, steps: reverseLinkedList(input) })

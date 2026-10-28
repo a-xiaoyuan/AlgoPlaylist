@@ -10,8 +10,8 @@ import { findTrack } from '@/lib/catalog'
 import type { Playlist, Track } from '@/lib/catalog'
 import { NotFound } from '@/pages/not-found'
 import { recordStory, stories } from '@/story/catalog'
-import { reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
-import type { FindAnagramsInput, ContainerInput, LongestSubstringInput, MinWindowInput, MinSubarraySumInput, Story, ThreeSumInput, TwoSumInput, TwoSumSortedInput } from '@/story/schema'
+import { mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
+import type { MergeTwoListsInput, FindAnagramsInput, ContainerInput, LongestSubstringInput, MinWindowInput, MinSubarraySumInput, Story, ThreeSumInput, TwoSumInput, TwoSumSortedInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
 import { frameAtProgress, replaceProblemRecordings } from '@/player/remix'
@@ -38,7 +38,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
   const [compareProblem, setCompareProblem] = useState<string | null>(null)
   const remixes = playlist.tracks.filter((item) => recordings[item.id].problem === story.problem)
 
-  function rerecord(input: TwoSumInput | ContainerInput | ThreeSumInput | LongestSubstringInput | MinWindowInput | FindAnagramsInput | MinSubarraySumInput) {
+  function rerecord(input: MergeTwoListsInput | TwoSumInput | ContainerInput | ThreeSumInput | LongestSubstringInput | MinWindowInput | FindAnagramsInput | MinSubarraySumInput) {
     // Only remixes of the current problem share the new recording input.
     setRecordings((previous) => replaceProblemRecordings(previous, track.id, input, recordStory))
   }
@@ -86,7 +86,8 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
             <p id="remix-note" className="muted">切换曲目后归零并暂停；同一歌单内保留已重录的参数。</p>
           </section>
           <Separator />
-          {story.problem === 'two-sum' ? <TwoSumParameters input={story.input} onRecord={rerecord} />
+          {story.problem === 'merge-two-lists' ? <MergeTwoListsParameters key={story.id} input={story.input} onRecord={rerecord} />
+            : story.problem === 'two-sum' ? <TwoSumParameters input={story.input} onRecord={rerecord} />
             : story.problem === 'two-sum-ii' ? <SortedArrayParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'longest-substring-without-repeating-characters' || story.problem === 'valid-palindrome' ? <StringParameters key={story.id} problem={story.problem} input={story.input} onRecord={rerecord} />
             : story.problem === 'find-all-anagrams' ? <FindAnagramsParameters key={story.id} input={story.input} onRecord={rerecord} />
@@ -123,10 +124,48 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
 }
 
 function inputDescription(story: Story) {
+  if ('list1' in story.input) return `list1 = [${story.input.list1.join(', ')}]，list2 = [${story.input.list2.join(', ')}]`
   if ('s' in story.input) return `s = ${JSON.stringify(story.input.s)}，${'p' in story.input ? `p = ${JSON.stringify(story.input.p)}` : `t = ${JSON.stringify(story.input.t)}`}`
   if ('text' in story.input) return `text = ${JSON.stringify(story.input.text)}`
   const input = story.input
   return `nums = [${input.nums.join(', ')}]${'target' in input ? `，target = ${input.target}` : ''}${'nums2' in input ? `，m = ${input.m}，nums2 = [${input.nums2.join(', ')}]` : ''}`
+}
+
+export function MergeTwoListsParameters({ input, onRecord }: { input: MergeTwoListsInput, onRecord: (input: MergeTwoListsInput) => void }) {
+  const [list1, setList1] = useState(JSON.stringify(input.list1))
+  const [list2, setList2] = useState(JSON.stringify(input.list2))
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
+  function submit(event: React.FormEvent) {
+    event.preventDefault()
+    let parsed1: unknown, parsed2: unknown
+    try { parsed1 = JSON.parse(list1); parsed2 = JSON.parse(list2) } catch {
+      setError('请输入 JSON 数组，例如 [1, 2, 4] 和 [1, 3, 4]。')
+      setNotice('')
+      return
+    }
+    const result = mergeTwoListsInputSchema.safeParse({ list1: parsed1, list2: parsed2 })
+    if (!result.success) {
+      setError('请输入两个升序整数数组，节点总数为 1–12，每个整数在 ±1000000 内。')
+      setNotice('')
+      return
+    }
+    onRecord(result.data)
+    setError('')
+    setNotice('已重录本曲，播放位置已归零并暂停。')
+  }
+  return <form aria-labelledby="params-title" onSubmit={submit} noValidate>
+    <h2 id="params-title" className="mb-3">修改参数</h2>
+    <fieldset className="space-y-4" aria-describedby="params-note params-error">
+      <legend className="sr-only">合并两个有序链表参数</legend>
+      <label>升序链表 list1<input name="list1" value={list1} onChange={(event) => setList1(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
+      <label>升序链表 list2<input name="list2" value={list2} onChange={(event) => setList2(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
+      <Button type="submit" className="w-full">重录本曲</Button>
+    </fieldset>
+    <p id="params-note" className="muted mt-3">两个链表均须升序，可以有一个为空；节点总数为 1–12。本曲录制为 34 秒。非法输入保留现有录制，离开歌单或刷新恢复默认。</p>
+    <p id="params-error" role="alert" className="form-error">{error}</p>
+    <p role="status" className="muted mt-3">{notice}</p>
+  </form>
 }
 
 export function MinSubarraySumParameters({ input, onRecord }: { input: MinSubarraySumInput, onRecord: (input: MinSubarraySumInput) => void }) {

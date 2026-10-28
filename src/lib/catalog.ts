@@ -84,7 +84,15 @@ const pointerTracks: Track[] = [{
   complexity: '时间 O(|s| + |t|) · 空间 O(|t|)',
   remix: '滑动窗口',
 }]
-const tracks = new Map([...catalog.playlists.flatMap((playlist) => playlist.tracks), ...pointerTracks].map((track) => [track.id, track]))
+const linkedTracks: Track[] = [{
+  id: 'merge-two-lists',
+  title: '21 合并两个有序链表',
+  subtitle: '比较两个链表的头节点，用 dummy 和 prev 逐个连接较小节点。',
+  duration: '00:34',
+  complexity: '时间 O(m+n) · 空间 O(1)',
+  remix: '迭代合并',
+}]
+const tracks = new Map([...catalog.playlists.flatMap((playlist) => playlist.tracks), ...pointerTracks, ...linkedTracks].map((track) => [track.id, track]))
 const pointerPlaylist: Playlist = {
   id: pointerNight.id,
   title: pointerNight.titleZh,
@@ -103,7 +111,7 @@ const linkedPlaylist: Playlist = {
   title: linkedNight.titleZh,
   description: linkedNight.subtitle,
   category: linkedNight.tags.join(' / '),
-  duration: '30 秒',
+  duration: '1 分 4 秒',
   tracks: linkedNight.trackIds.map((id: string) => {
     const track = tracks.get(id)
     if (!track) throw new Error(`歌单引用了未登记曲目：${id}`)

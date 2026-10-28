@@ -21,6 +21,7 @@ export const kadaneInputSchema = z.object({ nums: numbers.min(1) }).strict()
 export const moveZeroesInputSchema = z.object({ nums: numbers }).strict()
 export const reverseListInputSchema = z.object({ nums: numbers }).strict()
 const sorted = (nums: number[]) => nums.every((value, i) => i === 0 || nums[i - 1] <= value)
+export const mergeTwoListsInputSchema = z.object({ list1: numbers.refine(sorted, '链表必须升序排列。'), list2: numbers.refine(sorted, '链表必须升序排列。') }).strict().refine((input) => input.list1.length + input.list2.length >= 1 && input.list1.length + input.list2.length <= 12, '两个链表的节点总数须为 1–12。')
 export const removeDuplicatesSortedInputSchema = z.object({ nums: numbers.min(1).refine(sorted, '数组必须升序排列。') }).strict()
 export const twoSumSortedInputSchema = z.object({ nums: numbers.min(2).refine(sorted, '数组必须升序排列。'), target }).strict()
 export const binarySearchInputSchema = z.object({ nums: numbers.refine(sorted, '数组必须升序排列。'), target }).strict()
@@ -73,9 +74,10 @@ export const storySchema = z.discriminatedUnion('problem', [
   z.object({ ...base, problem: z.literal('merge-sorted-array'), remix: z.literal('backward'), scene: arraySceneSchema, input: mergeInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('binary-search'), remix: z.literal('closed-interval'), scene: z.literal('BinarySearch'), input: binarySearchInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('valid-parentheses'), remix: z.literal('stack'), scene: z.literal('Stack'), input: bracketsInputSchema }).strict(),
+  z.object({ ...base, problem: z.literal('merge-two-lists'), remix: z.enum(['two-pointers', 'iterative']), scene: z.literal('LinkedList'), input: mergeTwoListsInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('reverse-linked-list'), remix: z.literal('iterative'), scene: z.literal('LinkedList'), input: reverseListInputSchema }).strict(),
 ]).superRefine((story, ctx) => {
-  const length = 'nums' in story.input ? story.input.nums.length : Array.from('s' in story.input ? story.input.s : story.input.text).length
+  const length = 'list1' in story.input ? story.input.list1.length + story.input.list2.length : 'nums' in story.input ? story.input.nums.length : Array.from('s' in story.input ? story.input.s : story.input.text).length
   const sortedInput = story.problem === 'three-sum' ? [...story.input.nums].sort((a, b) => a - b) : undefined
   story.steps.forEach((step, i) => {
     const issue = (message: string) => ctx.addIssue({ code: 'custom', path: ['steps', i], message })
@@ -159,6 +161,7 @@ export const storySchema = z.discriminatedUnion('problem', [
   })
 })
 
+export type MergeTwoListsInput = z.infer<typeof mergeTwoListsInputSchema>
 export type RemoveDuplicatesSortedInput = z.infer<typeof removeDuplicatesSortedInputSchema>
 export type TwoSumSortedInput = z.infer<typeof twoSumSortedInputSchema>
 export type TwoSumInput = z.infer<typeof twoSumInputSchema>
