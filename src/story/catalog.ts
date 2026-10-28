@@ -9,12 +9,14 @@ import brackets from '../../data/stories/valid-parentheses.json'
 import reverse from '../../data/stories/reverse-linked-list.json'
 import container from '../../data/stories/container-with-most-water.json'
 import threeSumStory from '../../data/stories/three-sum.json'
-import { containerInputSchema, storySchema, threeSumInputSchema, twoSumInputSchema } from './schema'
+import longestSubstringStory from '../../data/stories/longest-substring.json'
+import { containerInputSchema, longestSubstringInputSchema, storySchema, threeSumInputSchema, twoSumInputSchema } from './schema'
 import type { Story } from './schema'
 import { twoSumHash } from '../steppers/twoSumHash'
 import { twoSumBrute } from '../steppers/twoSumBrute'
 import { containerWithMostWater } from '../steppers/containerWithMostWater'
 import { threeSum } from '../steppers/threeSum'
+import { longestSubstring } from '../steppers/longestSubstring'
 
 export const stories: Record<string, Story> = {
   'two-sum-hash': storySchema.parse(hash),
@@ -28,6 +30,7 @@ export const stories: Record<string, Story> = {
   'reverse-linked-list': storySchema.parse(reverse),
   'container-with-most-water': storySchema.parse(container),
   'three-sum': storySchema.parse(threeSumStory),
+  'longest-substring': storySchema.parse(longestSubstringStory),
 }
 
 export function recordStory(id: string, rawInput: unknown): Story {
@@ -44,6 +47,10 @@ export function recordStory(id: string, rawInput: unknown): Story {
   if (source.problem === 'three-sum') {
     const input = threeSumInputSchema.parse(rawInput)
     return storySchema.parse({ ...source, input, steps: threeSum(input) })
+  }
+  if (source.problem === 'longest-substring-without-repeating-characters') {
+    const input = longestSubstringInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: longestSubstring(input) })
   }
   throw new Error('此曲目暂不支持改参重录。')
 }

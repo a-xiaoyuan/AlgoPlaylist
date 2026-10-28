@@ -19,6 +19,13 @@ const pointerTracks: Track[] = [{
   duration: '00:40',
   complexity: '时间 O(n²) · 空间 O(n)，不含结果',
   remix: '排序 + 双指针',
+}, {
+  id: 'longest-substring',
+  title: '3 无重复字符的最长子串',
+  subtitle: '右端扩展窗口，遇到重复时只向前移动左端。',
+  duration: '00:36',
+  complexity: '时间 O(n) · 空间 O(n)',
+  remix: '滑动窗口',
 }]
 const tracks = new Map([...catalog.playlists.flatMap((playlist) => playlist.tracks), ...pointerTracks].map((track) => [track.id, track]))
 const pointerPlaylist: Playlist = {
@@ -26,7 +33,7 @@ const pointerPlaylist: Playlist = {
   title: pointerNight.titleZh,
   description: pointerNight.subtitle,
   category: pointerNight.tags.join(' / '),
-  duration: '1 分 16 秒',
+  duration: '1 分 52 秒',
   tracks: pointerNight.trackIds.map((id: string) => {
     const track = tracks.get(id)
     if (!track) throw new Error(`歌单引用了未登记曲目：${id}`)

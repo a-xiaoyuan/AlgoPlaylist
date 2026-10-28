@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Link, NavLink, useNavigate, useParams } from 'react-router-dom'
 import { Icon } from '@/components/icon'
+import { Cover } from '@/components/cover'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -9,8 +10,8 @@ import { findTrack } from '@/lib/catalog'
 import type { Playlist, Track } from '@/lib/catalog'
 import { NotFound } from '@/pages/not-found'
 import { recordStory, stories } from '@/story/catalog'
-import { containerInputSchema, threeSumInputSchema, twoSumInputSchema } from '@/story/schema'
-import type { ContainerInput, Story, ThreeSumInput, TwoSumInput } from '@/story/schema'
+import { containerInputSchema, longestSubstringInputSchema, threeSumInputSchema, twoSumInputSchema } from '@/story/schema'
+import type { ContainerInput, LongestSubstringInput, Story, ThreeSumInput, TwoSumInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
 import { StoryScene } from '@/scenes/StoryScene'
@@ -33,7 +34,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
   const navigate = useNavigate()
   const remixes = playlist.tracks.filter((item) => recordings[item.id].problem === story.problem)
 
-  function rerecord(input: TwoSumInput | ContainerInput | ThreeSumInput) {
+  function rerecord(input: TwoSumInput | ContainerInput | ThreeSumInput | LongestSubstringInput) {
     // Only remixes of the current problem share the new recording input.
     const next = Object.fromEntries(remixes.map((item) => [item.id, recordStory(item.id, input)]))
     setRecordings((previous) => ({ ...previous, ...next }))
@@ -48,6 +49,37 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
     </div>
     <div className="player-layout">
       <Playback story={story} title={track.title} playlist={playlist} />
+
+      <Card className="info-panel p-5">
+        <aside aria-labelledby="info-title" className="space-y-6">
+          <section className="space-y-3">
+            <div className="track-artwork"><Cover id={playlist.id} /></div>
+            <h2 id="info-title">曲目信息</h2>
+            <h3>{track.title}</h3>
+            <p className="muted">{track.subtitle}</p>
+            <p className="complexity-badge">{track.complexity}</p>
+            <p className="muted">时长 {clock(story.steps.at(-1)!.t)} · {story.steps.length} 帧</p>
+            <p className="muted break-words">当前录制：{inputDescription(story)}</p>
+          </section>
+          <Separator />
+          <section className="space-y-3" aria-labelledby="remix-title">
+            <h2 id="remix-title">{remixes.length > 1 ? 'Remix' : '解法'}</h2>
+            {remixes.length > 1 ? <label>解法版本
+              <select value={track.id} onChange={(event) => navigate(`/play/${event.target.value}`)} aria-describedby="remix-note">
+                {remixes.map((item) => <option key={item.id} value={item.id}>{item.remix}</option>)}
+              </select>
+            </label> : <p className="muted">{track.remix}</p>}
+            <p id="remix-note" className="muted">切换曲目后归零并暂停；同一歌单内保留已重录的参数。</p>
+          </section>
+          <Separator />
+          {story.problem === 'two-sum' ? <TwoSumParameters input={story.input} onRecord={rerecord} />
+            : story.problem === 'longest-substring-without-repeating-characters' ? <StringParameters key={story.id} input={story.input} onRecord={rerecord} />
+            : story.problem === 'container-with-most-water' || story.problem === 'three-sum' ? <ArrayParameters key={story.id} problem={story.problem} input={story.input} onRecord={rerecord} /> : <section className="space-y-3">
+            <h2>示例分镜</h2>
+            <p className="muted">本曲使用内置示例。播放或拖动进度，观察每一步的完整状态；用队列或上一曲、下一曲切换。</p>
+          </section>}
+        </aside>
+      </Card>
 
       <Card className="queue-panel p-4">
         <section aria-labelledby="queue-title">
@@ -68,41 +100,12 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
           </ol>
         </section>
       </Card>
-
-      <Card className="info-panel p-5">
-        <aside aria-labelledby="info-title" className="space-y-6">
-          <section className="space-y-3">
-            <h2 id="info-title">曲目信息</h2>
-            <h3>{track.title}</h3>
-            <p className="muted">{track.subtitle}</p>
-            <p className="complexity-badge">{track.complexity}</p>
-            <p className="muted">时长 {clock(story.steps.at(-1)!.t)} · {story.steps.length} 帧</p>
-            <p className="muted break-words">当前录制：{inputDescription(story)}</p>
-          </section>
-          <Separator />
-          <section className="space-y-3" aria-labelledby="remix-title">
-            <h2 id="remix-title">{remixes.length > 1 ? 'Remix' : '解法'}</h2>
-            {remixes.length > 1 ? <label>解法版本
-              <select value={track.id} onChange={(event) => navigate(`/play/${event.target.value}`)} aria-describedby="remix-note">
-                {remixes.map((item) => <option key={item.id} value={item.id}>{item.remix}</option>)}
-              </select>
-            </label> : <p className="muted">{track.remix}</p>}
-            <p id="remix-note" className="muted">切换曲目后归零并暂停；同一歌单内保留已重录的参数。</p>
-          </section>
-          <Separator />
-          {story.problem === 'two-sum' ? <TwoSumParameters input={story.input} onRecord={rerecord} />
-            : story.problem === 'container-with-most-water' || story.problem === 'three-sum' ? <ArrayParameters key={story.id} problem={story.problem} input={story.input} onRecord={rerecord} /> : <section className="space-y-3">
-            <h2>示例分镜</h2>
-            <p className="muted">本曲使用内置示例。播放或拖动进度，观察每一步的完整状态；用队列或上一曲、下一曲切换。</p>
-          </section>}
-        </aside>
-      </Card>
     </div>
   </div>
 }
 
 function inputDescription(story: Story) {
-  if (story.problem === 'valid-parentheses') return `text = ${JSON.stringify(story.input.text)}`
+  if ('text' in story.input) return `text = ${JSON.stringify(story.input.text)}`
   const input = story.input
   return `nums = [${input.nums.join(', ')}]${'target' in input ? `，target = ${input.target}` : ''}${'nums2' in input ? `，m = ${input.m}，nums2 = [${input.nums2.join(', ')}]` : ''}`
 }
@@ -180,6 +183,35 @@ function ArrayParameters({ problem, input, onRecord }: { problem: 'container-wit
   </form>
 }
 
+function StringParameters({ input, onRecord }: { input: LongestSubstringInput, onRecord: (input: LongestSubstringInput) => void }) {
+  const [text, setText] = useState(input.text)
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
+  function submit(event: React.FormEvent) {
+    event.preventDefault()
+    const result = longestSubstringInputSchema.safeParse({ text })
+    if (!result.success) {
+      setError('请输入最多 12 个 Unicode 码点；允许空串，不支持控制字符或不完整的 Unicode 字符。')
+      setNotice('')
+      return
+    }
+    onRecord(result.data)
+    setError('')
+    setNotice('已重录本曲，播放位置已归零并暂停。')
+  }
+  return <form aria-labelledby="params-title" onSubmit={submit} noValidate>
+    <h2 id="params-title" className="mb-3">修改参数</h2>
+    <fieldset className="space-y-4" aria-describedby="params-note params-error">
+      <legend className="sr-only">最长无重复子串参数</legend>
+      <label>字符串 text<input name="text" value={text} onChange={(event) => setText(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
+      <Button type="submit" className="w-full">重录本曲</Button>
+    </fieldset>
+    <p id="params-note" className="muted mt-3">直接输入文本，无需 JSON 引号。最多 12 个 Unicode 码点，空格显示为 ␠；组合字符按多个码点计数。本曲 36 秒；非法输入保留现有录制，离开歌单或刷新恢复默认。</p>
+    <p id="params-error" role="alert" className="form-error">{error}</p>
+    <p role="status" className="muted mt-3">{notice}</p>
+  </form>
+}
+
 function Playback({ story, title, playlist }: { story: Story, title: string, playlist: Playlist }) {
   const { engine, time, duration, playing, rate, frame, stepIndex } = usePlayer(story)
   const sound = useSound(frame, playing)
@@ -203,18 +235,20 @@ function Playback({ story, title, playlist }: { story: Story, title: string, pla
       <div className="caption-slot">
         <motion.p key={`${story.id}-${stepIndex}-${frame.caption}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={fade} className="muted" aria-live="off">{frame.caption}</motion.p>
       </div>
-      <Separator />
-      <div aria-label="播放控制">
+      <div className="player-dock" role="group" aria-label="播放控制">
+        <div className="dock-track"><Cover id={playlist.id} compact /><div><strong>{title}</strong><p>{playlist.title.split(' · ')[0]} · 本地分镜</p></div></div>
+        <div className="dock-controls">
         <div className="transport">
           <Button disabled={trackIndex === 0} onClick={() => navigate(`/play/${playlist.tracks[trackIndex - 1].id}`)} aria-label="上一曲"><Icon name="previous" /></Button>
-          <Button variant="primary" onClick={() => playing ? engine.pause() : engine.play()} aria-label={playing ? '暂停' : time >= duration ? '重播' : '播放'}><Icon name={playing ? 'pause' : 'play'} />{playing ? '暂停' : time >= duration ? '重播' : '播放'}</Button>
-          <Button onClick={() => engine.seek(0)} aria-label="回到开头">归零</Button>
+          <Button variant="primary" onClick={() => playing ? engine.pause() : engine.play()} aria-label={playing ? '暂停' : time >= duration ? '重播' : '播放'}><Icon name={playing ? 'pause' : 'play'} /><span className="sr-only">{playing ? '暂停' : time >= duration ? '重播' : '播放'}</span></Button>
+          <Button className="reset-button" onClick={() => engine.seek(0)} aria-label="回到开头">归零</Button>
           <Button disabled={trackIndex === playlist.tracks.length - 1} onClick={() => navigate(`/play/${playlist.tracks[trackIndex + 1].id}`)} aria-label="下一曲"><Icon name="next" /></Button>
         </div>
         <div className="progress-row">
           <span>{clock(time)}</span>
           <input type="range" min="0" max={duration} step="0.01" value={time} onChange={(event) => engine.seek(Number(event.target.value))} aria-label="播放进度" aria-valuetext={`${clock(time)} / ${clock(duration)}`} />
           <span>{clock(duration)}</span>
+        </div>
         </div>
         <div className="playback-options">
           <label className="rate-control">倍速
@@ -224,7 +258,7 @@ function Playback({ story, title, playlist }: { story: Story, title: string, pla
           </label>
           <label className="sound-control"><input type="checkbox" checked={sound.enabled} onChange={(event) => { void sound.toggle(event.target.checked) }} />极简音效{sound.enabled ? '开' : '关'}</label>
         </div>
-        {sound.error && <p role="status" className="muted mt-3">{sound.error}</p>}
+        {sound.error && <p role="status" className="dock-error">{sound.error}</p>}
       </div>
     </section>
   </Card>
