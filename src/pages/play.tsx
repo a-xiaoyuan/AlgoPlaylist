@@ -10,7 +10,7 @@ import { findTrack } from '@/lib/catalog'
 import type { Playlist, Track } from '@/lib/catalog'
 import { NotFound } from '@/pages/not-found'
 import { recordStory, stories } from '@/story/catalog'
-import { containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
+import { removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
 import type { ContainerInput, LongestSubstringInput, MinWindowInput, Story, ThreeSumInput, TwoSumInput, TwoSumSortedInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
@@ -89,7 +89,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
             : story.problem === 'two-sum-ii' ? <SortedArrayParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'longest-substring-without-repeating-characters' ? <StringParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'minimum-window-substring' ? <MinWindowParameters key={story.id} input={story.input} onRecord={rerecord} />
-            : story.problem === 'container-with-most-water' || story.problem === 'trapping-rain-water' || story.problem === 'three-sum' ? <ArrayParameters key={story.id} problem={story.problem} input={story.input} onRecord={rerecord} /> : <section className="space-y-3">
+            : story.problem === 'container-with-most-water' || story.problem === 'trapping-rain-water' || story.problem === 'three-sum' || story.problem === 'remove-duplicates-sorted' ? <ArrayParameters key={story.id} problem={story.problem} input={story.input} onRecord={rerecord} /> : <section className="space-y-3">
             <h2>示例分镜</h2>
             <p className="muted">本曲使用内置示例。播放或拖动进度，观察每一步的完整状态；用队列或上一曲、下一曲切换。</p>
           </section>}
@@ -231,7 +231,8 @@ export function SortedArrayParameters({ input, onRecord }: { input: TwoSumSorted
   </form>
 }
 
-export function ArrayParameters({ problem, input, onRecord }: { problem: 'container-with-most-water' | 'trapping-rain-water' | 'three-sum', input: ContainerInput | ThreeSumInput, onRecord: (input: ContainerInput | ThreeSumInput) => void }) {
+export function ArrayParameters({ problem, input, onRecord }: { problem: 'container-with-most-water' | 'trapping-rain-water' | 'three-sum' | 'remove-duplicates-sorted', input: ContainerInput | ThreeSumInput, onRecord: (input: ContainerInput | ThreeSumInput) => void }) {
+  const isDedup = problem === 'remove-duplicates-sorted'
   const isThreeSum = problem === 'three-sum'
   const isRain = problem === 'trapping-rain-water'
   const [nums, setNums] = useState(JSON.stringify(input.nums))
@@ -241,13 +242,13 @@ export function ArrayParameters({ problem, input, onRecord }: { problem: 'contai
     event.preventDefault()
     let parsedNums: unknown
     try { parsedNums = JSON.parse(nums) } catch {
-      setError(`数组格式不正确，请输入 JSON 数组，例如 ${isThreeSum ? '[-1, 0, 1, 2, -1, -4]' : isRain ? '[0, 1, 0, 2]' : '[1, 8, 6, 2, 5, 4, 8, 3, 7]'}。`)
+      setError(`数组格式不正确，请输入 JSON 数组，例如 ${isDedup ? '[1, 1, 2]' : isThreeSum ? '[-1, 0, 1, 2, -1, -4]' : isRain ? '[0, 1, 0, 2]' : '[1, 8, 6, 2, 5, 4, 8, 3, 7]'}。`)
       setNotice('')
       return
     }
-    const result = (isThreeSum ? threeSumInputSchema : isRain ? trappingRainWaterInputSchema : containerInputSchema).safeParse({ nums: parsedNums })
+    const result = (isDedup ? removeDuplicatesSortedInputSchema : isThreeSum ? threeSumInputSchema : isRain ? trappingRainWaterInputSchema : containerInputSchema).safeParse({ nums: parsedNums })
     if (!result.success) {
-      setError(isThreeSum ? '请输入 3–12 个整数，每个在 ±1000000 内。' : '请输入 2–12 个非负整数，每个高度在 0–1000000 内。')
+      setError(isDedup ? '请输入 1–12 个升序整数，每个在 ±1000000 内。' : isThreeSum ? '请输入 3–12 个整数，每个在 ±1000000 内。' : '请输入 2–12 个非负整数，每个高度在 0–1000000 内。')
       setNotice('')
       return
     }
@@ -258,11 +259,11 @@ export function ArrayParameters({ problem, input, onRecord }: { problem: 'contai
   return <form aria-labelledby="params-title" onSubmit={submit} noValidate>
     <h2 id="params-title" className="mb-3">修改参数</h2>
     <fieldset className="space-y-4" aria-describedby="params-note params-error">
-      <legend className="sr-only">{isThreeSum ? '三数之和参数' : isRain ? '接雨水参数' : '盛最多水的容器参数'}</legend>
-      <label>{isThreeSum ? '数组 nums' : '高度数组 nums'}<input name="nums" value={nums} onChange={(event) => setNums(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
+      <legend className="sr-only">{isDedup ? '删除重复项参数' : isThreeSum ? '三数之和参数' : isRain ? '接雨水参数' : '盛最多水的容器参数'}</legend>
+      <label>{isDedup ? '升序数组 nums' : isThreeSum ? '数组 nums' : '高度数组 nums'}<input name="nums" value={nums} onChange={(event) => setNums(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
       <Button type="submit" className="w-full">重录本曲</Button>
     </fieldset>
-    <p id="params-note" className="muted mt-3">{isThreeSum ? '3–12 个整数；默认录制 40 秒，步骤较多时延长。' : `2–12 个非负整数；本曲录制为 ${isRain ? 38 : 36} 秒。`}非法输入不会替换现有录制；离开歌单或刷新后恢复默认。</p>
+    <p id="params-note" className="muted mt-3">{isDedup ? '1–12 个升序整数；本曲录制为 32 秒。' : isThreeSum ? '3–12 个整数；默认录制 40 秒，步骤较多时延长。' : `2–12 个非负整数；本曲录制为 ${isRain ? 38 : 36} 秒。`}非法输入不会替换现有录制；离开歌单或刷新后恢复默认。</p>
     <p id="params-error" role="alert" className="form-error">{error}</p>
     <p role="status" className="muted mt-3">{notice}</p>
   </form>

@@ -1,3 +1,4 @@
+import removeDuplicatesStory from '../../data/stories/remove-duplicates.json'
 import sortedStory from '../../data/stories/two-sum-ii.json'
 import hash from '../../data/stories/two-sum-hash.json'
 import brute from '../../data/stories/two-sum-brute.json'
@@ -13,8 +14,9 @@ import trappingRainWaterStory from '../../data/stories/trapping-rain-water.json'
 import threeSumStory from '../../data/stories/three-sum.json'
 import longestSubstringStory from '../../data/stories/longest-substring.json'
 import minWindowStory from '../../data/stories/min-window.json'
-import { containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
+import { removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
 import type { Story } from './schema'
+import { removeDuplicatesSorted } from '../steppers/removeDuplicates'
 import { twoSumSorted } from '../steppers/twoSumSorted'
 import { twoSumHash } from '../steppers/twoSumHash'
 import { twoSumBrute } from '../steppers/twoSumBrute'
@@ -25,6 +27,7 @@ import { longestSubstring } from '../steppers/longestSubstring'
 import { minWindow } from '../steppers/minWindow'
 
 export const stories: Record<string, Story> = {
+  'remove-duplicates': storySchema.parse(removeDuplicatesStory),
   'two-sum-ii': storySchema.parse(sortedStory),
   'two-sum-hash': storySchema.parse(hash),
   'two-sum-brute': storySchema.parse(brute),
@@ -45,6 +48,10 @@ export const stories: Record<string, Story> = {
 export function recordStory(id: string, rawInput: unknown): Story {
   const source = stories[id]
   if (!source) throw new Error('没有找到这首曲目的分镜。')
+  if (source.problem === 'remove-duplicates-sorted') {
+    const input = removeDuplicatesSortedInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: removeDuplicatesSorted(input) })
+  }
   if (source.problem === 'two-sum-ii') {
     const input = twoSumSortedInputSchema.parse(rawInput)
     return storySchema.parse({ ...source, input, steps: twoSumSorted(input) })

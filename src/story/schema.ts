@@ -17,6 +17,7 @@ export const kadaneInputSchema = z.object({ nums: numbers.min(1) }).strict()
 export const moveZeroesInputSchema = z.object({ nums: numbers }).strict()
 export const reverseListInputSchema = z.object({ nums: numbers }).strict()
 const sorted = (nums: number[]) => nums.every((value, i) => i === 0 || nums[i - 1] <= value)
+export const removeDuplicatesSortedInputSchema = z.object({ nums: numbers.min(1).refine(sorted, '数组必须升序排列。') }).strict()
 export const twoSumSortedInputSchema = z.object({ nums: numbers.min(2).refine(sorted, '数组必须升序排列。'), target }).strict()
 export const binarySearchInputSchema = z.object({ nums: numbers.refine(sorted, '数组必须升序排列。'), target }).strict()
 export const bracketsInputSchema = z.object({ text: z.string().max(12).regex(/^[()[\]{}]*$/, '只支持括号 ()[]{}。') }).strict()
@@ -52,6 +53,7 @@ export const arraySceneSchema = z.enum(['Array1D', 'array-2ptrs'])
 export const storySchema = z.discriminatedUnion('problem', [
   z.object({ ...base, problem: z.literal('minimum-window-substring'), remix: z.literal('sliding-window'), scene: z.literal('array-2ptrs'), input: minWindowInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('longest-substring-without-repeating-characters'), remix: z.literal('sliding-window'), scene: z.literal('array-2ptrs'), input: longestSubstringInputSchema }).strict(),
+  z.object({ ...base, problem: z.literal('remove-duplicates-sorted'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: removeDuplicatesSortedInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('two-sum-ii'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: twoSumSortedInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('three-sum'), remix: z.literal('sort-two-pointers'), scene: z.literal('array-2ptrs'), input: threeSumInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('container-with-most-water'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: containerInputSchema }).strict(),
@@ -80,6 +82,10 @@ export const storySchema = z.discriminatedUnion('problem', [
     if (step.stack && (story.scene !== 'Stack' || step.stack.some((item) => item.index >= length || ('text' in story.input && story.input.text[item.index] !== item.value)))) issue('栈快照无效。')
     if (step.links && (story.scene !== 'LinkedList' || step.links.length !== length || step.links.some((index) => index !== null && index >= length))) issue('链表快照无效。')
     if (step.head !== undefined && (story.scene !== 'LinkedList' || (step.head !== null && step.head >= length))) issue('链表头指针无效。')
+    if (story.problem === 'remove-duplicates-sorted') {
+      const unique = [...new Set(story.input.nums)]
+      if (!step.values || typeof step.result !== 'number' || !Number.isInteger(step.result) || step.result < 1 || step.result > unique.length || step.values.slice(0, step.result).some((value, index) => value !== unique[index]) || (i === story.steps.length - 1 && step.result !== unique.length)) issue('去重需要完整数组快照和有效的唯一前缀长度。')
+    }
     if (story.problem === 'move-zeroes' && !step.values) issue('移动零需要完整数组快照。')
     if (story.problem === 'merge-sorted-array' && (!step.values || !step.secondary)) issue('合并需要两个数组快照。')
     if (story.scene === 'BinarySearch' && !step.bounds) issue('二分需要区间快照。')
@@ -127,6 +133,7 @@ export const storySchema = z.discriminatedUnion('problem', [
   })
 })
 
+export type RemoveDuplicatesSortedInput = z.infer<typeof removeDuplicatesSortedInputSchema>
 export type TwoSumSortedInput = z.infer<typeof twoSumSortedInputSchema>
 export type TwoSumInput = z.infer<typeof twoSumInputSchema>
 export type ContainerInput = z.infer<typeof containerInputSchema>
