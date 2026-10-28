@@ -10,6 +10,7 @@ import zeroes from '../../data/stories/move-zeroes.json'
 import merge from '../../data/stories/merge-sorted-array.json'
 import binary from '../../data/stories/binary-search.json'
 import brackets from '../../data/stories/valid-parentheses.json'
+import removeNthStory from '../../data/stories/remove-nth.json'
 import linkedCycleIIStory from '../../data/stories/linked-cycle-ii.json'
 import linkedCycleStory from '../../data/stories/linked-cycle.json'
 import mergeListsStory from '../../data/stories/merge-two-lists.json'
@@ -21,8 +22,9 @@ import longestSubstringStory from '../../data/stories/longest-substring.json'
 import findAnagramsStory from '../../data/stories/find-anagrams.json'
 import minWindowStory from '../../data/stories/min-window.json'
 import minSubarraySumStory from '../../data/stories/min-subarray-sum.json'
-import { linkedCycleIIInputSchema, linkedCycleInputSchema, mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
+import { removeNthInputSchema, linkedCycleIIInputSchema, linkedCycleInputSchema, mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
 import type { Story } from './schema'
+import { removeNthFromEnd } from '../steppers/removeNthFromEnd'
 import { linkedCycleII } from '../steppers/linkedCycleII'
 import { linkedCycle } from '../steppers/linkedCycle'
 import { mergeTwoLists } from '../steppers/mergeTwoLists'
@@ -55,6 +57,7 @@ export const stories: Record<string, Story> = {
   'binary-search': storySchema.parse(binary),
   'valid-parentheses': storySchema.parse(brackets),
   'reverse-linked-list': storySchema.parse(reverse),
+  'remove-nth': storySchema.parse(removeNthStory),
   'linked-cycle-ii': storySchema.parse(linkedCycleIIStory),
   'linked-cycle': storySchema.parse(linkedCycleStory),
   'merge-two-lists': storySchema.parse(mergeListsStory),
@@ -70,6 +73,10 @@ export const stories: Record<string, Story> = {
 export function recordStory(id: string, rawInput: unknown): Story {
   const source = stories[id]
   if (!source) throw new Error('没有找到这首曲目的分镜。')
+  if (source.problem === 'remove-nth-from-end') {
+    const input = removeNthInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: removeNthFromEnd(input) })
+  }
   if (source.problem === 'linked-list-cycle-ii') {
     const input = linkedCycleIIInputSchema.parse(rawInput)
     return storySchema.parse({ ...source, input, steps: linkedCycleII(input) })

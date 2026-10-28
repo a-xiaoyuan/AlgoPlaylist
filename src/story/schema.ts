@@ -19,6 +19,7 @@ export const minSubarraySumInputSchema = z.object({ target: z.number().int().pos
 const threeSumResultSchema = z.array(z.tuple([integer, integer, integer])).max(220)
 export const kadaneInputSchema = z.object({ nums: numbers.min(1) }).strict()
 export const moveZeroesInputSchema = z.object({ nums: numbers }).strict()
+export const removeNthInputSchema = z.object({ nums: z.array(z.number().finite()).min(1).max(12), n: z.number().int().min(1) }).strict().refine((input) => input.n <= input.nums.length, 'n 必须不超过链表长度。')
 export const linkedCycleInputSchema = z.object({ nums: z.array(z.number()).min(1).max(12), pos: z.number().int().min(-1) }).strict().refine((input) => input.pos < input.nums.length, 'pos 必须为 -1 或有效节点下标。')
 export const linkedCycleIIInputSchema = z.object({ nums: z.array(z.number().int()).min(1).max(12), pos: z.number().int().min(-1) }).strict().refine((input) => input.pos < input.nums.length, 'pos 必须为 -1 或有效节点下标。')
 export const reverseListInputSchema = z.object({ nums: numbers }).strict()
@@ -51,7 +52,7 @@ export const stepSchema = z.object({
   stack: z.array(z.object({ value: z.enum(['(', '[', '{']), index: indexSchema }).strict()).optional(),
   links: z.array(indexSchema.nullable()).max(12).optional(),
   head: indexSchema.nullable().optional(),
-  result: z.union([z.number().finite(), z.boolean(), z.string(), numbers, threeSumResultSchema, z.null()]).optional(),
+  result: z.union([z.number().finite(), z.boolean(), z.string(), z.array(z.number().finite()).max(12), threeSumResultSchema, z.null()]).optional(),
 }).strict()
 
 const base = { id: z.string().min(1), steps: z.array(stepSchema).min(2) }
@@ -76,6 +77,7 @@ export const storySchema = z.discriminatedUnion('problem', [
   z.object({ ...base, problem: z.literal('merge-sorted-array'), remix: z.literal('backward'), scene: arraySceneSchema, input: mergeInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('binary-search'), remix: z.literal('closed-interval'), scene: z.literal('BinarySearch'), input: binarySearchInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('valid-parentheses'), remix: z.literal('stack'), scene: z.literal('Stack'), input: bracketsInputSchema }).strict(),
+  z.object({ ...base, problem: z.literal('remove-nth-from-end'), remix: z.literal('two-pointers'), scene: z.literal('LinkedList'), input: removeNthInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('linked-list-cycle-ii'), remix: z.literal('floyd'), scene: z.literal('LinkedList'), input: linkedCycleIIInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('linked-list-cycle'), remix: z.enum(['floyd', 'two-pointers']), scene: z.literal('LinkedList'), input: linkedCycleInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('merge-two-lists'), remix: z.enum(['two-pointers', 'iterative']), scene: z.literal('LinkedList'), input: mergeTwoListsInputSchema }).strict(),
@@ -111,6 +113,12 @@ export const storySchema = z.discriminatedUnion('problem', [
     if (story.scene === 'BinarySearch' && !step.bounds) issue('二分需要区间快照。')
     if (story.scene === 'Stack' && !step.stack) issue('括号需要栈快照。')
     if (story.scene === 'LinkedList' && (!step.links || step.head === undefined)) issue('链表需要连线和头指针快照。')
+    if (story.problem !== 'remove-nth-from-end' && Array.isArray(step.result) && !step.result.some(Array.isArray) && !numbers.safeParse(step.result).success) issue('数值数组结果必须使用有效的整数。')
+    if (story.problem === 'remove-nth-from-end') {
+      const expected = story.input.nums.filter((_, index) => index !== length - story.input.n)
+      if (step.result !== undefined && (!Array.isArray(step.result) || step.result.length !== expected.length || step.result.some((value, index) => value !== expected[index]))) issue('删除结点的结果必须与输入一致。')
+      if (i === story.steps.length - 1 && !Array.isArray(step.result)) issue('最终帧需要删除后的结果。')
+    }
     if (story.problem === 'linked-list-cycle' && ((step.result !== undefined && typeof step.result !== 'boolean') || (i === story.steps.length - 1 && typeof step.result !== 'boolean'))) issue('环形链表需要布尔结果。')
     if (story.problem === 'linked-list-cycle-ii') {
       const result = step.result
@@ -170,6 +178,7 @@ export const storySchema = z.discriminatedUnion('problem', [
   })
 })
 
+export type RemoveNthInput = z.infer<typeof removeNthInputSchema>
 export type LinkedCycleInput = z.infer<typeof linkedCycleInputSchema>
 export type MergeTwoListsInput = z.infer<typeof mergeTwoListsInputSchema>
 export type RemoveDuplicatesSortedInput = z.infer<typeof removeDuplicatesSortedInputSchema>
