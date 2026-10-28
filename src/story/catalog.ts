@@ -11,7 +11,8 @@ import container from '../../data/stories/container-with-most-water.json'
 import trappingRainWaterStory from '../../data/stories/trapping-rain-water.json'
 import threeSumStory from '../../data/stories/three-sum.json'
 import longestSubstringStory from '../../data/stories/longest-substring.json'
-import { containerInputSchema, longestSubstringInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema } from './schema'
+import minWindowStory from '../../data/stories/min-window.json'
+import { containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema } from './schema'
 import type { Story } from './schema'
 import { twoSumHash } from '../steppers/twoSumHash'
 import { twoSumBrute } from '../steppers/twoSumBrute'
@@ -19,6 +20,7 @@ import { containerWithMostWater } from '../steppers/containerWithMostWater'
 import { trappingRainWater } from '../steppers/trappingRainWater'
 import { threeSum } from '../steppers/threeSum'
 import { longestSubstring } from '../steppers/longestSubstring'
+import { minWindow } from '../steppers/minWindow'
 
 export const stories: Record<string, Story> = {
   'two-sum-hash': storySchema.parse(hash),
@@ -34,6 +36,7 @@ export const stories: Record<string, Story> = {
   'trapping-rain-water': storySchema.parse(trappingRainWaterStory),
   'three-sum': storySchema.parse(threeSumStory),
   'longest-substring': storySchema.parse(longestSubstringStory),
+  'min-window': storySchema.parse(minWindowStory),
 }
 
 export function recordStory(id: string, rawInput: unknown): Story {
@@ -58,6 +61,10 @@ export function recordStory(id: string, rawInput: unknown): Story {
   if (source.problem === 'longest-substring-without-repeating-characters') {
     const input = longestSubstringInputSchema.parse(rawInput)
     return storySchema.parse({ ...source, input, steps: longestSubstring(input) })
+  }
+  if (source.problem === 'minimum-window-substring') {
+    const input = minWindowInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: minWindow(input) })
   }
   throw new Error('此曲目暂不支持改参重录。')
 }

@@ -8,10 +8,10 @@ export const stockInputSchema = z.object({ nums: z.array(integer.nonnegative()).
 export const containerInputSchema = z.object({ nums: z.array(integer.nonnegative()).min(2).max(12) }).strict()
 export const trappingRainWaterInputSchema = z.object({ nums: z.array(integer.nonnegative()).min(2).max(12) }).strict()
 export const threeSumInputSchema = z.object({ nums: numbers.min(3) }).strict()
-export const longestSubstringInputSchema = z.object({
-  text: z.string().max(24).refine((text) => Array.from(text).length <= 12, '最多支持 12 个 Unicode 码点。')
-    .regex(/^[^\p{Cc}\p{Cs}]*$/u, '不支持控制字符或不完整的 Unicode 字符。'),
-}).strict()
+const unicodeText = z.string().max(24).refine((text) => Array.from(text).length <= 12, '最多支持 12 个 Unicode 码点。')
+  .regex(/^[^\p{Cc}\p{Cs}]*$/u, '不支持控制字符或不完整的 Unicode 字符。')
+export const longestSubstringInputSchema = z.object({ text: unicodeText }).strict()
+export const minWindowInputSchema = z.object({ s: unicodeText, t: unicodeText }).strict()
 const threeSumResultSchema = z.array(z.tuple([integer, integer, integer])).max(220)
 export const kadaneInputSchema = z.object({ nums: numbers.min(1) }).strict()
 export const moveZeroesInputSchema = z.object({ nums: numbers }).strict()
@@ -42,13 +42,14 @@ export const stepSchema = z.object({
   stack: z.array(z.object({ value: z.enum(['(', '[', '{']), index: indexSchema }).strict()).optional(),
   links: z.array(indexSchema.nullable()).max(12).optional(),
   head: indexSchema.nullable().optional(),
-  result: z.union([z.number().finite(), z.boolean(), numbers, threeSumResultSchema]).optional(),
+  result: z.union([z.number().finite(), z.boolean(), z.string(), numbers, threeSumResultSchema]).optional(),
 }).strict()
 
 const base = { id: z.string().min(1), steps: z.array(stepSchema).min(2) }
 // Numeric array stories may opt into the shared two-pointer renderer.
 export const arraySceneSchema = z.enum(['Array1D', 'array-2ptrs'])
 export const storySchema = z.discriminatedUnion('problem', [
+  z.object({ ...base, problem: z.literal('minimum-window-substring'), remix: z.literal('sliding-window'), scene: z.literal('array-2ptrs'), input: minWindowInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('longest-substring-without-repeating-characters'), remix: z.literal('sliding-window'), scene: z.literal('array-2ptrs'), input: longestSubstringInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('three-sum'), remix: z.literal('sort-two-pointers'), scene: z.literal('array-2ptrs'), input: threeSumInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('container-with-most-water'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: containerInputSchema }).strict(),
@@ -62,7 +63,7 @@ export const storySchema = z.discriminatedUnion('problem', [
   z.object({ ...base, problem: z.literal('valid-parentheses'), remix: z.literal('stack'), scene: z.literal('Stack'), input: bracketsInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('reverse-linked-list'), remix: z.literal('iterative'), scene: z.literal('LinkedList'), input: reverseListInputSchema }).strict(),
 ]).superRefine((story, ctx) => {
-  const length = 'nums' in story.input ? story.input.nums.length : Array.from(story.input.text).length
+  const length = 'nums' in story.input ? story.input.nums.length : Array.from('s' in story.input ? story.input.s : story.input.text).length
   const sortedInput = story.problem === 'three-sum' ? [...story.input.nums].sort((a, b) => a - b) : undefined
   story.steps.forEach((step, i) => {
     const issue = (message: string) => ctx.addIssue({ code: 'custom', path: ['steps', i], message })
@@ -92,6 +93,10 @@ export const storySchema = z.discriminatedUnion('problem', [
         if (typeof step.result !== 'number' || !Number.isInteger(step.result) || step.result < window.length || step.result > length) issue('最长长度必须为窗口长度至输入长度之间的整数。')
       }
     }
+    if (story.problem === 'minimum-window-substring') {
+      if (step.values || !step.bounds || step.bounds.left > step.bounds.right + 1) issue('最小覆盖子串需要有效的字符窗口区间快照。')
+      if (typeof step.result !== 'string' || (step.result !== '' && !story.input.s.includes(step.result))) issue('结果必须是输入字符串的子串。')
+    } else if (typeof step.result === 'string') issue('当前题目不支持字符串结果。')
     if (story.problem === 'three-sum') {
       if (!step.values || step.values.some((value, index) => value !== sortedInput![index])) issue('三数之和需要完整的排序数组快照。')
       const result = threeSumResultSchema.safeParse(step.result)
@@ -121,6 +126,7 @@ export type ContainerInput = z.infer<typeof containerInputSchema>
 export type TrappingRainWaterInput = z.infer<typeof trappingRainWaterInputSchema>
 export type ThreeSumInput = z.infer<typeof threeSumInputSchema>
 export type LongestSubstringInput = z.infer<typeof longestSubstringInputSchema>
+export type MinWindowInput = z.infer<typeof minWindowInputSchema>
 export type StoryStep = z.infer<typeof stepSchema>
 export type Story = z.infer<typeof storySchema>
 export type StepFrame = Omit<StoryStep, 't'>

@@ -10,8 +10,8 @@ import { findTrack } from '@/lib/catalog'
 import type { Playlist, Track } from '@/lib/catalog'
 import { NotFound } from '@/pages/not-found'
 import { recordStory, stories } from '@/story/catalog'
-import { containerInputSchema, longestSubstringInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema } from '@/story/schema'
-import type { ContainerInput, LongestSubstringInput, Story, ThreeSumInput, TwoSumInput } from '@/story/schema'
+import { containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema } from '@/story/schema'
+import type { ContainerInput, LongestSubstringInput, MinWindowInput, Story, ThreeSumInput, TwoSumInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
 import { frameAtProgress, replaceProblemRecordings } from '@/player/remix'
@@ -37,7 +37,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
   const [compareProblem, setCompareProblem] = useState<string | null>(null)
   const remixes = playlist.tracks.filter((item) => recordings[item.id].problem === story.problem)
 
-  function rerecord(input: TwoSumInput | ContainerInput | ThreeSumInput | LongestSubstringInput) {
+  function rerecord(input: TwoSumInput | ContainerInput | ThreeSumInput | LongestSubstringInput | MinWindowInput) {
     // Only remixes of the current problem share the new recording input.
     setRecordings((previous) => replaceProblemRecordings(previous, track.id, input, recordStory))
   }
@@ -87,6 +87,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
           <Separator />
           {story.problem === 'two-sum' ? <TwoSumParameters input={story.input} onRecord={rerecord} />
             : story.problem === 'longest-substring-without-repeating-characters' ? <StringParameters key={story.id} input={story.input} onRecord={rerecord} />
+            : story.problem === 'minimum-window-substring' ? <MinWindowParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'container-with-most-water' || story.problem === 'trapping-rain-water' || story.problem === 'three-sum' ? <ArrayParameters key={story.id} problem={story.problem} input={story.input} onRecord={rerecord} /> : <section className="space-y-3">
             <h2>示例分镜</h2>
             <p className="muted">本曲使用内置示例。播放或拖动进度，观察每一步的完整状态；用队列或上一曲、下一曲切换。</p>
@@ -118,9 +119,41 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
 }
 
 function inputDescription(story: Story) {
+  if ('s' in story.input) return `s = ${JSON.stringify(story.input.s)}，t = ${JSON.stringify(story.input.t)}`
   if ('text' in story.input) return `text = ${JSON.stringify(story.input.text)}`
   const input = story.input
   return `nums = [${input.nums.join(', ')}]${'target' in input ? `，target = ${input.target}` : ''}${'nums2' in input ? `，m = ${input.m}，nums2 = [${input.nums2.join(', ')}]` : ''}`
+}
+
+function MinWindowParameters({ input, onRecord }: { input: MinWindowInput, onRecord: (input: MinWindowInput) => void }) {
+  const [s, setS] = useState(input.s)
+  const [t, setT] = useState(input.t)
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
+  function submit(event: React.FormEvent) {
+    event.preventDefault()
+    const result = minWindowInputSchema.safeParse({ s, t })
+    if (!result.success) {
+      setError('s 和 t 各支持最多 12 个 Unicode 码点；允许空串，不支持控制字符或不完整的 Unicode 字符。')
+      setNotice('')
+      return
+    }
+    onRecord(result.data)
+    setError('')
+    setNotice('已重录本曲，播放位置已归零并暂停。')
+  }
+  return <form aria-labelledby="params-title" onSubmit={submit} noValidate>
+    <h2 id="params-title" className="mb-3">修改参数</h2>
+    <fieldset className="space-y-4" aria-describedby="params-note params-error">
+      <legend className="sr-only">最小覆盖子串参数</legend>
+      <label>字符串 s<input name="s" value={s} onChange={(event) => setS(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
+      <label>目标字符串 t<input name="t" value={t} onChange={(event) => setT(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
+      <Button type="submit" className="w-full">重录本曲</Button>
+    </fieldset>
+    <p id="params-note" className="muted mt-3">直接输入文本，无需 JSON 引号。s 和 t 各最多 12 个 Unicode 码点；空格显示为 ␠，组合字符按多个码点计数。本曲 40 秒；非法输入保留现有录制，离开歌单或刷新恢复默认。</p>
+    <p id="params-error" role="alert" className="form-error">{error}</p>
+    <p role="status" className="muted mt-3">{notice}</p>
+  </form>
 }
 
 function TwoSumParameters({ input, onRecord }: { input: TwoSumInput, onRecord: (input: TwoSumInput) => void }) {

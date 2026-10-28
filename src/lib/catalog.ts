@@ -33,6 +33,13 @@ const pointerTracks: Track[] = [{
   duration: '00:36',
   complexity: '时间 O(n) · 空间 O(min(n, 字符集大小))',
   remix: '滑动窗口',
+}, {
+  id: 'min-window',
+  title: '76 最小覆盖子串',
+  subtitle: '扩展窗口直到覆盖目标，再收缩左边界寻找最短子串。',
+  duration: '00:40',
+  complexity: '时间 O(|s| + |t|) · 空间 O(|t|)',
+  remix: '滑动窗口',
 }]
 const tracks = new Map([...catalog.playlists.flatMap((playlist) => playlist.tracks), ...pointerTracks].map((track) => [track.id, track]))
 const pointerPlaylist: Playlist = {
@@ -40,7 +47,7 @@ const pointerPlaylist: Playlist = {
   title: pointerNight.titleZh,
   description: pointerNight.subtitle,
   category: pointerNight.tags.join(' / '),
-  duration: '2 分 30 秒',
+  duration: '3 分 10 秒',
   tracks: pointerNight.trackIds.map((id: string) => {
     const track = tracks.get(id)
     if (!track) throw new Error(`歌单引用了未登记曲目：${id}`)

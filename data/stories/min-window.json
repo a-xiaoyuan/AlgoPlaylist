@@ -1,0 +1,1236 @@
+{
+  "id": "min-window",
+  "problem": "minimum-window-substring",
+  "remix": "sliding-window",
+  "scene": "array-2ptrs",
+  "input": {
+    "s": "ADOBECODBANC",
+    "t": "ABC"
+  },
+  "steps": [
+    {
+      "caption": "从空窗口开始，right 向右扩展；覆盖 t 后尝试移动 left，寻找更短窗口。",
+      "highlight": [],
+      "pointers": [],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": -1
+      },
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "0 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": "尚无"
+        }
+      ],
+      "result": "",
+      "t": 0
+    },
+    {
+      "caption": "right = 0，加入 \"A\"；已满足 1 / 3 种所需字符。",
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 0
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "1 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": "尚无"
+        }
+      ],
+      "result": "",
+      "t": 1.29
+    },
+    {
+      "caption": "right = 1，加入 \"D\"；已满足 1 / 3 种所需字符。",
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 1
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "1 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": "尚无"
+        }
+      ],
+      "result": "",
+      "t": 2.581
+    },
+    {
+      "caption": "right = 2，加入 \"O\"；已满足 1 / 3 种所需字符。",
+      "highlight": [
+        0,
+        1,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 2
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "1 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": "尚无"
+        }
+      ],
+      "result": "",
+      "t": 3.871
+    },
+    {
+      "caption": "right = 3，加入 \"B\"；已满足 2 / 3 种所需字符。",
+      "highlight": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 3
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "2 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": "尚无"
+        }
+      ],
+      "result": "",
+      "t": 5.161
+    },
+    {
+      "caption": "right = 4，加入 \"E\"；已满足 2 / 3 种所需字符。",
+      "highlight": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 4
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 4
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "2 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": "尚无"
+        }
+      ],
+      "result": "",
+      "t": 6.452
+    },
+    {
+      "caption": "right = 5，加入 \"C\"；已满足 3 / 3 种所需字符。",
+      "highlight": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 5
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": "尚无"
+        }
+      ],
+      "result": "",
+      "t": 7.742
+    },
+    {
+      "caption": "窗口已覆盖 t，长度 6；更新最短窗口，接着收缩左边界。",
+      "highlight": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 5
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 6
+        }
+      ],
+      "result": "ADOBEC",
+      "t": 9.032
+    },
+    {
+      "caption": "移出 \"A\"，left 移到 1；已满足 2 / 3 种所需字符。",
+      "highlight": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 1,
+        "right": 5
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "2 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 6
+        }
+      ],
+      "result": "ADOBEC",
+      "t": 10.323
+    },
+    {
+      "caption": "right = 6，加入 \"O\"；已满足 2 / 3 种所需字符。",
+      "highlight": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 6
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 1,
+        "right": 6
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "2 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 6
+        }
+      ],
+      "result": "ADOBEC",
+      "t": 11.613
+    },
+    {
+      "caption": "right = 7，加入 \"D\"；已满足 2 / 3 种所需字符。",
+      "highlight": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 7
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 1,
+        "right": 7
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "2 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 6
+        }
+      ],
+      "result": "ADOBEC",
+      "t": 12.903
+    },
+    {
+      "caption": "right = 8，加入 \"B\"；已满足 2 / 3 种所需字符。",
+      "highlight": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 8
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 1,
+        "right": 8
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "2 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 6
+        }
+      ],
+      "result": "ADOBEC",
+      "t": 14.194
+    },
+    {
+      "caption": "right = 9，加入 \"A\"；已满足 3 / 3 种所需字符。",
+      "highlight": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 9
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 1,
+        "right": 9
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 6
+        }
+      ],
+      "result": "ADOBEC",
+      "t": 15.484
+    },
+    {
+      "caption": "窗口已覆盖 t，长度 9；保留已有最短窗口，接着收缩左边界。",
+      "highlight": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 9
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 1,
+        "right": 9
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 6
+        }
+      ],
+      "result": "ADOBEC",
+      "t": 16.774
+    },
+    {
+      "caption": "移出 \"D\"，left 移到 2；已满足 3 / 3 种所需字符。",
+      "highlight": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 9
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 2,
+        "right": 9
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 6
+        }
+      ],
+      "result": "ADOBEC",
+      "t": 18.065
+    },
+    {
+      "caption": "窗口已覆盖 t，长度 8；保留已有最短窗口，接着收缩左边界。",
+      "highlight": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 9
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 2,
+        "right": 9
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 6
+        }
+      ],
+      "result": "ADOBEC",
+      "t": 19.355
+    },
+    {
+      "caption": "移出 \"O\"，left 移到 3；已满足 3 / 3 种所需字符。",
+      "highlight": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 3
+        },
+        {
+          "label": "right",
+          "index": 9
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 3,
+        "right": 9
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 6
+        }
+      ],
+      "result": "ADOBEC",
+      "t": 20.645
+    },
+    {
+      "caption": "窗口已覆盖 t，长度 7；保留已有最短窗口，接着收缩左边界。",
+      "highlight": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 3
+        },
+        {
+          "label": "right",
+          "index": 9
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 3,
+        "right": 9
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 6
+        }
+      ],
+      "result": "ADOBEC",
+      "t": 21.935
+    },
+    {
+      "caption": "移出 \"B\"，left 移到 4；已满足 3 / 3 种所需字符。",
+      "highlight": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 4
+        },
+        {
+          "label": "right",
+          "index": 9
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 4,
+        "right": 9
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 6
+        }
+      ],
+      "result": "ADOBEC",
+      "t": 23.226
+    },
+    {
+      "caption": "窗口已覆盖 t，长度 6；保留已有最短窗口，接着收缩左边界。",
+      "highlight": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 4
+        },
+        {
+          "label": "right",
+          "index": 9
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 4,
+        "right": 9
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 6
+        }
+      ],
+      "result": "ADOBEC",
+      "t": 24.516
+    },
+    {
+      "caption": "移出 \"E\"，left 移到 5；已满足 3 / 3 种所需字符。",
+      "highlight": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 5
+        },
+        {
+          "label": "right",
+          "index": 9
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 5,
+        "right": 9
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 6
+        }
+      ],
+      "result": "ADOBEC",
+      "t": 25.806
+    },
+    {
+      "caption": "窗口已覆盖 t，长度 5；更新最短窗口，接着收缩左边界。",
+      "highlight": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 5
+        },
+        {
+          "label": "right",
+          "index": 9
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 5,
+        "right": 9
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 5
+        }
+      ],
+      "result": "CODBA",
+      "t": 27.097
+    },
+    {
+      "caption": "移出 \"C\"，left 移到 6；已满足 2 / 3 种所需字符。",
+      "highlight": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 6
+        },
+        {
+          "label": "right",
+          "index": 9
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 6,
+        "right": 9
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "2 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 5
+        }
+      ],
+      "result": "CODBA",
+      "t": 28.387
+    },
+    {
+      "caption": "right = 10，加入 \"N\"；已满足 2 / 3 种所需字符。",
+      "highlight": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 6
+        },
+        {
+          "label": "right",
+          "index": 10
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 6,
+        "right": 10
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "2 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 5
+        }
+      ],
+      "result": "CODBA",
+      "t": 29.677
+    },
+    {
+      "caption": "right = 11，加入 \"C\"；已满足 3 / 3 种所需字符。",
+      "highlight": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 6
+        },
+        {
+          "label": "right",
+          "index": 11
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 6,
+        "right": 11
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 5
+        }
+      ],
+      "result": "CODBA",
+      "t": 30.968
+    },
+    {
+      "caption": "窗口已覆盖 t，长度 6；保留已有最短窗口，接着收缩左边界。",
+      "highlight": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 6
+        },
+        {
+          "label": "right",
+          "index": 11
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 6,
+        "right": 11
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 5
+        }
+      ],
+      "result": "CODBA",
+      "t": 32.258
+    },
+    {
+      "caption": "移出 \"O\"，left 移到 7；已满足 3 / 3 种所需字符。",
+      "highlight": [
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 7
+        },
+        {
+          "label": "right",
+          "index": 11
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 7,
+        "right": 11
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 5
+        }
+      ],
+      "result": "CODBA",
+      "t": 33.548
+    },
+    {
+      "caption": "窗口已覆盖 t，长度 5；保留已有最短窗口，接着收缩左边界。",
+      "highlight": [
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 7
+        },
+        {
+          "label": "right",
+          "index": 11
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 7,
+        "right": 11
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 5
+        }
+      ],
+      "result": "CODBA",
+      "t": 34.839
+    },
+    {
+      "caption": "移出 \"D\"，left 移到 8；已满足 3 / 3 种所需字符。",
+      "highlight": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 8
+        },
+        {
+          "label": "right",
+          "index": 11
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 8,
+        "right": 11
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 5
+        }
+      ],
+      "result": "CODBA",
+      "t": 36.129
+    },
+    {
+      "caption": "窗口已覆盖 t，长度 4；更新最短窗口，接着收缩左边界。",
+      "highlight": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 8
+        },
+        {
+          "label": "right",
+          "index": 11
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 8,
+        "right": 11
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 4
+        }
+      ],
+      "result": "BANC",
+      "t": 37.419
+    },
+    {
+      "caption": "移出 \"B\"，left 移到 9；已满足 2 / 3 种所需字符。",
+      "highlight": [
+        9,
+        10,
+        11
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 9
+        },
+        {
+          "label": "right",
+          "index": 11
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 9,
+        "right": 11
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "2 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 4
+        }
+      ],
+      "result": "BANC",
+      "t": 38.71
+    },
+    {
+      "caption": "扫描结束，返回最短覆盖子串 \"BANC\"，长度 4。时间 O(|s| + |t|)，空间 O(|t|)。",
+      "highlight": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 8
+        },
+        {
+          "label": "right",
+          "index": 11
+        }
+      ],
+      "marks": [
+        {
+          "label": "最优左边界",
+          "index": 8
+        },
+        {
+          "label": "最优右边界",
+          "index": 11
+        }
+      ],
+      "bounds": {
+        "left": 8,
+        "right": 11
+      },
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "满足的字符种类",
+          "value": "3 / 3"
+        },
+        {
+          "label": "最短长度",
+          "value": 4
+        }
+      ],
+      "result": "BANC",
+      "t": 40
+    }
+  ]
+}

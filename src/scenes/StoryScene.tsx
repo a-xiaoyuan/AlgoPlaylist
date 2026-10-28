@@ -9,7 +9,7 @@ export function StoryScene({ story, frame }: { story: Story, frame: StoryStep })
   const scene = story.scene === 'Stack' ? <Stack text={story.input.text} frame={frame} />
     : story.scene === 'LinkedList' ? <LinkedList nums={story.input.nums} frame={frame} />
     : story.scene === 'BinarySearch' ? <BinarySearch nums={story.input.nums} frame={frame} />
-    : story.scene === 'array-2ptrs' ? <Array2Ptrs nums={'nums' in story.input ? story.input.nums : Array.from(story.input.text)} frame={frame} />
+    : story.scene === 'array-2ptrs' ? <Array2Ptrs nums={'nums' in story.input ? story.input.nums : Array.from('s' in story.input ? story.input.s : story.input.text)} frame={frame} />
     : <Array1D nums={story.input.nums} frame={frame} />
   return <>
     {scene}
