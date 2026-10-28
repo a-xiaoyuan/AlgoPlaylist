@@ -10,8 +10,8 @@ import { findTrack } from '@/lib/catalog'
 import type { Playlist, Track } from '@/lib/catalog'
 import { NotFound } from '@/pages/not-found'
 import { recordStory, stories } from '@/story/catalog'
-import { mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
-import type { MergeTwoListsInput, FindAnagramsInput, ContainerInput, LongestSubstringInput, MinWindowInput, MinSubarraySumInput, Story, ThreeSumInput, TwoSumInput, TwoSumSortedInput } from '@/story/schema'
+import { linkedCycleInputSchema, mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
+import type { LinkedCycleInput, MergeTwoListsInput, FindAnagramsInput, ContainerInput, LongestSubstringInput, MinWindowInput, MinSubarraySumInput, Story, ThreeSumInput, TwoSumInput, TwoSumSortedInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
 import { frameAtProgress, replaceProblemRecordings } from '@/player/remix'
@@ -38,7 +38,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
   const [compareProblem, setCompareProblem] = useState<string | null>(null)
   const remixes = playlist.tracks.filter((item) => recordings[item.id].problem === story.problem)
 
-  function rerecord(input: MergeTwoListsInput | TwoSumInput | ContainerInput | ThreeSumInput | LongestSubstringInput | MinWindowInput | FindAnagramsInput | MinSubarraySumInput) {
+  function rerecord(input: LinkedCycleInput | MergeTwoListsInput | TwoSumInput | ContainerInput | ThreeSumInput | LongestSubstringInput | MinWindowInput | FindAnagramsInput | MinSubarraySumInput) {
     // Only remixes of the current problem share the new recording input.
     setRecordings((previous) => replaceProblemRecordings(previous, track.id, input, recordStory))
   }
@@ -86,7 +86,8 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
             <p id="remix-note" className="muted">切换曲目后归零并暂停；同一歌单内保留已重录的参数。</p>
           </section>
           <Separator />
-          {story.problem === 'merge-two-lists' ? <MergeTwoListsParameters key={story.id} input={story.input} onRecord={rerecord} />
+          {story.problem === 'linked-list-cycle' ? <LinkedCycleParameters key={story.id} input={story.input} onRecord={rerecord} />
+            : story.problem === 'merge-two-lists' ? <MergeTwoListsParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'two-sum' ? <TwoSumParameters input={story.input} onRecord={rerecord} />
             : story.problem === 'two-sum-ii' ? <SortedArrayParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'longest-substring-without-repeating-characters' || story.problem === 'valid-palindrome' ? <StringParameters key={story.id} problem={story.problem} input={story.input} onRecord={rerecord} />
@@ -128,7 +129,44 @@ function inputDescription(story: Story) {
   if ('s' in story.input) return `s = ${JSON.stringify(story.input.s)}，${'p' in story.input ? `p = ${JSON.stringify(story.input.p)}` : `t = ${JSON.stringify(story.input.t)}`}`
   if ('text' in story.input) return `text = ${JSON.stringify(story.input.text)}`
   const input = story.input
-  return `nums = [${input.nums.join(', ')}]${'target' in input ? `，target = ${input.target}` : ''}${'nums2' in input ? `，m = ${input.m}，nums2 = [${input.nums2.join(', ')}]` : ''}`
+  return `nums = [${input.nums.join(', ')}]${'pos' in input ? `，pos = ${input.pos}` : ''}${'target' in input ? `，target = ${input.target}` : ''}${'nums2' in input ? `，m = ${input.m}，nums2 = [${input.nums2.join(', ')}]` : ''}`
+}
+
+export function LinkedCycleParameters({ input, onRecord }: { input: LinkedCycleInput, onRecord: (input: LinkedCycleInput) => void }) {
+  const [nums, setNums] = useState(JSON.stringify(input.nums))
+  const [pos, setPos] = useState(String(input.pos))
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
+  function submit(event: React.FormEvent) {
+    event.preventDefault()
+    let parsedNums: unknown, parsedPos: unknown
+    try { parsedNums = JSON.parse(nums); parsedPos = JSON.parse(pos) } catch {
+      setError('请输入 JSON 数组和整数 pos。')
+      setNotice('')
+      return
+    }
+    const result = linkedCycleInputSchema.safeParse({ nums: parsedNums, pos: parsedPos })
+    if (!result.success) {
+      setError('请输入 1–12 个数字；pos 必须为 -1 或有效的节点下标。')
+      setNotice('')
+      return
+    }
+    onRecord(result.data)
+    setError('')
+    setNotice('已重录本曲，播放位置已归零并暂停。')
+  }
+  return <form aria-labelledby="params-title" onSubmit={submit} noValidate>
+    <h2 id="params-title" className="mb-3">修改参数</h2>
+    <fieldset className="space-y-4" aria-describedby="params-note params-error">
+      <legend className="sr-only">环形链表参数</legend>
+      <label>链表节点 nums<input name="nums" value={nums} onChange={(event) => setNums(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
+      <label>尾节点连接下标 pos<input name="pos" value={pos} onChange={(event) => setPos(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
+      <Button type="submit" className="w-full">重录本曲</Button>
+    </fieldset>
+    <p id="params-note" className="muted mt-3">pos 从 0 开始；-1 表示尾节点指向 null，无环。本曲录制为 32 秒。</p>
+    <p id="params-error" role="alert" className="form-error">{error}</p>
+    <p role="status" className="muted mt-3">{notice}</p>
+  </form>
 }
 
 export function MergeTwoListsParameters({ input, onRecord }: { input: MergeTwoListsInput, onRecord: (input: MergeTwoListsInput) => void }) {

@@ -85,6 +85,13 @@ const pointerTracks: Track[] = [{
   remix: '滑动窗口',
 }]
 const linkedTracks: Track[] = [{
+  id: 'linked-cycle',
+  title: '141 环形链表',
+  subtitle: '快指针每次走两步，慢指针走一步；相遇则链表有环。',
+  duration: '00:32',
+  complexity: '时间 O(n) · 空间 O(1)',
+  remix: 'Floyd 快慢指针',
+}, {
   id: 'merge-two-lists',
   title: '21 合并两个有序链表',
   subtitle: '比较两个链表的头节点，用 dummy 和 prev 逐个连接较小节点。',
@@ -111,7 +118,7 @@ const linkedPlaylist: Playlist = {
   title: linkedNight.titleZh,
   description: linkedNight.subtitle,
   category: linkedNight.tags.join(' / '),
-  duration: '1 分 4 秒',
+  duration: '1 分 36 秒',
   tracks: linkedNight.trackIds.map((id: string) => {
     const track = tracks.get(id)
     if (!track) throw new Error(`歌单引用了未登记曲目：${id}`)

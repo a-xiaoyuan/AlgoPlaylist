@@ -5,6 +5,13 @@ export function LinkedList({ nums, frame }: { nums: number[], frame: StoryStep }
   const id = useId()
   const width = Math.max(400, nums.length * 144 + 32)
   const x = (index: number) => 32 + index * 144
+  const visited = new Set<number>()
+  let node = frame.head ?? null
+  while (node !== null && !visited.has(node)) {
+    visited.add(node)
+    node = frame.links?.[node] ?? null
+  }
+  const cyclic = node !== null
   return <div className="array-scroll" tabIndex={0} role="region" aria-label="链表场景，可横向滚动">
     <svg className="stage-frame array-scene" style={{ minWidth: width }} viewBox={`0 0 ${width} 360`} role="img" aria-labelledby={`${id}-title`}>
       <title id={`${id}-title`}>{`链表节点 [${nums.join(', ')}]，next [${frame.links?.map((link) => link ?? 'null').join(', ')}]，head ${frame.head ?? 'null'}。${frame.caption}`}</title>
@@ -23,7 +30,7 @@ export function LinkedList({ nums, frame }: { nums: number[], frame: StoryStep }
           {next === null ? <g>
             <path d={`M${x(index) + 40} 252v20`} stroke="var(--text-2)" markerEnd={`url(#${id}-arrow)`} />
             <text x={x(index) + 40} y="300" textAnchor="middle" fill="var(--text-2)" fontSize="16">null</text>
-          </g> : <path d={next > index ? `M${x(index) + 80} 174H${x(next) - 8}` : `M${x(index)} 200H${x(next) + 88}`} fill="none" stroke="var(--text-2)" markerEnd={`url(#${id}-arrow)`} />}
+          </g> : cyclic && next <= index ? <path d={`M${x(index) + 70} 216 V320 H${x(next) + 10} V224`} fill="none" stroke="var(--text-2)" markerEnd={`url(#${id}-arrow)`} /> : <path d={next > index ? `M${x(index) + 80} 174H${x(next) - 8}` : `M${x(index)} 200H${x(next) + 88}`} fill="none" stroke="var(--text-2)" markerEnd={`url(#${id}-arrow)`} />}
         </g>
       })}
     </svg>

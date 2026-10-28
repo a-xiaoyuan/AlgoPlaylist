@@ -1,8 +1,8 @@
 {
   "id": "B2",
   "titleZh": "链表夜跑",
-  "subtitle": "用链表双指针与迭代，观察节点连线如何反转与合并。",
+  "subtitle": "用链表双指针与迭代，观察节点连线如何反转、合并与成环。",
   "tags": ["链表"],
   "cover": "placeholder",
-  "trackIds": ["reverse-linked-list", "merge-two-lists"]
+  "trackIds": ["reverse-linked-list", "merge-two-lists", "linked-cycle"]
 }
