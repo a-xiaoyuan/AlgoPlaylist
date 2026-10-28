@@ -14,9 +14,10 @@ import container from '../../data/stories/container-with-most-water.json'
 import trappingRainWaterStory from '../../data/stories/trapping-rain-water.json'
 import threeSumStory from '../../data/stories/three-sum.json'
 import longestSubstringStory from '../../data/stories/longest-substring.json'
+import findAnagramsStory from '../../data/stories/find-anagrams.json'
 import minWindowStory from '../../data/stories/min-window.json'
 import minSubarraySumStory from '../../data/stories/min-subarray-sum.json'
-import { sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
+import { findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
 import type { Story } from './schema'
 import { sortColors } from '../steppers/sortColors'
 import { removeDuplicatesSorted } from '../steppers/removeDuplicates'
@@ -27,6 +28,7 @@ import { containerWithMostWater } from '../steppers/containerWithMostWater'
 import { trappingRainWater } from '../steppers/trappingRainWater'
 import { threeSum } from '../steppers/threeSum'
 import { longestSubstring } from '../steppers/longestSubstring'
+import { findAnagrams } from '../steppers/findAnagrams'
 import { minWindow } from '../steppers/minWindow'
 import { minSubarraySum } from '../steppers/minSubarraySum'
 
@@ -47,6 +49,7 @@ export const stories: Record<string, Story> = {
   'trapping-rain-water': storySchema.parse(trappingRainWaterStory),
   'three-sum': storySchema.parse(threeSumStory),
   'longest-substring': storySchema.parse(longestSubstringStory),
+  'find-anagrams': storySchema.parse(findAnagramsStory),
   'min-window': storySchema.parse(minWindowStory),
   'min-subarray-sum': storySchema.parse(minSubarraySumStory),
 }
@@ -85,6 +88,10 @@ export function recordStory(id: string, rawInput: unknown): Story {
   if (source.problem === 'longest-substring-without-repeating-characters') {
     const input = longestSubstringInputSchema.parse(rawInput)
     return storySchema.parse({ ...source, input, steps: longestSubstring(input) })
+  }
+  if (source.problem === 'find-all-anagrams') {
+    const input = findAnagramsInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: findAnagrams(input) })
   }
   if (source.problem === 'minimum-window-substring') {
     const input = minWindowInputSchema.parse(rawInput)
