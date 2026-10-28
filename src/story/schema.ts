@@ -7,6 +7,7 @@ export const twoSumInputSchema = z.object({ nums: numbers.min(2), target }).stri
 export const stockInputSchema = z.object({ nums: z.array(integer.nonnegative()).min(1).max(12) }).strict()
 export const containerInputSchema = z.object({ nums: z.array(integer.nonnegative()).min(2).max(12) }).strict()
 export const trappingRainWaterInputSchema = z.object({ nums: z.array(integer.nonnegative()).min(2).max(12) }).strict()
+export const sortColorsInputSchema = z.object({ nums: z.array(z.number().int().min(0).max(2)).min(1).max(12) }).strict()
 export const threeSumInputSchema = z.object({ nums: numbers.min(3) }).strict()
 const unicodeText = z.string().max(24).refine((text) => Array.from(text).length <= 12, '最多支持 12 个 Unicode 码点。')
   .regex(/^[^\p{Cc}\p{Cs}]*$/u, '不支持控制字符或不完整的 Unicode 字符。')
@@ -55,6 +56,7 @@ export const storySchema = z.discriminatedUnion('problem', [
   z.object({ ...base, problem: z.literal('longest-substring-without-repeating-characters'), remix: z.literal('sliding-window'), scene: z.literal('array-2ptrs'), input: longestSubstringInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('remove-duplicates-sorted'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: removeDuplicatesSortedInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('two-sum-ii'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: twoSumSortedInputSchema }).strict(),
+  z.object({ ...base, problem: z.literal('sort-colors'), remix: z.literal('three-pointers'), scene: z.literal('array-2ptrs'), input: sortColorsInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('three-sum'), remix: z.literal('sort-two-pointers'), scene: z.literal('array-2ptrs'), input: threeSumInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('container-with-most-water'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: containerInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('trapping-rain-water'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: trappingRainWaterInputSchema }).strict(),
@@ -85,6 +87,12 @@ export const storySchema = z.discriminatedUnion('problem', [
     if (story.problem === 'remove-duplicates-sorted') {
       const unique = [...new Set(story.input.nums)]
       if (!step.values || typeof step.result !== 'number' || !Number.isInteger(step.result) || step.result < 1 || step.result > unique.length || step.values.slice(0, step.result).some((value, index) => value !== unique[index]) || (i === story.steps.length - 1 && step.result !== unique.length)) issue('去重需要完整数组快照和有效的唯一前缀长度。')
+    }
+    if (story.problem === 'sort-colors') {
+      const expected = [...story.input.nums].sort((a, b) => a - b)
+      if (!step.values || [...step.values].sort((a, b) => a - b).some((value, index) => value !== expected[index])) issue('颜色分类需要保留所有输入元素的完整快照。')
+      if (step.result !== undefined && (!Array.isArray(step.result) || step.result.length !== length || step.result.some((value, index) => value !== expected[index]))) issue('颜色分类的结果必须是排序后的数组。')
+      if (i === story.steps.length - 1 && (!step.values || step.values.some((value, index) => value !== expected[index]) || !Array.isArray(step.result))) issue('最终快照和结果必须完成排序。')
     }
     if (story.problem === 'move-zeroes' && !step.values) issue('移动零需要完整数组快照。')
     if (story.problem === 'merge-sorted-array' && (!step.values || !step.secondary)) issue('合并需要两个数组快照。')
@@ -138,6 +146,7 @@ export type TwoSumSortedInput = z.infer<typeof twoSumSortedInputSchema>
 export type TwoSumInput = z.infer<typeof twoSumInputSchema>
 export type ContainerInput = z.infer<typeof containerInputSchema>
 export type TrappingRainWaterInput = z.infer<typeof trappingRainWaterInputSchema>
+export type SortColorsInput = z.infer<typeof sortColorsInputSchema>
 export type ThreeSumInput = z.infer<typeof threeSumInputSchema>
 export type LongestSubstringInput = z.infer<typeof longestSubstringInputSchema>
 export type MinWindowInput = z.infer<typeof minWindowInputSchema>

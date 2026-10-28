@@ -1,0 +1,868 @@
+{
+  "id": "sort-colors",
+  "problem": "sort-colors",
+  "remix": "three-pointers",
+  "scene": "array-2ptrs",
+  "input": {
+    "nums": [
+      2,
+      0,
+      2,
+      1,
+      1,
+      0
+    ]
+  },
+  "steps": [
+    {
+      "caption": "lo 左侧是 0，lo 到 mid 之前是 1，hi 右侧是 2；闭区间是待检查区域。",
+      "values": [
+        2,
+        0,
+        2,
+        1,
+        1,
+        0
+      ],
+      "highlight": [],
+      "pointers": [
+        {
+          "label": "lo",
+          "index": 0
+        },
+        {
+          "label": "mid",
+          "index": 0
+        },
+        {
+          "label": "hi",
+          "index": 5
+        }
+      ],
+      "bounds": {
+        "left": 0,
+        "right": 5
+      },
+      "marks": [],
+      "stats": [
+        {
+          "label": "lo",
+          "value": 0
+        },
+        {
+          "label": "mid",
+          "value": 0
+        },
+        {
+          "label": "hi",
+          "value": 5
+        }
+      ],
+      "sfx": "none",
+      "t": 0
+    },
+    {
+      "caption": "检查 nums[mid] = 2。",
+      "values": [
+        2,
+        0,
+        2,
+        1,
+        1,
+        0
+      ],
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "lo",
+          "index": 0
+        },
+        {
+          "label": "mid",
+          "index": 0
+        },
+        {
+          "label": "hi",
+          "index": 5
+        }
+      ],
+      "bounds": {
+        "left": 0,
+        "right": 5
+      },
+      "marks": [],
+      "stats": [
+        {
+          "label": "lo",
+          "value": 0
+        },
+        {
+          "label": "mid",
+          "value": 0
+        },
+        {
+          "label": "hi",
+          "value": 5
+        }
+      ],
+      "sfx": "compare",
+      "t": 2.615
+    },
+    {
+      "caption": "遇到 2，与 hi 交换后 hi 后退；换来的值尚未检查，mid 不动。",
+      "values": [
+        0,
+        0,
+        2,
+        1,
+        1,
+        2
+      ],
+      "highlight": [
+        0,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "lo",
+          "index": 0
+        },
+        {
+          "label": "mid",
+          "index": 0
+        },
+        {
+          "label": "hi",
+          "index": 4
+        }
+      ],
+      "bounds": {
+        "left": 0,
+        "right": 4
+      },
+      "marks": [
+        {
+          "label": "2 区",
+          "index": 5
+        }
+      ],
+      "stats": [
+        {
+          "label": "lo",
+          "value": 0
+        },
+        {
+          "label": "mid",
+          "value": 0
+        },
+        {
+          "label": "hi",
+          "value": 4
+        }
+      ],
+      "sfx": "match",
+      "t": 5.231
+    },
+    {
+      "caption": "检查 nums[mid] = 0。",
+      "values": [
+        0,
+        0,
+        2,
+        1,
+        1,
+        2
+      ],
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "lo",
+          "index": 0
+        },
+        {
+          "label": "mid",
+          "index": 0
+        },
+        {
+          "label": "hi",
+          "index": 4
+        }
+      ],
+      "bounds": {
+        "left": 0,
+        "right": 4
+      },
+      "marks": [
+        {
+          "label": "2 区",
+          "index": 5
+        }
+      ],
+      "stats": [
+        {
+          "label": "lo",
+          "value": 0
+        },
+        {
+          "label": "mid",
+          "value": 0
+        },
+        {
+          "label": "hi",
+          "value": 4
+        }
+      ],
+      "sfx": "compare",
+      "t": 7.846
+    },
+    {
+      "caption": "遇到 0，与 lo 交换后，lo 和 mid 都前进。",
+      "values": [
+        0,
+        0,
+        2,
+        1,
+        1,
+        2
+      ],
+      "highlight": [
+        0,
+        0
+      ],
+      "pointers": [
+        {
+          "label": "lo",
+          "index": 1
+        },
+        {
+          "label": "mid",
+          "index": 1
+        },
+        {
+          "label": "hi",
+          "index": 4
+        }
+      ],
+      "bounds": {
+        "left": 1,
+        "right": 4
+      },
+      "marks": [
+        {
+          "label": "0 区",
+          "index": 0
+        },
+        {
+          "label": "2 区",
+          "index": 5
+        }
+      ],
+      "stats": [
+        {
+          "label": "lo",
+          "value": 1
+        },
+        {
+          "label": "mid",
+          "value": 1
+        },
+        {
+          "label": "hi",
+          "value": 4
+        }
+      ],
+      "sfx": "match",
+      "t": 10.462
+    },
+    {
+      "caption": "检查 nums[mid] = 0。",
+      "values": [
+        0,
+        0,
+        2,
+        1,
+        1,
+        2
+      ],
+      "highlight": [
+        1
+      ],
+      "pointers": [
+        {
+          "label": "lo",
+          "index": 1
+        },
+        {
+          "label": "mid",
+          "index": 1
+        },
+        {
+          "label": "hi",
+          "index": 4
+        }
+      ],
+      "bounds": {
+        "left": 1,
+        "right": 4
+      },
+      "marks": [
+        {
+          "label": "0 区",
+          "index": 0
+        },
+        {
+          "label": "2 区",
+          "index": 5
+        }
+      ],
+      "stats": [
+        {
+          "label": "lo",
+          "value": 1
+        },
+        {
+          "label": "mid",
+          "value": 1
+        },
+        {
+          "label": "hi",
+          "value": 4
+        }
+      ],
+      "sfx": "compare",
+      "t": 13.077
+    },
+    {
+      "caption": "遇到 0，与 lo 交换后，lo 和 mid 都前进。",
+      "values": [
+        0,
+        0,
+        2,
+        1,
+        1,
+        2
+      ],
+      "highlight": [
+        1,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "lo",
+          "index": 2
+        },
+        {
+          "label": "mid",
+          "index": 2
+        },
+        {
+          "label": "hi",
+          "index": 4
+        }
+      ],
+      "bounds": {
+        "left": 2,
+        "right": 4
+      },
+      "marks": [
+        {
+          "label": "0 区",
+          "index": 0
+        },
+        {
+          "label": "0 区",
+          "index": 1
+        },
+        {
+          "label": "2 区",
+          "index": 5
+        }
+      ],
+      "stats": [
+        {
+          "label": "lo",
+          "value": 2
+        },
+        {
+          "label": "mid",
+          "value": 2
+        },
+        {
+          "label": "hi",
+          "value": 4
+        }
+      ],
+      "sfx": "match",
+      "t": 15.692
+    },
+    {
+      "caption": "检查 nums[mid] = 2。",
+      "values": [
+        0,
+        0,
+        2,
+        1,
+        1,
+        2
+      ],
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "lo",
+          "index": 2
+        },
+        {
+          "label": "mid",
+          "index": 2
+        },
+        {
+          "label": "hi",
+          "index": 4
+        }
+      ],
+      "bounds": {
+        "left": 2,
+        "right": 4
+      },
+      "marks": [
+        {
+          "label": "0 区",
+          "index": 0
+        },
+        {
+          "label": "0 区",
+          "index": 1
+        },
+        {
+          "label": "2 区",
+          "index": 5
+        }
+      ],
+      "stats": [
+        {
+          "label": "lo",
+          "value": 2
+        },
+        {
+          "label": "mid",
+          "value": 2
+        },
+        {
+          "label": "hi",
+          "value": 4
+        }
+      ],
+      "sfx": "compare",
+      "t": 18.308
+    },
+    {
+      "caption": "遇到 2，与 hi 交换后 hi 后退；换来的值尚未检查，mid 不动。",
+      "values": [
+        0,
+        0,
+        1,
+        1,
+        2,
+        2
+      ],
+      "highlight": [
+        2,
+        4
+      ],
+      "pointers": [
+        {
+          "label": "lo",
+          "index": 2
+        },
+        {
+          "label": "mid",
+          "index": 2
+        },
+        {
+          "label": "hi",
+          "index": 3
+        }
+      ],
+      "bounds": {
+        "left": 2,
+        "right": 3
+      },
+      "marks": [
+        {
+          "label": "0 区",
+          "index": 0
+        },
+        {
+          "label": "0 区",
+          "index": 1
+        },
+        {
+          "label": "2 区",
+          "index": 4
+        },
+        {
+          "label": "2 区",
+          "index": 5
+        }
+      ],
+      "stats": [
+        {
+          "label": "lo",
+          "value": 2
+        },
+        {
+          "label": "mid",
+          "value": 2
+        },
+        {
+          "label": "hi",
+          "value": 3
+        }
+      ],
+      "sfx": "match",
+      "t": 20.923
+    },
+    {
+      "caption": "检查 nums[mid] = 1。",
+      "values": [
+        0,
+        0,
+        1,
+        1,
+        2,
+        2
+      ],
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "lo",
+          "index": 2
+        },
+        {
+          "label": "mid",
+          "index": 2
+        },
+        {
+          "label": "hi",
+          "index": 3
+        }
+      ],
+      "bounds": {
+        "left": 2,
+        "right": 3
+      },
+      "marks": [
+        {
+          "label": "0 区",
+          "index": 0
+        },
+        {
+          "label": "0 区",
+          "index": 1
+        },
+        {
+          "label": "2 区",
+          "index": 4
+        },
+        {
+          "label": "2 区",
+          "index": 5
+        }
+      ],
+      "stats": [
+        {
+          "label": "lo",
+          "value": 2
+        },
+        {
+          "label": "mid",
+          "value": 2
+        },
+        {
+          "label": "hi",
+          "value": 3
+        }
+      ],
+      "sfx": "compare",
+      "t": 23.538
+    },
+    {
+      "caption": "遇到 1，留在中间区域，mid 前进。",
+      "values": [
+        0,
+        0,
+        1,
+        1,
+        2,
+        2
+      ],
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "lo",
+          "index": 2
+        },
+        {
+          "label": "mid",
+          "index": 3
+        },
+        {
+          "label": "hi",
+          "index": 3
+        }
+      ],
+      "bounds": {
+        "left": 3,
+        "right": 3
+      },
+      "marks": [
+        {
+          "label": "0 区",
+          "index": 0
+        },
+        {
+          "label": "0 区",
+          "index": 1
+        },
+        {
+          "label": "2 区",
+          "index": 4
+        },
+        {
+          "label": "2 区",
+          "index": 5
+        }
+      ],
+      "stats": [
+        {
+          "label": "lo",
+          "value": 2
+        },
+        {
+          "label": "mid",
+          "value": 3
+        },
+        {
+          "label": "hi",
+          "value": 3
+        }
+      ],
+      "sfx": "match",
+      "t": 26.154
+    },
+    {
+      "caption": "检查 nums[mid] = 1。",
+      "values": [
+        0,
+        0,
+        1,
+        1,
+        2,
+        2
+      ],
+      "highlight": [
+        3
+      ],
+      "pointers": [
+        {
+          "label": "lo",
+          "index": 2
+        },
+        {
+          "label": "mid",
+          "index": 3
+        },
+        {
+          "label": "hi",
+          "index": 3
+        }
+      ],
+      "bounds": {
+        "left": 3,
+        "right": 3
+      },
+      "marks": [
+        {
+          "label": "0 区",
+          "index": 0
+        },
+        {
+          "label": "0 区",
+          "index": 1
+        },
+        {
+          "label": "2 区",
+          "index": 4
+        },
+        {
+          "label": "2 区",
+          "index": 5
+        }
+      ],
+      "stats": [
+        {
+          "label": "lo",
+          "value": 2
+        },
+        {
+          "label": "mid",
+          "value": 3
+        },
+        {
+          "label": "hi",
+          "value": 3
+        }
+      ],
+      "sfx": "compare",
+      "t": 28.769
+    },
+    {
+      "caption": "遇到 1，留在中间区域，mid 前进。",
+      "values": [
+        0,
+        0,
+        1,
+        1,
+        2,
+        2
+      ],
+      "highlight": [
+        3
+      ],
+      "pointers": [
+        {
+          "label": "lo",
+          "index": 2
+        },
+        {
+          "label": "mid",
+          "index": 4
+        },
+        {
+          "label": "hi",
+          "index": 3
+        }
+      ],
+      "bounds": {
+        "left": 4,
+        "right": 3
+      },
+      "marks": [
+        {
+          "label": "0 区",
+          "index": 0
+        },
+        {
+          "label": "0 区",
+          "index": 1
+        },
+        {
+          "label": "2 区",
+          "index": 4
+        },
+        {
+          "label": "2 区",
+          "index": 5
+        }
+      ],
+      "stats": [
+        {
+          "label": "lo",
+          "value": 2
+        },
+        {
+          "label": "mid",
+          "value": 4
+        },
+        {
+          "label": "hi",
+          "value": 3
+        }
+      ],
+      "sfx": "match",
+      "t": 31.385
+    },
+    {
+      "caption": "待检查区域为空，颜色分类完成。时间 O(n)，额外空间 O(1)。",
+      "values": [
+        0,
+        0,
+        1,
+        1,
+        2,
+        2
+      ],
+      "highlight": [],
+      "pointers": [
+        {
+          "label": "lo",
+          "index": 2
+        },
+        {
+          "label": "mid",
+          "index": 4
+        },
+        {
+          "label": "hi",
+          "index": 3
+        }
+      ],
+      "bounds": {
+        "left": 4,
+        "right": 3
+      },
+      "marks": [
+        {
+          "label": "0 区",
+          "index": 0
+        },
+        {
+          "label": "0 区",
+          "index": 1
+        },
+        {
+          "label": "2 区",
+          "index": 4
+        },
+        {
+          "label": "2 区",
+          "index": 5
+        }
+      ],
+      "stats": [
+        {
+          "label": "lo",
+          "value": 2
+        },
+        {
+          "label": "mid",
+          "value": 4
+        },
+        {
+          "label": "hi",
+          "value": 3
+        }
+      ],
+      "sfx": "none",
+      "result": [
+        0,
+        0,
+        1,
+        1,
+        2,
+        2
+      ],
+      "t": 34
+    }
+  ]
+}
