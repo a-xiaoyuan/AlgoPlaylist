@@ -1,0 +1,497 @@
+{
+  "id": "swap-pairs",
+  "problem": "swap-pairs",
+  "remix": "iterative",
+  "scene": "LinkedList",
+  "input": {
+    "nums": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "steps": [
+    {
+      "caption": "创建虚拟头节点 dummy，dummy.next 指向 head；prev 从 dummy 出发。",
+      "links": [
+        1,
+        2,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [],
+      "pointers": [],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "dummy"
+        },
+        {
+          "label": "first",
+          "value": "null"
+        },
+        {
+          "label": "second",
+          "value": "null"
+        }
+      ],
+      "t": 0
+    },
+    {
+      "caption": "找到一对节点 #0 和 #1，先保存后续节点 #2。",
+      "links": [
+        1,
+        2,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "first",
+          "index": 0
+        },
+        {
+          "label": "second",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "dummy"
+        },
+        {
+          "label": "first",
+          "value": "#0"
+        },
+        {
+          "label": "second",
+          "value": "#1"
+        }
+      ],
+      "t": 3.091
+    },
+    {
+      "caption": "令 #0.next 指向 #2，接住未处理的后缀。",
+      "links": [
+        2,
+        2,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "first",
+          "index": 0
+        },
+        {
+          "label": "second",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "dummy"
+        },
+        {
+          "label": "first",
+          "value": "#0"
+        },
+        {
+          "label": "second",
+          "value": "#1"
+        }
+      ],
+      "t": 6.182
+    },
+    {
+      "caption": "令 #1.next 指向 #0，反转这一对的方向。",
+      "links": [
+        2,
+        0,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "first",
+          "index": 0
+        },
+        {
+          "label": "second",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "dummy"
+        },
+        {
+          "label": "first",
+          "value": "#0"
+        },
+        {
+          "label": "second",
+          "value": "#1"
+        }
+      ],
+      "t": 9.273
+    },
+    {
+      "caption": "令 dummy.next 指向 #1，把交换后的一对接回链表。",
+      "links": [
+        2,
+        0,
+        3,
+        null
+      ],
+      "head": 1,
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "first",
+          "index": 0
+        },
+        {
+          "label": "second",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "dummy"
+        },
+        {
+          "label": "first",
+          "value": "#0"
+        },
+        {
+          "label": "second",
+          "value": "#1"
+        }
+      ],
+      "t": 12.364
+    },
+    {
+      "caption": "prev 移到交换后的尾节点 #0，继续检查下一对。",
+      "links": [
+        2,
+        0,
+        3,
+        null
+      ],
+      "head": 1,
+      "highlight": [],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#0"
+        },
+        {
+          "label": "first",
+          "value": "null"
+        },
+        {
+          "label": "second",
+          "value": "null"
+        }
+      ],
+      "t": 15.455
+    },
+    {
+      "caption": "找到一对节点 #2 和 #3，先保存后续节点 null。",
+      "links": [
+        2,
+        0,
+        3,
+        null
+      ],
+      "head": 1,
+      "highlight": [
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 0
+        },
+        {
+          "label": "first",
+          "index": 2
+        },
+        {
+          "label": "second",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#0"
+        },
+        {
+          "label": "first",
+          "value": "#2"
+        },
+        {
+          "label": "second",
+          "value": "#3"
+        }
+      ],
+      "t": 18.545
+    },
+    {
+      "caption": "令 #2.next 指向 null，接住未处理的后缀。",
+      "links": [
+        2,
+        0,
+        null,
+        null
+      ],
+      "head": 1,
+      "highlight": [
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 0
+        },
+        {
+          "label": "first",
+          "index": 2
+        },
+        {
+          "label": "second",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#0"
+        },
+        {
+          "label": "first",
+          "value": "#2"
+        },
+        {
+          "label": "second",
+          "value": "#3"
+        }
+      ],
+      "t": 21.636
+    },
+    {
+      "caption": "令 #3.next 指向 #2，反转这一对的方向。",
+      "links": [
+        2,
+        0,
+        null,
+        2
+      ],
+      "head": 1,
+      "highlight": [
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 0
+        },
+        {
+          "label": "first",
+          "index": 2
+        },
+        {
+          "label": "second",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#0"
+        },
+        {
+          "label": "first",
+          "value": "#2"
+        },
+        {
+          "label": "second",
+          "value": "#3"
+        }
+      ],
+      "t": 24.727
+    },
+    {
+      "caption": "令 #0.next 指向 #3，把交换后的一对接回链表。",
+      "links": [
+        3,
+        0,
+        null,
+        2
+      ],
+      "head": 1,
+      "highlight": [
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 0
+        },
+        {
+          "label": "first",
+          "index": 2
+        },
+        {
+          "label": "second",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#0"
+        },
+        {
+          "label": "first",
+          "value": "#2"
+        },
+        {
+          "label": "second",
+          "value": "#3"
+        }
+      ],
+      "t": 27.818
+    },
+    {
+      "caption": "prev 移到交换后的尾节点 #2，继续检查下一对。",
+      "links": [
+        3,
+        0,
+        null,
+        2
+      ],
+      "head": 1,
+      "highlight": [],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#2"
+        },
+        {
+          "label": "first",
+          "value": "null"
+        },
+        {
+          "label": "second",
+          "value": "null"
+        }
+      ],
+      "t": 30.909
+    },
+    {
+      "caption": "不足两个节点，剩余节点保持不变。返回 dummy.next，结果为 [2, 1, 4, 3]。时间 O(n)，额外空间 O(1)。",
+      "links": [
+        3,
+        0,
+        null,
+        2
+      ],
+      "head": 1,
+      "highlight": [],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#2"
+        },
+        {
+          "label": "first",
+          "value": "null"
+        },
+        {
+          "label": "second",
+          "value": "null"
+        }
+      ],
+      "result": [
+        2,
+        1,
+        4,
+        3
+      ],
+      "t": 34
+    }
+  ]
+}

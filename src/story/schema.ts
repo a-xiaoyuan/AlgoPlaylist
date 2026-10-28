@@ -19,6 +19,7 @@ export const minSubarraySumInputSchema = z.object({ target: z.number().int().pos
 const threeSumResultSchema = z.array(z.tuple([integer, integer, integer])).max(220)
 export const kadaneInputSchema = z.object({ nums: numbers.min(1) }).strict()
 export const moveZeroesInputSchema = z.object({ nums: numbers }).strict()
+export const swapPairsInputSchema = z.object({ nums: z.array(z.number().finite()).max(12) }).strict()
 export const removeNthInputSchema = z.object({ nums: z.array(z.number().finite()).min(1).max(12), n: z.number().int().min(1) }).strict().refine((input) => input.n <= input.nums.length, 'n 必须不超过链表长度。')
 export const linkedCycleInputSchema = z.object({ nums: z.array(z.number()).min(1).max(12), pos: z.number().int().min(-1) }).strict().refine((input) => input.pos < input.nums.length, 'pos 必须为 -1 或有效节点下标。')
 export const linkedCycleIIInputSchema = z.object({ nums: z.array(z.number().int()).min(1).max(12), pos: z.number().int().min(-1) }).strict().refine((input) => input.pos < input.nums.length, 'pos 必须为 -1 或有效节点下标。')
@@ -77,6 +78,7 @@ export const storySchema = z.discriminatedUnion('problem', [
   z.object({ ...base, problem: z.literal('merge-sorted-array'), remix: z.literal('backward'), scene: arraySceneSchema, input: mergeInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('binary-search'), remix: z.literal('closed-interval'), scene: z.literal('BinarySearch'), input: binarySearchInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('valid-parentheses'), remix: z.literal('stack'), scene: z.literal('Stack'), input: bracketsInputSchema }).strict(),
+  z.object({ ...base, problem: z.literal('swap-pairs'), remix: z.literal('iterative'), scene: z.literal('LinkedList'), input: swapPairsInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('remove-nth-from-end'), remix: z.literal('two-pointers'), scene: z.literal('LinkedList'), input: removeNthInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('linked-list-cycle-ii'), remix: z.literal('floyd'), scene: z.literal('LinkedList'), input: linkedCycleIIInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('linked-list-cycle'), remix: z.enum(['floyd', 'two-pointers']), scene: z.literal('LinkedList'), input: linkedCycleInputSchema }).strict(),
@@ -113,7 +115,17 @@ export const storySchema = z.discriminatedUnion('problem', [
     if (story.scene === 'BinarySearch' && !step.bounds) issue('二分需要区间快照。')
     if (story.scene === 'Stack' && !step.stack) issue('括号需要栈快照。')
     if (story.scene === 'LinkedList' && (!step.links || step.head === undefined)) issue('链表需要连线和头指针快照。')
-    if (story.problem !== 'remove-nth-from-end' && Array.isArray(step.result) && !step.result.some(Array.isArray) && !numbers.safeParse(step.result).success) issue('数值数组结果必须使用有效的整数。')
+    if (story.problem !== 'remove-nth-from-end' && story.problem !== 'swap-pairs' && Array.isArray(step.result) && !step.result.some(Array.isArray) && !numbers.safeParse(step.result).success) issue('数值数组结果必须使用有效的整数。')
+    if (story.problem === 'swap-pairs') {
+      const order = Array.from({ length }, (_, index) => index % 2 === 0 && index + 1 < length ? index + 1 : index % 2 === 1 ? index - 1 : index)
+      const expected = order.map((index) => story.input.nums[index])
+      if (step.result !== undefined && (!Array.isArray(step.result) || step.result.length !== length || step.result.some((value, index) => value !== expected[index]))) issue('交换节点的结果必须与输入一致。')
+      if (i === story.steps.length - 1) {
+        const expectedLinks: (number | null)[] = Array(length).fill(null)
+        order.forEach((node, index) => { expectedLinks[node] = order[index + 1] ?? null })
+        if (!Array.isArray(step.result) || step.head !== (order[0] ?? null) || !step.links || step.links.some((node, index) => node !== expectedLinks[index])) issue('最终帧需要完整的交换后链表和结果。')
+      }
+    }
     if (story.problem === 'remove-nth-from-end') {
       const expected = story.input.nums.filter((_, index) => index !== length - story.input.n)
       if (step.result !== undefined && (!Array.isArray(step.result) || step.result.length !== expected.length || step.result.some((value, index) => value !== expected[index]))) issue('删除结点的结果必须与输入一致。')
