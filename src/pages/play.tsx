@@ -14,6 +14,8 @@ import { containerInputSchema, longestSubstringInputSchema, threeSumInputSchema,
 import type { ContainerInput, LongestSubstringInput, Story, ThreeSumInput, TwoSumInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
+import { frameAtProgress, replaceProblemRecordings } from '@/player/remix'
+import type { StoryStep } from '@/story/schema'
 import { StoryScene } from '@/scenes/StoryScene'
 
 function clock(seconds: number) {
@@ -32,13 +34,17 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
   const [recordings, setRecordings] = useState<Record<string, Story>>(stories)
   const story = recordings[track.id]
   const navigate = useNavigate()
+  const [compareProblem, setCompareProblem] = useState<string | null>(null)
   const remixes = playlist.tracks.filter((item) => recordings[item.id].problem === story.problem)
 
   function rerecord(input: TwoSumInput | ContainerInput | ThreeSumInput | LongestSubstringInput) {
     // Only remixes of the current problem share the new recording input.
-    const next = Object.fromEntries(remixes.map((item) => [item.id, recordStory(item.id, input)]))
-    setRecordings((previous) => ({ ...previous, ...next }))
+    setRecordings((previous) => replaceProblemRecordings(previous, track.id, input, recordStory))
   }
+
+  const comparing = compareProblem === story.problem && remixes.length >= 2
+  const partnerTrack = remixes.find((item) => item.id !== track.id)
+  const partner = comparing && partnerTrack ? recordings[partnerTrack.id] : undefined
 
   return <div className="player-page">
     <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -48,7 +54,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
       <p className="muted">本地分镜 · 默认静音</p>
     </div>
     <div className="player-layout">
-      <Playback story={story} title={track.title} playlist={playlist} />
+      <Playback story={story} title={track.title} playlist={playlist} partner={partner} partnerTrack={partnerTrack} remixLabel={track.remix} />
 
       <Card className="info-panel p-5">
         <aside aria-labelledby="info-title" className="space-y-6">
@@ -64,11 +70,18 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
           <Separator />
           <section className="space-y-3" aria-labelledby="remix-title">
             <h2 id="remix-title">{remixes.length > 1 ? 'Remix' : '解法'}</h2>
-            {remixes.length > 1 ? <label>解法版本
-              <select value={track.id} onChange={(event) => navigate(`/play/${event.target.value}`)} aria-describedby="remix-note">
-                {remixes.map((item) => <option key={item.id} value={item.id}>{item.remix}</option>)}
-              </select>
-            </label> : <p className="muted">{track.remix}</p>}
+            <div className="remix-list" role="group" aria-label="选择 Remix">
+              {remixes.map((item) => <button key={item.id} className="remix-choice" aria-pressed={item.id === track.id} onClick={() => navigate(`/play/${item.id}`)}>
+                <span>{item.remix}</span><small>{item.complexity}</small>
+                {item.id === track.id && <span className="remix-current">当前</span>}
+              </button>)}
+            </div>
+            {remixes.length >= 2 && <Button aria-pressed={comparing} onClick={() => setCompareProblem(comparing ? null : story.problem)}>{comparing ? '退出对比' : '对比两种解法'}</Button>}
+            {comparing && story.problem === 'two-sum' && <section className="remix-insight" aria-label="为什么换解法">
+              <h3>为什么换解法？</h3>
+              <p className="muted">暴力逐对尝试，额外空间少；哈希用一张表记住已见数字，以空间换取更少的查找。</p>
+              {remixes.map((item) => <div key={item.id}><strong>{item.id === track.id ? 'A' : 'B'} · {item.remix}</strong><p>{item.complexity}</p><small>{item.subtitle}</small></div>)}
+            </section>}
             <p id="remix-note" className="muted">切换曲目后归零并暂停；同一歌单内保留已重录的参数。</p>
           </section>
           <Separator />
@@ -212,9 +225,10 @@ function StringParameters({ input, onRecord }: { input: LongestSubstringInput, o
   </form>
 }
 
-function Playback({ story, title, playlist }: { story: Story, title: string, playlist: Playlist }) {
+function Playback({ story, title, playlist, partner, partnerTrack, remixLabel }: { story: Story, title: string, playlist: Playlist, partner?: Story, partnerTrack?: Track, remixLabel: string }) {
   const { engine, time, duration, playing, rate, frame, stepIndex } = usePlayer(story)
-  const sound = useSound(frame, playing)
+  const other = partner ? frameAtProgress(partner, duration > 0 ? time / duration : 0) : undefined
+  const sound = useSound(frame, playing, other?.frame)
   const navigate = useNavigate()
   const reducedMotion = useReducedMotion()
   const fade = useMemo(() => {
@@ -229,12 +243,11 @@ function Playback({ story, title, playlist }: { story: Story, title: string, pla
         <h1 id="stage-title" className="text-xl">{title}</h1>
         <span className="muted">第 {stepIndex + 1} / {story.steps.length} 帧</span>
       </div>
-      <motion.div key={story.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={fade}>
-        <StoryScene story={story} frame={frame} />
+      {partner && <p className="compare-note">同一输入 · 比例同步：A 为主时间轴，B 按各自总时长的相同比例推进；步骤并非一一对应。</p>}
+      <motion.div key={`${story.id}-${partner?.id ?? 'solo'}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={fade} className={partner ? 'compare-stages' : ''}>
+        <Stage story={story} frame={frame} stepIndex={stepIndex} time={time} label={partner ? `A · ${remixLabel}` : undefined} enabled={sound.enabled} fade={fade} />
+        {partner && other && <Stage story={partner} frame={other.frame} stepIndex={other.stepIndex} time={other.time} label={`B · ${partnerTrack?.remix}`} enabled={sound.enabled} fade={fade} />}
       </motion.div>
-      <div className="caption-slot">
-        <motion.p key={`${story.id}-${stepIndex}-${frame.caption}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={fade} className="muted" aria-live="off">{frame.caption}</motion.p>
-      </div>
       <div className="player-dock" role="group" aria-label="播放控制">
         <div className="dock-track"><Cover id={playlist.id} compact /><div><strong>{title}</strong><p>{playlist.title.split(' · ')[0]} · 本地分镜</p></div></div>
         <div className="dock-controls">
@@ -256,10 +269,21 @@ function Playback({ story, title, playlist }: { story: Story, title: string, pla
               {[0.5, 1, 1.5, 2].map((value) => <option key={value} value={value}>{value}×</option>)}
             </select>
           </label>
-          <label className="sound-control"><input type="checkbox" checked={sound.enabled} onChange={(event) => { void sound.toggle(event.target.checked) }} />极简音效{sound.enabled ? '开' : '关'}</label>
+          <label className="sound-control"><input type="checkbox" checked={sound.enabled} onChange={(event) => { void sound.toggle(event.target.checked) }} />音效{sound.enabled ? '开' : '关'}</label>
         </div>
         {sound.error && <p role="status" className="dock-error">{sound.error}</p>}
       </div>
     </section>
   </Card>
+}
+
+function Stage({ story, frame, stepIndex, time, label, enabled, fade }: { story: Story, frame: StoryStep, stepIndex: number, time: number, label?: string, enabled: boolean, fade: { duration: number, ease: [number, number, number, number] } }) {
+  return <section className="remix-stage" aria-label={label ?? '算法舞台'}>
+    {label && <div className="stage-heading"><h2>{label}</h2><span>{clock(time)} / {clock(story.steps.at(-1)!.t)} · {stepIndex + 1} / {story.steps.length} 帧</span></div>}
+    <div className="stage-visual">
+      <StoryScene story={story} frame={frame} />
+      {enabled && frame.sfx !== 'none' && <motion.div key={`${story.id}-${stepIndex}`} aria-hidden="true" className={`sfx-pulse sfx-${frame.sfx}`} initial={{ opacity: 0.65 }} animate={{ opacity: 0 }} transition={fade}><span>{frame.sfx === 'match' ? '命中' : '比较'}</span></motion.div>}
+    </div>
+    <div className="caption-slot"><motion.p key={`${story.id}-${stepIndex}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={fade} className="muted">{frame.caption}</motion.p></div>
+  </section>
 }

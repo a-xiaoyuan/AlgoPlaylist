@@ -33,3 +33,6 @@ dist-ssr
 coverage/
 *.tsbuildinfo
 *.tmp
+
+# local design refs
+design-lock/
