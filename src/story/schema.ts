@@ -6,6 +6,8 @@ const target = z.number().int().min(-2_000_000).max(2_000_000)
 export const twoSumInputSchema = z.object({ nums: numbers.min(2), target }).strict()
 export const stockInputSchema = z.object({ nums: z.array(integer.nonnegative()).min(1).max(12) }).strict()
 export const containerInputSchema = z.object({ nums: z.array(integer.nonnegative()).min(2).max(12) }).strict()
+export const threeSumInputSchema = z.object({ nums: numbers.min(3) }).strict()
+const threeSumResultSchema = z.array(z.tuple([integer, integer, integer])).max(220)
 export const kadaneInputSchema = z.object({ nums: numbers.min(1) }).strict()
 export const moveZeroesInputSchema = z.object({ nums: numbers }).strict()
 export const reverseListInputSchema = z.object({ nums: numbers }).strict()
@@ -35,13 +37,14 @@ export const stepSchema = z.object({
   stack: z.array(z.object({ value: z.enum(['(', '[', '{']), index: indexSchema }).strict()).optional(),
   links: z.array(indexSchema.nullable()).max(12).optional(),
   head: indexSchema.nullable().optional(),
-  result: z.union([z.number().finite(), z.boolean(), numbers]).optional(),
+  result: z.union([z.number().finite(), z.boolean(), numbers, threeSumResultSchema]).optional(),
 }).strict()
 
 const base = { id: z.string().min(1), steps: z.array(stepSchema).min(2) }
 // Numeric array stories may opt into the shared two-pointer renderer.
 export const arraySceneSchema = z.enum(['Array1D', 'array-2ptrs'])
 export const storySchema = z.discriminatedUnion('problem', [
+  z.object({ ...base, problem: z.literal('three-sum'), remix: z.literal('sort-two-pointers'), scene: z.literal('array-2ptrs'), input: threeSumInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('container-with-most-water'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: containerInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('two-sum'), remix: z.enum(['hash', 'brute']), scene: arraySceneSchema, input: twoSumInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('best-time-to-buy-and-sell-stock'), remix: z.literal('one-pass'), scene: arraySceneSchema, input: stockInputSchema }).strict(),
@@ -53,6 +56,7 @@ export const storySchema = z.discriminatedUnion('problem', [
   z.object({ ...base, problem: z.literal('reverse-linked-list'), remix: z.literal('iterative'), scene: z.literal('LinkedList'), input: reverseListInputSchema }).strict(),
 ]).superRefine((story, ctx) => {
   const length = 'nums' in story.input ? story.input.nums.length : story.input.text.length
+  const sortedInput = story.problem === 'three-sum' ? [...story.input.nums].sort((a, b) => a - b) : undefined
   story.steps.forEach((step, i) => {
     const issue = (message: string) => ctx.addIssue({ code: 'custom', path: ['steps', i], message })
     if ((i === 0 && step.t !== 0) || (i > 0 && step.t <= story.steps[i - 1].t)) {
@@ -71,11 +75,33 @@ export const storySchema = z.discriminatedUnion('problem', [
     if (story.scene === 'BinarySearch' && !step.bounds) issue('二分需要区间快照。')
     if (story.scene === 'Stack' && !step.stack) issue('括号需要栈快照。')
     if (story.scene === 'LinkedList' && (!step.links || step.head === undefined)) issue('链表需要连线和头指针快照。')
+    if (story.problem === 'three-sum') {
+      if (!step.values || step.values.some((value, index) => value !== sortedInput![index])) issue('三数之和需要完整的排序数组快照。')
+      const result = threeSumResultSchema.safeParse(step.result)
+      if (!result.success) issue('三数之和需要完整的三元组结果快照。')
+      else {
+        const seen = new Set<string>()
+        for (const tuple of result.data) {
+          const [a, b, c] = tuple
+          const remaining = [...story.input.nums]
+          const available = [a, b, c].every((value) => {
+            const index = remaining.indexOf(value)
+            if (index < 0) return false
+            remaining.splice(index, 1)
+            return true
+          })
+          const key = tuple.join(',')
+          if (!available || a > b || b > c || a + b + c !== 0 || seen.has(key)) issue('三元组必须来自不同元素、升序、和为零且不重复。')
+          seen.add(key)
+        }
+      }
+    } else if (Array.isArray(step.result) && step.result.some(Array.isArray)) issue('当前题目不支持三元组结果。')
   })
 })
 
 export type TwoSumInput = z.infer<typeof twoSumInputSchema>
 export type ContainerInput = z.infer<typeof containerInputSchema>
+export type ThreeSumInput = z.infer<typeof threeSumInputSchema>
 export type StoryStep = z.infer<typeof stepSchema>
 export type Story = z.infer<typeof storySchema>
 export type StepFrame = Omit<StoryStep, 't'>

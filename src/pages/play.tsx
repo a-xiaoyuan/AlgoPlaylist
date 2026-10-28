@@ -9,8 +9,8 @@ import { findTrack } from '@/lib/catalog'
 import type { Playlist, Track } from '@/lib/catalog'
 import { NotFound } from '@/pages/not-found'
 import { recordStory, stories } from '@/story/catalog'
-import { containerInputSchema, twoSumInputSchema } from '@/story/schema'
-import type { ContainerInput, Story, TwoSumInput } from '@/story/schema'
+import { containerInputSchema, threeSumInputSchema, twoSumInputSchema } from '@/story/schema'
+import type { ContainerInput, Story, ThreeSumInput, TwoSumInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
 import { StoryScene } from '@/scenes/StoryScene'
@@ -33,7 +33,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
   const navigate = useNavigate()
   const remixes = playlist.tracks.filter((item) => recordings[item.id].problem === story.problem)
 
-  function rerecord(input: TwoSumInput | ContainerInput) {
+  function rerecord(input: TwoSumInput | ContainerInput | ThreeSumInput) {
     // Only remixes of the current problem share the new recording input.
     const next = Object.fromEntries(remixes.map((item) => [item.id, recordStory(item.id, input)]))
     setRecordings((previous) => ({ ...previous, ...next }))
@@ -91,7 +91,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
           </section>
           <Separator />
           {story.problem === 'two-sum' ? <TwoSumParameters input={story.input} onRecord={rerecord} />
-            : story.problem === 'container-with-most-water' ? <ContainerParameters input={story.input} onRecord={rerecord} /> : <section className="space-y-3">
+            : story.problem === 'container-with-most-water' || story.problem === 'three-sum' ? <ArrayParameters key={story.id} problem={story.problem} input={story.input} onRecord={rerecord} /> : <section className="space-y-3">
             <h2>示例分镜</h2>
             <p className="muted">本曲使用内置示例。播放或拖动进度，观察每一步的完整状态；用队列或上一曲、下一曲切换。</p>
           </section>}
@@ -144,7 +144,8 @@ function TwoSumParameters({ input, onRecord }: { input: TwoSumInput, onRecord: (
   </form>
 }
 
-function ContainerParameters({ input, onRecord }: { input: ContainerInput, onRecord: (input: ContainerInput) => void }) {
+function ArrayParameters({ problem, input, onRecord }: { problem: 'container-with-most-water' | 'three-sum', input: ContainerInput | ThreeSumInput, onRecord: (input: ContainerInput | ThreeSumInput) => void }) {
+  const isThreeSum = problem === 'three-sum'
   const [nums, setNums] = useState(JSON.stringify(input.nums))
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
@@ -152,13 +153,13 @@ function ContainerParameters({ input, onRecord }: { input: ContainerInput, onRec
     event.preventDefault()
     let parsedNums: unknown
     try { parsedNums = JSON.parse(nums) } catch {
-      setError('数组格式不正确，请输入 JSON 数组，例如 [1, 8, 6, 2, 5, 4, 8, 3, 7]。')
+      setError(`数组格式不正确，请输入 JSON 数组，例如 ${isThreeSum ? '[-1, 0, 1, 2, -1, -4]' : '[1, 8, 6, 2, 5, 4, 8, 3, 7]'}。`)
       setNotice('')
       return
     }
-    const result = containerInputSchema.safeParse({ nums: parsedNums })
+    const result = (isThreeSum ? threeSumInputSchema : containerInputSchema).safeParse({ nums: parsedNums })
     if (!result.success) {
-      setError('请输入 2–12 个非负整数，每个高度在 0–1000000 内。')
+      setError(isThreeSum ? '请输入 3–12 个整数，每个在 ±1000000 内。' : '请输入 2–12 个非负整数，每个高度在 0–1000000 内。')
       setNotice('')
       return
     }
@@ -169,11 +170,11 @@ function ContainerParameters({ input, onRecord }: { input: ContainerInput, onRec
   return <form aria-labelledby="params-title" onSubmit={submit} noValidate>
     <h2 id="params-title" className="mb-3">修改参数</h2>
     <fieldset className="space-y-4" aria-describedby="params-note params-error">
-      <legend className="sr-only">盛最多水的容器参数</legend>
-      <label>高度数组 nums<input name="nums" value={nums} onChange={(event) => setNums(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
+      <legend className="sr-only">{isThreeSum ? '三数之和参数' : '盛最多水的容器参数'}</legend>
+      <label>{isThreeSum ? '数组 nums' : '高度数组 nums'}<input name="nums" value={nums} onChange={(event) => setNums(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
       <Button type="submit" className="w-full">重录本曲</Button>
     </fieldset>
-    <p id="params-note" className="muted mt-3">2–12 个非负整数；本曲录制为 36 秒。非法输入不会替换现有录制；离开歌单或刷新后恢复默认。</p>
+    <p id="params-note" className="muted mt-3">{isThreeSum ? '3–12 个整数；默认录制 40 秒，步骤较多时延长。' : '2–12 个非负整数；本曲录制为 36 秒。'}非法输入不会替换现有录制；离开歌单或刷新后恢复默认。</p>
     <p id="params-error" role="alert" className="form-error">{error}</p>
     <p role="status" className="muted mt-3">{notice}</p>
   </form>

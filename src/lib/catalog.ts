@@ -12,6 +12,13 @@ const pointerTracks: Track[] = [{
   duration: '00:36',
   complexity: '时间 O(n) · 空间 O(1)',
   remix: '双指针',
+}, {
+  id: 'three-sum',
+  title: '15 三数之和',
+  subtitle: '排序后固定 i，用左右指针寻找零和，跳过重复值。',
+  duration: '00:40',
+  complexity: '时间 O(n²) · 空间 O(n)，不含结果',
+  remix: '排序 + 双指针',
 }]
 const tracks = new Map([...catalog.playlists.flatMap((playlist) => playlist.tracks), ...pointerTracks].map((track) => [track.id, track]))
 const pointerPlaylist: Playlist = {
@@ -19,7 +26,7 @@ const pointerPlaylist: Playlist = {
   title: pointerNight.titleZh,
   description: pointerNight.subtitle,
   category: pointerNight.tags.join(' / '),
-  duration: '36 秒',
+  duration: '1 分 16 秒',
   tracks: pointerNight.trackIds.map((id: string) => {
     const track = tracks.get(id)
     if (!track) throw new Error(`歌单引用了未登记曲目：${id}`)

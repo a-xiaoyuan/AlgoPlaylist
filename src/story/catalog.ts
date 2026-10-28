@@ -8,11 +8,13 @@ import binary from '../../data/stories/binary-search.json'
 import brackets from '../../data/stories/valid-parentheses.json'
 import reverse from '../../data/stories/reverse-linked-list.json'
 import container from '../../data/stories/container-with-most-water.json'
-import { containerInputSchema, storySchema, twoSumInputSchema } from './schema'
+import threeSumStory from '../../data/stories/three-sum.json'
+import { containerInputSchema, storySchema, threeSumInputSchema, twoSumInputSchema } from './schema'
 import type { Story } from './schema'
 import { twoSumHash } from '../steppers/twoSumHash'
 import { twoSumBrute } from '../steppers/twoSumBrute'
 import { containerWithMostWater } from '../steppers/containerWithMostWater'
+import { threeSum } from '../steppers/threeSum'
 
 export const stories: Record<string, Story> = {
   'two-sum-hash': storySchema.parse(hash),
@@ -25,6 +27,7 @@ export const stories: Record<string, Story> = {
   'valid-parentheses': storySchema.parse(brackets),
   'reverse-linked-list': storySchema.parse(reverse),
   'container-with-most-water': storySchema.parse(container),
+  'three-sum': storySchema.parse(threeSumStory),
 }
 
 export function recordStory(id: string, rawInput: unknown): Story {
@@ -37,6 +40,10 @@ export function recordStory(id: string, rawInput: unknown): Story {
   if (source.problem === 'container-with-most-water') {
     const input = containerInputSchema.parse(rawInput)
     return storySchema.parse({ ...source, input, steps: containerWithMostWater(input) })
+  }
+  if (source.problem === 'three-sum') {
+    const input = threeSumInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: threeSum(input) })
   }
   throw new Error('此曲目暂不支持改参重录。')
 }

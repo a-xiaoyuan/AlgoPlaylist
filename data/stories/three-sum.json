@@ -1,0 +1,731 @@
+{
+  "id": "three-sum",
+  "steps": [
+    {
+      "t": 0,
+      "caption": "先升序排序，画面下标均指向排序后的数组。固定 i，在它右侧用 left、right 寻找和为零的三元组。",
+      "highlight": [],
+      "pointers": [],
+      "marks": [],
+      "sfx": "none",
+      "values": [
+        -4,
+        -1,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "解数量",
+          "value": 0
+        },
+        {
+          "label": "三元组",
+          "value": "暂无"
+        }
+      ],
+      "result": []
+    },
+    {
+      "t": 3.333,
+      "caption": "固定 i = 0，值为 -4。left 从 1 出发，right 从 5 出发。",
+      "highlight": [
+        0,
+        1,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 0
+        },
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "values": [
+        -4,
+        -1,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "固定值",
+          "value": -4
+        },
+        {
+          "label": "当前和",
+          "value": -3
+        },
+        {
+          "label": "解数量",
+          "value": 0
+        },
+        {
+          "label": "三元组",
+          "value": "暂无"
+        }
+      ],
+      "bounds": {
+        "left": 1,
+        "right": 5
+      },
+      "result": []
+    },
+    {
+      "t": 6.667,
+      "caption": "[-4, -1, 2] 的和为 -3。和偏小，left 右移以增大和值。",
+      "highlight": [
+        0,
+        1,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 0
+        },
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "values": [
+        -4,
+        -1,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "固定值",
+          "value": -4
+        },
+        {
+          "label": "当前和",
+          "value": -3
+        },
+        {
+          "label": "解数量",
+          "value": 0
+        },
+        {
+          "label": "三元组",
+          "value": "暂无"
+        }
+      ],
+      "bounds": {
+        "left": 1,
+        "right": 5
+      },
+      "result": []
+    },
+    {
+      "t": 10,
+      "caption": "[-4, -1, 2] 的和为 -3。和偏小，left 右移以增大和值。",
+      "highlight": [
+        0,
+        2,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 0
+        },
+        {
+          "label": "left",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "values": [
+        -4,
+        -1,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "固定值",
+          "value": -4
+        },
+        {
+          "label": "当前和",
+          "value": -3
+        },
+        {
+          "label": "解数量",
+          "value": 0
+        },
+        {
+          "label": "三元组",
+          "value": "暂无"
+        }
+      ],
+      "bounds": {
+        "left": 2,
+        "right": 5
+      },
+      "result": []
+    },
+    {
+      "t": 13.333,
+      "caption": "[-4, 0, 2] 的和为 -2。和偏小，left 右移以增大和值。",
+      "highlight": [
+        0,
+        3,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 0
+        },
+        {
+          "label": "left",
+          "index": 3
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "values": [
+        -4,
+        -1,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "固定值",
+          "value": -4
+        },
+        {
+          "label": "当前和",
+          "value": -2
+        },
+        {
+          "label": "解数量",
+          "value": 0
+        },
+        {
+          "label": "三元组",
+          "value": "暂无"
+        }
+      ],
+      "bounds": {
+        "left": 3,
+        "right": 5
+      },
+      "result": []
+    },
+    {
+      "t": 16.667,
+      "caption": "[-4, 1, 2] 的和为 -1。和偏小，left 右移以增大和值。",
+      "highlight": [
+        0,
+        4,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 0
+        },
+        {
+          "label": "left",
+          "index": 4
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "values": [
+        -4,
+        -1,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "固定值",
+          "value": -4
+        },
+        {
+          "label": "当前和",
+          "value": -1
+        },
+        {
+          "label": "解数量",
+          "value": 0
+        },
+        {
+          "label": "三元组",
+          "value": "暂无"
+        }
+      ],
+      "bounds": {
+        "left": 4,
+        "right": 5
+      },
+      "result": []
+    },
+    {
+      "t": 20,
+      "caption": "固定 i = 1，值为 -1。left 从 2 出发，right 从 5 出发。",
+      "highlight": [
+        1,
+        2,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 1
+        },
+        {
+          "label": "left",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "values": [
+        -4,
+        -1,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "固定值",
+          "value": -1
+        },
+        {
+          "label": "当前和",
+          "value": 0
+        },
+        {
+          "label": "解数量",
+          "value": 0
+        },
+        {
+          "label": "三元组",
+          "value": "暂无"
+        }
+      ],
+      "bounds": {
+        "left": 2,
+        "right": 5
+      },
+      "result": []
+    },
+    {
+      "t": 23.333,
+      "caption": "[-1, -1, 2] 的和为 0。记录此三元组；两端同时收缩，并跳过相同左右值，避免重复。",
+      "highlight": [
+        1,
+        2,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 1
+        },
+        {
+          "label": "left",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "values": [
+        -4,
+        -1,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "固定值",
+          "value": -1
+        },
+        {
+          "label": "当前和",
+          "value": 0
+        },
+        {
+          "label": "解数量",
+          "value": 1
+        },
+        {
+          "label": "三元组",
+          "value": "[-1, -1, 2]"
+        }
+      ],
+      "bounds": {
+        "left": 2,
+        "right": 5
+      },
+      "result": [
+        [
+          -1,
+          -1,
+          2
+        ]
+      ]
+    },
+    {
+      "t": 26.667,
+      "caption": "[-1, 0, 1] 的和为 0。记录此三元组；两端同时收缩，并跳过相同左右值，避免重复。",
+      "highlight": [
+        1,
+        3,
+        4
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 1
+        },
+        {
+          "label": "left",
+          "index": 3
+        },
+        {
+          "label": "right",
+          "index": 4
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "values": [
+        -4,
+        -1,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "固定值",
+          "value": -1
+        },
+        {
+          "label": "当前和",
+          "value": 0
+        },
+        {
+          "label": "解数量",
+          "value": 2
+        },
+        {
+          "label": "三元组",
+          "value": "[-1, -1, 2] · [-1, 0, 1]"
+        }
+      ],
+      "bounds": {
+        "left": 3,
+        "right": 4
+      },
+      "result": [
+        [
+          -1,
+          -1,
+          2
+        ],
+        [
+          -1,
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "t": 30,
+      "caption": "i = 2，固定值 -1 与前一个相同；跳过，避免重复三元组。",
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "values": [
+        -4,
+        -1,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "固定值",
+          "value": -1
+        },
+        {
+          "label": "解数量",
+          "value": 2
+        },
+        {
+          "label": "三元组",
+          "value": "[-1, -1, 2] · [-1, 0, 1]"
+        }
+      ],
+      "result": [
+        [
+          -1,
+          -1,
+          2
+        ],
+        [
+          -1,
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "t": 33.333,
+      "caption": "固定 i = 3，值为 0。left 从 4 出发，right 从 5 出发。",
+      "highlight": [
+        3,
+        4,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 3
+        },
+        {
+          "label": "left",
+          "index": 4
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "values": [
+        -4,
+        -1,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "固定值",
+          "value": 0
+        },
+        {
+          "label": "当前和",
+          "value": 3
+        },
+        {
+          "label": "解数量",
+          "value": 2
+        },
+        {
+          "label": "三元组",
+          "value": "[-1, -1, 2] · [-1, 0, 1]"
+        }
+      ],
+      "bounds": {
+        "left": 4,
+        "right": 5
+      },
+      "result": [
+        [
+          -1,
+          -1,
+          2
+        ],
+        [
+          -1,
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "t": 36.667,
+      "caption": "[0, 1, 2] 的和为 3。和偏大，right 左移以减小和值。",
+      "highlight": [
+        3,
+        4,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 3
+        },
+        {
+          "label": "left",
+          "index": 4
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "values": [
+        -4,
+        -1,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "固定值",
+          "value": 0
+        },
+        {
+          "label": "当前和",
+          "value": 3
+        },
+        {
+          "label": "解数量",
+          "value": 2
+        },
+        {
+          "label": "三元组",
+          "value": "[-1, -1, 2] · [-1, 0, 1]"
+        }
+      ],
+      "bounds": {
+        "left": 4,
+        "right": 5
+      },
+      "result": [
+        [
+          -1,
+          -1,
+          2
+        ],
+        [
+          -1,
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "t": 40,
+      "caption": "扫描结束，共找到 2 组不重复三元组，完整结果见状态读数。排序后双指针扫描，时间 O(n²)，排序副本占用 O(n)，不含结果存储。",
+      "highlight": [],
+      "pointers": [],
+      "marks": [],
+      "sfx": "none",
+      "values": [
+        -4,
+        -1,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "解数量",
+          "value": 2
+        },
+        {
+          "label": "三元组",
+          "value": "[-1, -1, 2] · [-1, 0, 1]"
+        }
+      ],
+      "result": [
+        [
+          -1,
+          -1,
+          2
+        ],
+        [
+          -1,
+          0,
+          1
+        ]
+      ]
+    }
+  ],
+  "problem": "three-sum",
+  "remix": "sort-two-pointers",
+  "scene": "array-2ptrs",
+  "input": {
+    "nums": [
+      -1,
+      0,
+      1,
+      2,
+      -1,
+      -4
+    ]
+  }
+}
