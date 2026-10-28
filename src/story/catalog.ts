@@ -1,3 +1,5 @@
+import palindromeListStory from '../../data/stories/palindrome-list.json'
+import { palindromeList } from '../steppers/palindromeList'
 import validPalindromeStory from '../../data/stories/valid-palindrome.json'
 import sortColorsStory from '../../data/stories/sort-colors.json'
 import removeDuplicatesStory from '../../data/stories/remove-duplicates.json'
@@ -23,7 +25,7 @@ import longestSubstringStory from '../../data/stories/longest-substring.json'
 import findAnagramsStory from '../../data/stories/find-anagrams.json'
 import minWindowStory from '../../data/stories/min-window.json'
 import minSubarraySumStory from '../../data/stories/min-subarray-sum.json'
-import { swapPairsInputSchema, removeNthInputSchema, linkedCycleIIInputSchema, linkedCycleInputSchema, mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
+import { palindromeListInputSchema, swapPairsInputSchema, removeNthInputSchema, linkedCycleIIInputSchema, linkedCycleInputSchema, mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
 import type { Story } from './schema'
 import { swapPairs } from '../steppers/swapPairs'
 import { removeNthFromEnd } from '../steppers/removeNthFromEnd'
@@ -46,6 +48,7 @@ import { minWindow } from '../steppers/minWindow'
 import { minSubarraySum } from '../steppers/minSubarraySum'
 
 export const stories: Record<string, Story> = {
+  'palindrome-list': storySchema.parse(palindromeListStory),
   'valid-palindrome': storySchema.parse(validPalindromeStory),
   'sort-colors': storySchema.parse(sortColorsStory),
   'remove-duplicates': storySchema.parse(removeDuplicatesStory),
@@ -95,6 +98,10 @@ export function recordStory(id: string, rawInput: unknown): Story {
   if (source.problem === 'merge-two-lists') {
     const input = mergeTwoListsInputSchema.parse(rawInput)
     return storySchema.parse({ ...source, input, steps: mergeTwoLists(input) })
+  }
+  if (source.problem === 'palindrome-linked-list') {
+    const input = palindromeListInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: palindromeList(input) })
   }
   if (source.problem === 'reverse-linked-list') {
     const input = reverseListInputSchema.parse(rawInput)

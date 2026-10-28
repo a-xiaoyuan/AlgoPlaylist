@@ -10,7 +10,7 @@ import { findTrack } from '@/lib/catalog'
 import type { Playlist, Track } from '@/lib/catalog'
 import { NotFound } from '@/pages/not-found'
 import { recordStory, stories } from '@/story/catalog'
-import { swapPairsInputSchema, removeNthInputSchema, linkedCycleIIInputSchema, linkedCycleInputSchema, mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
+import { palindromeListInputSchema, swapPairsInputSchema, removeNthInputSchema, linkedCycleIIInputSchema, linkedCycleInputSchema, mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
 import type { RemoveNthInput, LinkedCycleInput, MergeTwoListsInput, FindAnagramsInput, ContainerInput, LongestSubstringInput, MinWindowInput, MinSubarraySumInput, Story, ThreeSumInput, TwoSumInput, TwoSumSortedInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
@@ -95,7 +95,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
             : story.problem === 'find-all-anagrams' ? <FindAnagramsParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'minimum-window-substring' ? <MinWindowParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'minimum-size-subarray-sum' ? <MinSubarraySumParameters key={story.id} input={story.input} onRecord={rerecord} />
-            : story.problem === 'reverse-linked-list' || story.problem === 'swap-pairs' || story.problem === 'sort-colors' || story.problem === 'container-with-most-water' || story.problem === 'trapping-rain-water' || story.problem === 'three-sum' || story.problem === 'remove-duplicates-sorted' ? <ArrayParameters key={story.id} problem={story.problem} input={story.input} onRecord={rerecord} /> : <section className="space-y-3">
+            : story.problem === 'reverse-linked-list' || story.problem === 'palindrome-linked-list' || story.problem === 'swap-pairs' || story.problem === 'sort-colors' || story.problem === 'container-with-most-water' || story.problem === 'trapping-rain-water' || story.problem === 'three-sum' || story.problem === 'remove-duplicates-sorted' ? <ArrayParameters key={story.id} problem={story.problem} input={story.input} onRecord={rerecord} /> : <section className="space-y-3">
             <h2>示例分镜</h2>
             <p className="muted">本曲使用内置示例。播放或拖动进度，观察每一步的完整状态；用队列或上一曲、下一曲切换。</p>
           </section>}
@@ -417,10 +417,11 @@ export function SortedArrayParameters({ input, onRecord }: { input: TwoSumSorted
   </form>
 }
 
-export function ArrayParameters({ problem, input, onRecord }: { problem: 'reverse-linked-list' | 'swap-pairs' | 'container-with-most-water' | 'trapping-rain-water' | 'three-sum' | 'remove-duplicates-sorted' | 'sort-colors', input: ContainerInput | ThreeSumInput, onRecord: (input: ContainerInput | ThreeSumInput) => void }) {
+export function ArrayParameters({ problem, input, onRecord }: { problem: 'reverse-linked-list' | 'palindrome-linked-list' | 'swap-pairs' | 'container-with-most-water' | 'trapping-rain-water' | 'three-sum' | 'remove-duplicates-sorted' | 'sort-colors', input: ContainerInput | ThreeSumInput, onRecord: (input: ContainerInput | ThreeSumInput) => void }) {
+  const isPalindrome = problem === 'palindrome-linked-list'
   const isReverse = problem === 'reverse-linked-list'
   const isSwap = problem === 'swap-pairs'
-  const isLinked = isReverse || isSwap
+  const isLinked = isReverse || isSwap || isPalindrome
   const isColors = problem === 'sort-colors'
   const isDedup = problem === 'remove-duplicates-sorted'
   const isThreeSum = problem === 'three-sum'
@@ -436,9 +437,9 @@ export function ArrayParameters({ problem, input, onRecord }: { problem: 'revers
       setNotice('')
       return
     }
-    const result = (isSwap ? swapPairsInputSchema : isReverse ? reverseListInputSchema : isColors ? sortColorsInputSchema : isDedup ? removeDuplicatesSortedInputSchema : isThreeSum ? threeSumInputSchema : isRain ? trappingRainWaterInputSchema : containerInputSchema).safeParse({ nums: parsedNums })
+    const result = (isPalindrome ? palindromeListInputSchema : isSwap ? swapPairsInputSchema : isReverse ? reverseListInputSchema : isColors ? sortColorsInputSchema : isDedup ? removeDuplicatesSortedInputSchema : isThreeSum ? threeSumInputSchema : isRain ? trappingRainWaterInputSchema : containerInputSchema).safeParse({ nums: parsedNums })
     if (!result.success) {
-      setError(isSwap ? '请输入 0–12 个有限数字。' : isReverse ? '请输入 0–12 个整数，每个在 ±1000000 内。' : isColors ? '请输入 1–12 个整数，每个只能是 0、1 或 2。' : isDedup ? '请输入 1–12 个升序整数，每个在 ±1000000 内。' : isThreeSum ? '请输入 3–12 个整数，每个在 ±1000000 内。' : '请输入 2–12 个非负整数，每个高度在 0–1000000 内。')
+      setError(isPalindrome ? '请输入 1–12 个有限数字。' : isSwap ? '请输入 0–12 个有限数字。' : isReverse ? '请输入 0–12 个整数，每个在 ±1000000 内。' : isColors ? '请输入 1–12 个整数，每个只能是 0、1 或 2。' : isDedup ? '请输入 1–12 个升序整数，每个在 ±1000000 内。' : isThreeSum ? '请输入 3–12 个整数，每个在 ±1000000 内。' : '请输入 2–12 个非负整数，每个高度在 0–1000000 内。')
       setNotice('')
       return
     }
@@ -449,11 +450,11 @@ export function ArrayParameters({ problem, input, onRecord }: { problem: 'revers
   return <form aria-labelledby="params-title" onSubmit={submit} noValidate>
     <h2 id="params-title" className="mb-3">修改参数</h2>
     <fieldset className="space-y-4" aria-describedby="params-note params-error">
-      <legend className="sr-only">{isSwap ? '两两交换链表参数' : isReverse ? '反转链表参数' : isColors ? '颜色分类参数' : isDedup ? '删除重复项参数' : isThreeSum ? '三数之和参数' : isRain ? '接雨水参数' : '盛最多水的容器参数'}</legend>
+      <legend className="sr-only">{isPalindrome ? '回文链表参数' : isSwap ? '两两交换链表参数' : isReverse ? '反转链表参数' : isColors ? '颜色分类参数' : isDedup ? '删除重复项参数' : isThreeSum ? '三数之和参数' : isRain ? '接雨水参数' : '盛最多水的容器参数'}</legend>
       <label>{isLinked ? '链表节点 nums' : isColors ? '颜色数组 nums' : isDedup ? '升序数组 nums' : isThreeSum ? '数组 nums' : '高度数组 nums'}<input name="nums" value={nums} onChange={(event) => setNums(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
       <Button type="submit" className="w-full">重录本曲</Button>
     </fieldset>
-    <p id="params-note" className="muted mt-3">{isSwap ? '0–12 个有限数字，按顺序表示链表节点；本曲录制为 34 秒。' : isReverse ? '0–12 个整数，按顺序表示链表节点；本曲录制为 30 秒。' : isColors ? '1–12 个整数，只能为 0、1 或 2；本曲录制为 34 秒。' : isDedup ? '1–12 个升序整数；本曲录制为 32 秒。' : isThreeSum ? '3–12 个整数；默认录制 40 秒，步骤较多时延长。' : `2–12 个非负整数；本曲录制为 ${isRain ? 38 : 36} 秒。`}非法输入不会替换现有录制；离开歌单或刷新后恢复默认。</p>
+    <p id="params-note" className="muted mt-3">{isPalindrome ? '1–12 个有限数字，按顺序表示链表节点；本曲录制为 36 秒。' : isSwap ? '0–12 个有限数字，按顺序表示链表节点；本曲录制为 34 秒。' : isReverse ? '0–12 个整数，按顺序表示链表节点；本曲录制为 30 秒。' : isColors ? '1–12 个整数，只能为 0、1 或 2；本曲录制为 34 秒。' : isDedup ? '1–12 个升序整数；本曲录制为 32 秒。' : isThreeSum ? '3–12 个整数；默认录制 40 秒，步骤较多时延长。' : `2–12 个非负整数；本曲录制为 ${isRain ? 38 : 36} 秒。`}非法输入不会替换现有录制；离开歌单或刷新后恢复默认。</p>
     <p id="params-error" role="alert" className="form-error">{error}</p>
     <p role="status" className="muted mt-3">{notice}</p>
   </form>
