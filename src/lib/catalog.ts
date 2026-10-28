@@ -1,5 +1,6 @@
 import catalog from '../../data/playlists/array-warmup.json'
 import pointerNight from '../../data/playlists/pointer-night.json'
+import linkedNight from '../../data/playlists/linked-night.json'
 
 export type Playlist = (typeof catalog.playlists)[number]
 export type Track = Playlist['tracks'][number]
@@ -97,9 +98,25 @@ const pointerPlaylist: Playlist = {
   }),
 }
 
-export const playlists: Playlist[] = [catalog.playlists[0], pointerPlaylist, ...catalog.playlists.slice(1)]
+const linkedPlaylist: Playlist = {
+  id: linkedNight.id,
+  title: linkedNight.titleZh,
+  description: linkedNight.subtitle,
+  category: linkedNight.tags.join(' / '),
+  duration: '30 秒',
+  tracks: linkedNight.trackIds.map((id: string) => {
+    const track = tracks.get(id)
+    if (!track) throw new Error(`歌单引用了未登记曲目：${id}`)
+    return track
+  }),
+}
 
-export function findTrack(id: string | undefined) {
+export const playlists: Playlist[] = [catalog.playlists[0], pointerPlaylist, linkedPlaylist]
+
+export function findTrack(id: string | undefined, playlistId?: string | null) {
+  const requested = playlists.find((playlist) => playlist.id === playlistId)
+  const requestedTrack = requested?.tracks.find((track) => track.id === id)
+  if (requested && requestedTrack) return { playlist: requested, track: requestedTrack }
   for (const playlist of playlists) {
     const track = playlist.tracks.find((entry) => entry.id === id)
     if (track) return { playlist, track }

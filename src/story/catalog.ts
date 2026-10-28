@@ -18,8 +18,9 @@ import longestSubstringStory from '../../data/stories/longest-substring.json'
 import findAnagramsStory from '../../data/stories/find-anagrams.json'
 import minWindowStory from '../../data/stories/min-window.json'
 import minSubarraySumStory from '../../data/stories/min-subarray-sum.json'
-import { validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
+import { reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
 import type { Story } from './schema'
+import { reverseLinkedList } from '../steppers/reverseLinkedList'
 import { validPalindrome } from '../steppers/validPalindrome'
 import { sortColors } from '../steppers/sortColors'
 import { removeDuplicatesSorted } from '../steppers/removeDuplicates'
@@ -60,6 +61,10 @@ export const stories: Record<string, Story> = {
 export function recordStory(id: string, rawInput: unknown): Story {
   const source = stories[id]
   if (!source) throw new Error('没有找到这首曲目的分镜。')
+  if (source.problem === 'reverse-linked-list') {
+    const input = reverseListInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: reverseLinkedList(input) })
+  }
   if (source.problem === 'valid-palindrome') {
     const input = validPalindromeInputSchema.parse(rawInput)
     return storySchema.parse({ ...source, input, steps: validPalindrome(input) })

@@ -2,13 +2,14 @@ import { Link, useParams } from 'react-router-dom'
 import { Cover } from '@/components/cover'
 import { Icon } from '@/components/icon'
 import { buttonClass } from '@/components/ui/button'
-import { playlists } from '@/lib/catalog'
+import { findTrack, playlists } from '@/lib/catalog'
 import { NotFound } from '@/pages/not-found'
 
 export function PlaylistPage() {
   const { id } = useParams()
   const playlist = playlists.find((entry) => entry.id === id)
   if (!playlist) return <NotFound message="没有找到这张歌单。" />
+  const trackLink = (trackId: string) => `/play/${trackId}${findTrack(trackId)?.playlist.id === playlist.id ? '' : `?playlist=${encodeURIComponent(playlist.id)}`}`
   return <div className="page album-page">
     <Link to="/" className="text-link breadcrumb"><Icon name="back" />歌单墙</Link>
     <div className="album-heading">
@@ -17,7 +18,7 @@ export function PlaylistPage() {
         <h1>{playlist.title}</h1>
         <p className="album-description">{playlist.description}</p>
         <p className="album-meta"><strong>AlgoPlaylist</strong><span>{playlist.category}</span><span>{playlist.tracks.length} 首曲目{playlist.duration && ` · ${playlist.duration}`}</span></p>
-        {playlist.tracks[0] ? <Link className={buttonClass('primary')} to={`/play/${playlist.tracks[0].id}`}><Icon name="play" />播放歌单</Link> : <span className="pending-label">曲目待更新</span>}
+        {playlist.tracks[0] ? <Link className={buttonClass('primary')} to={trackLink(playlist.tracks[0].id)}><Icon name="play" />播放歌单</Link> : <span className="pending-label">曲目待更新</span>}
       </div>
     </div>
     <section aria-labelledby="tracks-title" className="album-tracks">
@@ -25,7 +26,7 @@ export function PlaylistPage() {
       {playlist.tracks.length ? <>
         <div className="track-table-heading" aria-hidden="true"><span>#</span><span>曲目 / 思路</span><span>解法</span><span>时长</span><span /></div>
         <ol>{playlist.tracks.map((track, index) => <li key={track.id}>
-          <Link to={`/play/${track.id}`} className="track-link">
+          <Link to={trackLink(track.id)} className="track-link">
             <span className="track-number">{String(index + 1).padStart(2, '0')}</span>
             <div className="track-title"><h3>{track.title}</h3><p>{track.subtitle}</p></div>
             <span className="track-remix">{track.remix}</span><span className="track-time">{track.duration}</span><Icon name="play" />

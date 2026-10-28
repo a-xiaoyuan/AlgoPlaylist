@@ -36,7 +36,7 @@ test('two-pointer schema accepts optional/empty windows and rejects invalid scen
   }
 })
 
-test('B1 links LC11, LC15, LC42, LC3, LC76, LC209, LC167, LC26, LC75, LC438 and LC125, empty playlists remain safe and StoryScene selects the two-pointer SVG', async () => {
+test('B1 links LC11, LC15, LC42, LC3, LC76, LC209, LC167, LC26, LC75, LC438 and LC125, and StoryScene selects the two-pointer SVG', async () => {
   const server = await createServer({ cacheDir: 'node_modules/.tmp/b1-test-vite', server: { middlewareMode: true, hmr: false, ws: false }, appType: 'custom' })
   try {
     const [{ playlists, findTrack }, { Home }, { PlaylistPage }, { StoryScene }] = await Promise.all([
@@ -73,12 +73,6 @@ test('B1 links LC11, LC15, LC42, LC3, LC76, LC209, LC167, LC26, LC75, LC438 and 
     assert.match(album, /href="\/play\/sort-colors"/)
     assert.match(album, /href="\/play\/valid-palindrome"/)
     assert.match(album, /进入播放页/)
-    const emptyAlbum = renderToStaticMarkup(React.createElement(StaticRouter, { location: '/playlist/B2' },
-      React.createElement(Routes, {}, React.createElement(Route, { path: '/playlist/:id', element: React.createElement(PlaylistPage) }))))
-    assert.match(emptyAlbum, /0 首曲目/)
-    assert.match(emptyAlbum, /暂无曲目/)
-    assert.doesNotMatch(emptyAlbum, /进入播放页|href="\/play\//)
-
     const story = sceneStory()
     story.steps[0].pointers = [{ label: 'left', index: 1 }, { label: 'right', index: 1 }]
     story.steps[0].highlight = [1]
