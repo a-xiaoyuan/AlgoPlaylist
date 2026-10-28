@@ -15,7 +15,8 @@ import trappingRainWaterStory from '../../data/stories/trapping-rain-water.json'
 import threeSumStory from '../../data/stories/three-sum.json'
 import longestSubstringStory from '../../data/stories/longest-substring.json'
 import minWindowStory from '../../data/stories/min-window.json'
-import { sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
+import minSubarraySumStory from '../../data/stories/min-subarray-sum.json'
+import { sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
 import type { Story } from './schema'
 import { sortColors } from '../steppers/sortColors'
 import { removeDuplicatesSorted } from '../steppers/removeDuplicates'
@@ -27,6 +28,7 @@ import { trappingRainWater } from '../steppers/trappingRainWater'
 import { threeSum } from '../steppers/threeSum'
 import { longestSubstring } from '../steppers/longestSubstring'
 import { minWindow } from '../steppers/minWindow'
+import { minSubarraySum } from '../steppers/minSubarraySum'
 
 export const stories: Record<string, Story> = {
   'sort-colors': storySchema.parse(sortColorsStory),
@@ -46,6 +48,7 @@ export const stories: Record<string, Story> = {
   'three-sum': storySchema.parse(threeSumStory),
   'longest-substring': storySchema.parse(longestSubstringStory),
   'min-window': storySchema.parse(minWindowStory),
+  'min-subarray-sum': storySchema.parse(minSubarraySumStory),
 }
 
 export function recordStory(id: string, rawInput: unknown): Story {
@@ -86,6 +89,10 @@ export function recordStory(id: string, rawInput: unknown): Story {
   if (source.problem === 'minimum-window-substring') {
     const input = minWindowInputSchema.parse(rawInput)
     return storySchema.parse({ ...source, input, steps: minWindow(input) })
+  }
+  if (source.problem === 'minimum-size-subarray-sum') {
+    const input = minSubarraySumInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: minSubarraySum(input) })
   }
   throw new Error('此曲目暂不支持改参重录。')
 }

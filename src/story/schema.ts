@@ -13,6 +13,7 @@ const unicodeText = z.string().max(24).refine((text) => Array.from(text).length 
   .regex(/^[^\p{Cc}\p{Cs}]*$/u, '不支持控制字符或不完整的 Unicode 字符。')
 export const longestSubstringInputSchema = z.object({ text: unicodeText }).strict()
 export const minWindowInputSchema = z.object({ s: unicodeText, t: unicodeText }).strict()
+export const minSubarraySumInputSchema = z.object({ target: z.number().int().positive(), nums: z.array(z.number().int().positive()).min(1).max(12) }).strict()
 const threeSumResultSchema = z.array(z.tuple([integer, integer, integer])).max(220)
 export const kadaneInputSchema = z.object({ nums: numbers.min(1) }).strict()
 export const moveZeroesInputSchema = z.object({ nums: numbers }).strict()
@@ -52,6 +53,7 @@ const base = { id: z.string().min(1), steps: z.array(stepSchema).min(2) }
 // Numeric array stories may opt into the shared two-pointer renderer.
 export const arraySceneSchema = z.enum(['Array1D', 'array-2ptrs'])
 export const storySchema = z.discriminatedUnion('problem', [
+  z.object({ ...base, problem: z.literal('minimum-size-subarray-sum'), remix: z.literal('sliding-window'), scene: z.literal('array-2ptrs'), input: minSubarraySumInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('minimum-window-substring'), remix: z.literal('sliding-window'), scene: z.literal('array-2ptrs'), input: minWindowInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('longest-substring-without-repeating-characters'), remix: z.literal('sliding-window'), scene: z.literal('array-2ptrs'), input: longestSubstringInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('remove-duplicates-sorted'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: removeDuplicatesSortedInputSchema }).strict(),
@@ -113,6 +115,10 @@ export const storySchema = z.discriminatedUnion('problem', [
       if (step.values || !step.bounds || step.bounds.left > step.bounds.right + 1) issue('最小覆盖子串需要有效的字符窗口区间快照。')
       if (typeof step.result !== 'string' || (step.result !== '' && !story.input.s.includes(step.result))) issue('结果必须是输入字符串的子串。')
     } else if (typeof step.result === 'string') issue('当前题目不支持字符串结果。')
+    if (story.problem === 'minimum-size-subarray-sum') {
+      if (!step.bounds || step.bounds.left > step.bounds.right + 1) issue('最小长度子数组需要有效的窗口区间快照。')
+      if (typeof step.result !== 'number' || !Number.isInteger(step.result) || step.result < 0 || step.result > length) issue('最短长度必须是输入长度范围内的非负整数。')
+    }
     if (story.problem === 'two-sum-ii') {
       const result = step.result
       if (!Array.isArray(result) || (result.length !== 0 && (result.length !== 2 || typeof result[0] !== 'number' || typeof result[1] !== 'number' || !Number.isInteger(result[0]) || !Number.isInteger(result[1]) || result[0] < 1 || result[0] >= result[1] || result[1] > length || story.input.nums[result[0] - 1] + story.input.nums[result[1] - 1] !== story.input.target))) issue('结果必须为空或为满足目标值的两个升序一基下标。')
@@ -150,6 +156,7 @@ export type SortColorsInput = z.infer<typeof sortColorsInputSchema>
 export type ThreeSumInput = z.infer<typeof threeSumInputSchema>
 export type LongestSubstringInput = z.infer<typeof longestSubstringInputSchema>
 export type MinWindowInput = z.infer<typeof minWindowInputSchema>
+export type MinSubarraySumInput = z.infer<typeof minSubarraySumInputSchema>
 export type StoryStep = z.infer<typeof stepSchema>
 export type Story = z.infer<typeof storySchema>
 export type StepFrame = Omit<StoryStep, 't'>

@@ -10,8 +10,8 @@ import { findTrack } from '@/lib/catalog'
 import type { Playlist, Track } from '@/lib/catalog'
 import { NotFound } from '@/pages/not-found'
 import { recordStory, stories } from '@/story/catalog'
-import { sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
-import type { ContainerInput, LongestSubstringInput, MinWindowInput, Story, ThreeSumInput, TwoSumInput, TwoSumSortedInput } from '@/story/schema'
+import { sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
+import type { ContainerInput, LongestSubstringInput, MinWindowInput, MinSubarraySumInput, Story, ThreeSumInput, TwoSumInput, TwoSumSortedInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
 import { frameAtProgress, replaceProblemRecordings } from '@/player/remix'
@@ -37,7 +37,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
   const [compareProblem, setCompareProblem] = useState<string | null>(null)
   const remixes = playlist.tracks.filter((item) => recordings[item.id].problem === story.problem)
 
-  function rerecord(input: TwoSumInput | ContainerInput | ThreeSumInput | LongestSubstringInput | MinWindowInput) {
+  function rerecord(input: TwoSumInput | ContainerInput | ThreeSumInput | LongestSubstringInput | MinWindowInput | MinSubarraySumInput) {
     // Only remixes of the current problem share the new recording input.
     setRecordings((previous) => replaceProblemRecordings(previous, track.id, input, recordStory))
   }
@@ -89,6 +89,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
             : story.problem === 'two-sum-ii' ? <SortedArrayParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'longest-substring-without-repeating-characters' ? <StringParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'minimum-window-substring' ? <MinWindowParameters key={story.id} input={story.input} onRecord={rerecord} />
+            : story.problem === 'minimum-size-subarray-sum' ? <MinSubarraySumParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'sort-colors' || story.problem === 'container-with-most-water' || story.problem === 'trapping-rain-water' || story.problem === 'three-sum' || story.problem === 'remove-duplicates-sorted' ? <ArrayParameters key={story.id} problem={story.problem} input={story.input} onRecord={rerecord} /> : <section className="space-y-3">
             <h2>示例分镜</h2>
             <p className="muted">本曲使用内置示例。播放或拖动进度，观察每一步的完整状态；用队列或上一曲、下一曲切换。</p>
@@ -124,6 +125,43 @@ function inputDescription(story: Story) {
   if ('text' in story.input) return `text = ${JSON.stringify(story.input.text)}`
   const input = story.input
   return `nums = [${input.nums.join(', ')}]${'target' in input ? `，target = ${input.target}` : ''}${'nums2' in input ? `，m = ${input.m}，nums2 = [${input.nums2.join(', ')}]` : ''}`
+}
+
+export function MinSubarraySumParameters({ input, onRecord }: { input: MinSubarraySumInput, onRecord: (input: MinSubarraySumInput) => void }) {
+  const [nums, setNums] = useState(JSON.stringify(input.nums))
+  const [target, setTarget] = useState(String(input.target))
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
+  function submit(event: React.FormEvent) {
+    event.preventDefault()
+    let parsedNums: unknown
+    try { parsedNums = JSON.parse(nums) } catch {
+      setError('数组格式不正确，请输入 JSON 数组，例如 [2, 3, 1, 2, 4, 3]。')
+      setNotice('')
+      return
+    }
+    const result = minSubarraySumInputSchema.safeParse({ nums: parsedNums, target: target.trim() ? Number(target) : NaN })
+    if (!result.success) {
+      setError('请输入 1–12 个正整数，target 也必须是正整数，数值须在安全整数范围内。')
+      setNotice('')
+      return
+    }
+    onRecord(result.data)
+    setError('')
+    setNotice('已重录本曲，播放位置已归零并暂停。')
+  }
+  return <form aria-labelledby="params-title" onSubmit={submit} noValidate>
+    <h2 id="params-title" className="mb-3">修改参数</h2>
+    <fieldset className="space-y-4" aria-describedby="params-note params-error">
+      <legend className="sr-only">长度最小的子数组参数</legend>
+      <label>数组 nums<input name="nums" value={nums} onChange={(event) => setNums(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
+      <label>目标值 target<input name="target" type="number" min="1" step="1" value={target} onChange={(event) => setTarget(event.target.value)} aria-invalid={!!error} /></label>
+      <Button type="submit" className="w-full">重录本曲</Button>
+    </fieldset>
+    <p id="params-note" className="muted mt-3">输入 1–12 个正整数和正整数目标值，数值须在安全整数范围内。本曲 34 秒；非法输入保留现有录制，离开歌单或刷新恢复默认。</p>
+    <p id="params-error" role="alert" className="form-error">{error}</p>
+    <p role="status" className="muted mt-3">{notice}</p>
+  </form>
 }
 
 function MinWindowParameters({ input, onRecord }: { input: MinWindowInput, onRecord: (input: MinWindowInput) => void }) {

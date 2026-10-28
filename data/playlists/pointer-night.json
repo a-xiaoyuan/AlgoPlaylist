@@ -4,5 +4,5 @@
   "subtitle": "双指针与滑动窗口，沿着数组与字符串观察区间变化。",
   "tags": ["双指针", "滑窗"],
   "cover": "placeholder",
-  "trackIds": ["container-with-most-water", "three-sum", "trapping-rain-water", "longest-substring", "min-window", "two-sum-ii", "remove-duplicates", "sort-colors"]
+  "trackIds": ["container-with-most-water", "three-sum", "trapping-rain-water", "longest-substring", "min-window", "min-subarray-sum", "two-sum-ii", "remove-duplicates", "sort-colors"]
 }
