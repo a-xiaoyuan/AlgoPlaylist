@@ -1,0 +1,355 @@
+{
+  "id": "merge-sorted-array",
+  "steps": [
+    {
+      "t": 0,
+      "caption": "nums 仅前 3 项有效，末尾 3 项是预留空间。i、j 指向两段末尾，k 从后向前写。",
+      "highlight": [],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 2
+        },
+        {
+          "label": "k",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "values": [
+        1,
+        2,
+        3,
+        0,
+        0,
+        0
+      ],
+      "stats": [
+        {
+          "label": "i / j / k",
+          "value": "2 / 2 / 5"
+        }
+      ],
+      "secondary": {
+        "values": [
+          2,
+          5,
+          6
+        ],
+        "pointers": [
+          {
+            "label": "j",
+            "index": 2
+          }
+        ]
+      }
+    },
+    {
+      "t": 7.2,
+      "caption": "比较 3 与 6，取较大者，将 6 写入 nums[5]。从后往前写，不覆盖尚未读取的有效元素。",
+      "highlight": [
+        5
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 2
+        },
+        {
+          "label": "k",
+          "index": 4
+        }
+      ],
+      "marks": [
+        {
+          "label": "已就位",
+          "index": 5
+        }
+      ],
+      "sfx": "none",
+      "values": [
+        1,
+        2,
+        3,
+        0,
+        0,
+        6
+      ],
+      "stats": [
+        {
+          "label": "i / j / k",
+          "value": "2 / 1 / 4"
+        }
+      ],
+      "secondary": {
+        "values": [
+          2,
+          5,
+          6
+        ],
+        "pointers": [
+          {
+            "label": "j",
+            "index": 1
+          }
+        ]
+      }
+    },
+    {
+      "t": 14.4,
+      "caption": "比较 3 与 5，取较大者，将 5 写入 nums[4]。从后往前写，不覆盖尚未读取的有效元素。",
+      "highlight": [
+        4
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 2
+        },
+        {
+          "label": "k",
+          "index": 3
+        }
+      ],
+      "marks": [
+        {
+          "label": "已就位",
+          "index": 4
+        },
+        {
+          "label": "已就位",
+          "index": 5
+        }
+      ],
+      "sfx": "none",
+      "values": [
+        1,
+        2,
+        3,
+        0,
+        5,
+        6
+      ],
+      "stats": [
+        {
+          "label": "i / j / k",
+          "value": "2 / 0 / 3"
+        }
+      ],
+      "secondary": {
+        "values": [
+          2,
+          5,
+          6
+        ],
+        "pointers": [
+          {
+            "label": "j",
+            "index": 0
+          }
+        ]
+      }
+    },
+    {
+      "t": 21.6,
+      "caption": "比较 3 与 2，取较大者，将 3 写入 nums[3]。从后往前写，不覆盖尚未读取的有效元素。",
+      "highlight": [
+        3
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 1
+        },
+        {
+          "label": "k",
+          "index": 2
+        }
+      ],
+      "marks": [
+        {
+          "label": "已就位",
+          "index": 3
+        },
+        {
+          "label": "已就位",
+          "index": 4
+        },
+        {
+          "label": "已就位",
+          "index": 5
+        }
+      ],
+      "sfx": "none",
+      "values": [
+        1,
+        2,
+        3,
+        3,
+        5,
+        6
+      ],
+      "stats": [
+        {
+          "label": "i / j / k",
+          "value": "1 / 0 / 2"
+        }
+      ],
+      "secondary": {
+        "values": [
+          2,
+          5,
+          6
+        ],
+        "pointers": [
+          {
+            "label": "j",
+            "index": 0
+          }
+        ]
+      }
+    },
+    {
+      "t": 28.8,
+      "caption": "比较 2 与 2，取较大者，将 2 写入 nums[2]。从后往前写，不覆盖尚未读取的有效元素。",
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 1
+        },
+        {
+          "label": "k",
+          "index": 1
+        }
+      ],
+      "marks": [
+        {
+          "label": "已就位",
+          "index": 2
+        },
+        {
+          "label": "已就位",
+          "index": 3
+        },
+        {
+          "label": "已就位",
+          "index": 4
+        },
+        {
+          "label": "已就位",
+          "index": 5
+        }
+      ],
+      "sfx": "none",
+      "values": [
+        1,
+        2,
+        2,
+        3,
+        5,
+        6
+      ],
+      "stats": [
+        {
+          "label": "i / j / k",
+          "value": "1 / -1 / 1"
+        }
+      ],
+      "secondary": {
+        "values": [
+          2,
+          5,
+          6
+        ],
+        "pointers": []
+      }
+    },
+    {
+      "t": 36,
+      "caption": "nums2 已全部放入；nums 中剩余前缀天然就位。结果 [1, 2, 2, 3, 5, 6]，时间 O(m+n)，额外空间 O(1)。",
+      "highlight": [],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 1
+        },
+        {
+          "label": "k",
+          "index": 1
+        }
+      ],
+      "marks": [
+        {
+          "label": "已就位",
+          "index": 2
+        },
+        {
+          "label": "已就位",
+          "index": 3
+        },
+        {
+          "label": "已就位",
+          "index": 4
+        },
+        {
+          "label": "已就位",
+          "index": 5
+        }
+      ],
+      "sfx": "none",
+      "values": [
+        1,
+        2,
+        2,
+        3,
+        5,
+        6
+      ],
+      "stats": [
+        {
+          "label": "i / j / k",
+          "value": "1 / -1 / 1"
+        }
+      ],
+      "secondary": {
+        "values": [
+          2,
+          5,
+          6
+        ],
+        "pointers": []
+      },
+      "result": [
+        1,
+        2,
+        2,
+        3,
+        5,
+        6
+      ]
+    }
+  ],
+  "problem": "merge-sorted-array",
+  "remix": "backward",
+  "scene": "Array1D",
+  "input": {
+    "nums": [
+      1,
+      2,
+      3,
+      0,
+      0,
+      0
+    ],
+    "m": 3,
+    "nums2": [
+      2,
+      5,
+      6
+    ]
+  }
+}

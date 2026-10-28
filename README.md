@@ -1,10 +1,10 @@
 # AlgoPlaylist（算法歌单）
 
-M1：歌单与播放页线框、16 个 design tokens、PlayerEngine、两数之和哈希 / 暴力双 Remix。Vite + React 18 + TypeScript + Tailwind CSS v3 + React Router；Zod 校验分镜。Framer Motion 仅用于字幕和曲目切换的 opacity fade，读取既有 --dur / --ease，尊重减少动态效果设置。
+B0 本地算法分镜：保留两数之和哈希 / 暴力，补齐股票、Kadane、移动零、合并、二分、括号与反转链表。Vite + React 18 + TypeScript + Tailwind CSS v3 + React Router，Zod 校验分镜；Framer Motion 仅用于字幕和曲目切换的 opacity fade，时长与缓动读取既有 `--dur`（240ms）/ `--ease`，尊重减少动态效果设置。16 个 design tokens 保持原值，无新增动画或依赖。
 
 ## 运行与验证
 
-使用支持 TypeScript 类型剥离的 Node.js 版本（本地 Node 24）与 pnpm。
+Node.js 22.12+、pnpm 9（本次 Node 24.15.0）。
 
 ```sh
 pnpm install
@@ -13,30 +13,61 @@ pnpm test
 pnpm build
 ```
 
-`pnpm test` 使用 Node 内置测试运行器；`pnpm build` 执行 TypeScript 检查和 Vite 静态构建。
+`pnpm build` 执行 TypeScript 检查与 Vite 静态构建。`pnpm test` 使用 Node 内置测试运行器和 TypeScript 类型剥离，无额外测试框架。
 
 ## 页面与操作
 
-- `/`：歌单墙；B1、B2 为空歌单。
-- `/playlist/B0`：仅两数之和哈希 / 暴力两首，各 24 秒，合计 48 秒；「开场八分钟」为歌单名称。
-- `/play/two-sum-hash`、`/play/two-sum-brute`：队列、SVG 舞台、字幕、复杂度、Remix 和改参。
-- 支持播放、暂停、归零、拖动或键盘 seek、0.5× / 1× / 1.5× / 2× 倍速；结束后停在最后帧，可重播。
-- 队列、上一曲 / 下一曲、Remix 切换后归零暂停，并保留当前会话中已重录的输入。
-- 输入 JSON 整数数组（2–12 项，每项在 ±1000000 内）和整数 target（±2000000 内），重录两个 Remix。非法输入不替换当前录制。
-- 默认 nums = [3, 2, 4, 7]、target = 6；较长输入时长随步骤增加。录制仅在内存保存，刷新或离开播放页后恢复 JSON 默认值。
-- 音效默认关闭，可选浏览器 Web Audio 本地短音；人工听感未验收。
-- 桌面三栏，窄屏单列；长数组在场景内部横向滚动。
+- `/`：歌单墙；B1、B2 仍为空歌单。
+- `/playlist/B0`：9 首曲目，实际总时长 4 分 24 秒；「开场八分钟」保留为歌单名称。
+- `/play/two-sum-hash`、`/play/two-sum-brute`：队列、SVG 舞台、字幕、复杂度与改参。
+- 播放 / 暂停 / 归零，拖动或用键盘调整进度，0.5× / 1× / 1.5× / 2× 倍速。结束后停在最后帧，可重播。
+- 队列、上一曲 / 下一曲、Remix 切换均可用；切换后归零并暂停。Remix 仅列出同题解法，新增七首均使用内置示例。
+- 输入 JSON 整数数组（2–12 项，每项 ±1000000 内）和整数 target（±2000000 内），点击「重录两个 Remix」同时重建两个版本的 steps。非法输入不替换现有录制。
+- 重录只保存在当前播放页会话；切到任意 B0 曲目再返回仍保留两数之和输入，且不修改其他曲目。刷新或离开播放页后恢复 JSON 默认录制。没有持久化需求扩展。
+- 默认 nums = `[3, 2, 4, 7]`，target = `6`；两首各 24 秒。较长输入时长随步骤增加；窄屏和长数组通过场景内部横向滚动保持文字可读。
+- 音效默认关闭；可选的极简正弦短音由浏览器 Web Audio 本地生成，可随时关闭。听感未做主观验收。
+- 桌面保留三栏；窄屏先显示播放器，再显示可滚动队列与信息。SVG 内部可横向滚动，页面不随长数组变宽。
+
+## 新增七首与文件
+
+以下 JSON 均在 `data/stories/`，stepper 均在 `src/steppers/`；播放地址为 `/play/<曲目 ID>`。
+
+| 题目 | 曲目 ID / JSON 文件名（加 .json） | stepper | 场景 | 时长 |
+| --- | --- | --- | --- | --- |
+| 121 买卖股票最佳时机 | best-time-stock | bestTimeStock.ts | Array1D | 30s |
+| 53 最大子数组和 | maximum-subarray | maximumSubarray.ts | Array1D | 30s |
+| 283 移动零 | move-zeroes | moveZeroes.ts | Array1D | 30s |
+| 88 合并两个有序数组 | merge-sorted-array | mergeSortedArray.ts | Array1D 双数组 | 36s |
+| 704 二分查找 | binary-search | binarySearch.ts | BinarySearch | 30s |
+| 20 有效的括号 | valid-parentheses | validParentheses.ts | Stack | 30s |
+| 206 反转链表 | reverse-linked-list | reverseLinkedList.ts | LinkedList | 30s |
+
+离线重新生成这七首及 B0 元数据：`node --experimental-strip-types scripts/record-b0.mjs`。脚本不改写两数之和 JSON；生成结果可由 `pnpm test` 校验一致性。
 
 ## 数据与实现
 
-- `data/stories/two-sum-{hash,brute}.json`：两份中文默认完整帧分镜。
-- `src/story/schema.ts`：两数之和输入、解法与 Array1D 场景；严格校验字段、输入边界、首帧 0 秒、递增时间及下标。
-- `src/story/catalog.ts`：仅登记两个 Remix，改参时调用对应纯 stepper 并校验。
-- `src/steppers/twoSumHash.ts`、`twoSumBrute.ts`、`timing.ts`：输入转为完整帧，处理重复值、负数与无解，不复用同一下标。
-- `src/player/PlayerEngine.ts`：可订阅纯时间轴；`usePlayer.ts` 用 requestAnimationFrame 驱动，scene 与字幕读取同一当前帧。
-- `src/scenes/Array1D.tsx`：扁平 SVG 色块，高亮和指针使用 design tokens。
-- `tests/player.test.mjs`：默认 JSON 与 stepper 一致、播放时间轴与倍速、schema 反例、算法边界输入。
+- `data/stories/two-sum-{hash,brute}.json`：默认中文完整帧分镜。
+- `src/story/schema.ts`：按 problem 区分输入 / 解法 / scene，严格校验字段、输入边界、首帧 0 秒、严格递增时间、指针、栈、链表和区间快照。
+- `src/steppers/twoSumHash.ts`、`twoSumBrute.ts`：input → steps[]，处理重复值、负数与无解，不复用同一下标。
+- `src/player/PlayerEngine.ts`：可订阅的纯时间轴；`usePlayer.ts` 用 requestAnimationFrame 驱动。scene 与字幕读取同一个当前帧。
+- `src/scenes/Array1D.tsx`：扁平 SVG 色块；高亮 `--accent`、指针 `--text-2`，无场景动画或粒子。
+- `src/scenes/BinarySearch.tsx`、`Stack.tsx`、`LinkedList.tsx`：复用数组语言展示二分排除区间、栈顶、真实 next 连线；`StoryScene.tsx` 负责路由与状态读数。
+- V1 保留原 `t/caption/highlight/pointers/marks/sfx`，按需增加 `values/stats/secondary/bounds/stack/links/head/result`。每步为完整快照，不靠重播写操作恢复。`t` 单位为秒，末帧为总时长。复杂度描述针对算法本身，不包含教学录制的快照存储。
+- `tests/player.test.mjs`：JSON 与 stepper 一致性、时间轴边界 / 倍速 / 完成 / 重播、schema 反例、算法边界输入。
+- `tests/b0.test.mjs`：七首生成一致性、B0 顺序与总时长、全帧倒序 seek / 重播、股票和 Kadane 穷举参照、移动零稳定性、合并边界、二分命中 / 缺失、括号错配、链表连通性与最终遍历、快照反例。
 
-仅前端本地实现，无后端、API Key 或线上部署。历史本地视觉验收记录见 `docs/视觉验收清单.md`；本次提交隔离另运行 M1 测试与构建，未重新做浏览器端到端验收。
+## 本轮共享文件变更
 
-设计索引见 [docs](docs/README.md)。索引引用的「详细设计-v0.2.md」附件不在本目录，未声称已核对缺失附件。
+- `data/playlists/array-warmup.json`、`src/story/catalog.ts`：登记全部曲目。
+- `src/story/schema.ts`、`src/steppers/timing.ts`：兼容原 V1 并支持新增快照与显式时长。
+- `src/scenes/Array1D.tsx`、上述四个新场景文件：绘制快照。
+- `src/pages/play.tsx`、`src/styles/globals.css`：场景切换、Remix / 重录隔离、窄屏布局与状态读数。
+- `src/App.tsx`：去除旧阶段页脚文字。
+- `scripts/record-b0.mjs`、`tests/b0.test.mjs`：离线录制与回归测试。
+- `.gitignore`：忽略 `.b0-qa/`；`README.md` 与 `docs/视觉验收清单.md` 更新说明与验收证据。
+
+原两数之和的两个 JSON、两个 stepper、`PlayerEngine.ts`、`design-tokens.css` 未修改。
+
+仅前端本地数据，无后端、无 API Key。`pnpm test` 15/15 通过，`pnpm build`（TypeScript + Vite）通过。Edge 验证七首导航 / seek 终帧、播放中切曲暂停归零、RAF 推进与倍速、两数之和重录隔离；1440px 三栏，390/320px 七首均无页面横向溢出，浏览器无 error / warn。验收截图和日志位于被忽略的 `.b0-qa/`。这些是本地验证；未部署，未做音效主观验收。未执行 git commit、push 或 Git 远程操作。
+
+设计索引仍见 [docs](docs/README.md)。其引用的「详细设计-v0.2.md」附件不在本目录，字段结构按本次 M1b 指令落地，未声称核对缺失附件。

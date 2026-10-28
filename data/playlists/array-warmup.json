@@ -3,9 +3,9 @@
     {
       "id": "B0",
       "title": "开场八分钟 · 数组热身",
-      "description": "从两数之和出发，对比哈希查找与暴力枚举两种解法。",
+      "description": "从两数之和出发，依次练习一趟扫描、Kadane、双指针、合并、二分、栈与链表。",
       "category": "数组 / 入门",
-      "duration": "48 秒",
+      "duration": "4 分 24 秒",
       "tracks": [
         {
           "id": "two-sum-hash",
@@ -22,6 +22,62 @@
           "duration": "00:24",
           "complexity": "时间 O(n²) · 空间 O(1)",
           "remix": "暴力枚举"
+        },
+        {
+          "id": "best-time-stock",
+          "title": "121 买卖股票最佳时机",
+          "subtitle": "记住先前最低价，一趟扫描更新最大利润。",
+          "duration": "00:30",
+          "complexity": "时间 O(n) · 空间 O(1)",
+          "remix": "一趟扫描"
+        },
+        {
+          "id": "maximum-subarray",
+          "title": "53 最大子数组和",
+          "subtitle": "延续当前区间，还是从当前元素重新开始？",
+          "duration": "00:30",
+          "complexity": "时间 O(n) · 空间 O(1)",
+          "remix": "Kadane"
+        },
+        {
+          "id": "move-zeroes",
+          "title": "283 移动零",
+          "subtitle": "read 扫描，write 收集非零数，最后补零。",
+          "duration": "00:30",
+          "complexity": "时间 O(n) · 空间 O(1)",
+          "remix": "双指针"
+        },
+        {
+          "id": "merge-sorted-array",
+          "title": "88 合并两个有序数组",
+          "subtitle": "比较两段末尾，从后往前写入预留空间。",
+          "duration": "00:36",
+          "complexity": "时间 O(m+n) · 空间 O(1)",
+          "remix": "从后往前"
+        },
+        {
+          "id": "binary-search",
+          "title": "704 二分查找",
+          "subtitle": "维护闭区间，每次排除一半候选元素。",
+          "duration": "00:30",
+          "complexity": "时间 O(log n) · 空间 O(1)",
+          "remix": "闭区间二分"
+        },
+        {
+          "id": "valid-parentheses",
+          "title": "20 有效的括号",
+          "subtitle": "左括号入栈，右括号与栈顶配对。",
+          "duration": "00:30",
+          "complexity": "时间 O(n) · 空间 O(n)",
+          "remix": "栈"
+        },
+        {
+          "id": "reverse-linked-list",
+          "title": "206 反转链表",
+          "subtitle": "保存 next，反转连线，再移动 prev 与 curr。",
+          "duration": "00:30",
+          "complexity": "时间 O(n) · 空间 O(1)",
+          "remix": "迭代反转"
         }
       ]
     },

@@ -1,0 +1,193 @@
+{
+  "id": "binary-search",
+  "steps": [
+    {
+      "t": 0,
+      "caption": "升序数组中寻找 9。维护闭区间 [left, right]，只要 left ≤ right 就继续。",
+      "highlight": [],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "闭区间",
+          "value": "[0, 5]"
+        },
+        {
+          "label": "target",
+          "value": 9
+        }
+      ],
+      "bounds": {
+        "left": 0,
+        "right": 5
+      }
+    },
+    {
+      "t": 7.5,
+      "caption": "mid = 0 + floor((5 − 0) / 2) = 2，比较 3 与 9。",
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "mid",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "闭区间",
+          "value": "[0, 5]"
+        },
+        {
+          "label": "target",
+          "value": 9
+        }
+      ],
+      "bounds": {
+        "left": 0,
+        "right": 5
+      }
+    },
+    {
+      "t": 15,
+      "caption": "3 < 9，左半段连同 mid 均可排除，left = 3。",
+      "highlight": [],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 3
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "闭区间",
+          "value": "[3, 5]"
+        },
+        {
+          "label": "target",
+          "value": 9
+        }
+      ],
+      "bounds": {
+        "left": 3,
+        "right": 5
+      }
+    },
+    {
+      "t": 22.5,
+      "caption": "mid = 3 + floor((5 − 3) / 2) = 4，比较 9 与 9。",
+      "highlight": [
+        4
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 3
+        },
+        {
+          "label": "mid",
+          "index": 4
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "闭区间",
+          "value": "[3, 5]"
+        },
+        {
+          "label": "target",
+          "value": 9
+        }
+      ],
+      "bounds": {
+        "left": 3,
+        "right": 5
+      }
+    },
+    {
+      "t": 30,
+      "caption": "命中，返回下标 4。每轮排除约一半区间，时间 O(log n)，空间 O(1)。",
+      "highlight": [
+        4
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 3
+        },
+        {
+          "label": "mid",
+          "index": 4
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "闭区间",
+          "value": "[3, 5]"
+        },
+        {
+          "label": "target",
+          "value": 9
+        }
+      ],
+      "bounds": {
+        "left": 3,
+        "right": 5
+      },
+      "result": 4
+    }
+  ],
+  "problem": "binary-search",
+  "remix": "closed-interval",
+  "scene": "BinarySearch",
+  "input": {
+    "nums": [
+      -1,
+      0,
+      3,
+      5,
+      9,
+      12
+    ],
+    "target": 9
+  }
+}

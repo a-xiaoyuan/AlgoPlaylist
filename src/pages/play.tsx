@@ -13,7 +13,7 @@ import { twoSumInputSchema } from '@/story/schema'
 import type { Story, TwoSumInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
-import { Array1D } from '@/scenes/Array1D'
+import { StoryScene } from '@/scenes/StoryScene'
 
 function clock(seconds: number) {
   const whole = Math.floor(seconds)
@@ -34,7 +34,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
   const remixes = playlist.tracks.filter((item) => recordings[item.id].problem === story.problem)
 
   function rerecord(input: TwoSumInput) {
-    // Both remixes share the newly recorded input.
+    // Preserve every other track; only these two remixes share input.
     const next = Object.fromEntries(remixes.map((item) => [item.id, recordStory(item.id, input)]))
     setRecordings((previous) => ({ ...previous, ...next }))
   }
@@ -90,7 +90,10 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
             <p id="remix-note" className="muted">切换曲目后归零并暂停；两数之和保留已重录的参数。</p>
           </section>
           <Separator />
-          <TwoSumParameters input={story.input} onRecord={rerecord} />
+          {story.problem === 'two-sum' ? <TwoSumParameters input={story.input} onRecord={rerecord} /> : <section className="space-y-3">
+            <h2>示例分镜</h2>
+            <p className="muted">本曲使用内置示例。播放或拖动进度，观察每一步的完整状态；用队列或上一曲、下一曲切换。</p>
+          </section>}
         </aside>
       </Card>
     </div>
@@ -98,7 +101,9 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
 }
 
 function inputDescription(story: Story) {
-  return `nums = [${story.input.nums.join(', ')}]，target = ${story.input.target}`
+  if (story.problem === 'valid-parentheses') return `text = ${JSON.stringify(story.input.text)}`
+  const input = story.input
+  return `nums = [${input.nums.join(', ')}]${'target' in input ? `，target = ${input.target}` : ''}${'nums2' in input ? `，m = ${input.m}，nums2 = [${input.nums2.join(', ')}]` : ''}`
 }
 
 function TwoSumParameters({ input, onRecord }: { input: TwoSumInput, onRecord: (input: TwoSumInput) => void }) {
@@ -156,7 +161,7 @@ function Playback({ story, title, playlist }: { story: Story, title: string, pla
         <span className="muted">第 {stepIndex + 1} / {story.steps.length} 帧</span>
       </div>
       <motion.div key={story.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={fade}>
-        <Array1D nums={story.input.nums} frame={frame} />
+        <StoryScene story={story} frame={frame} />
       </motion.div>
       <div className="caption-slot">
         <motion.p key={`${story.id}-${stepIndex}-${frame.caption}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={fade} className="muted" aria-live="off">{frame.caption}</motion.p>

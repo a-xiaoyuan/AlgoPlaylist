@@ -1,0 +1,390 @@
+{
+  "id": "reverse-linked-list",
+  "steps": [
+    {
+      "t": 0,
+      "caption": "节点固定在原位，用箭头表示 next。prev = null，curr = head；反转连线，不交换节点值。",
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "curr",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "null"
+        },
+        {
+          "label": "curr",
+          "value": "#0"
+        }
+      ],
+      "links": [
+        1,
+        2,
+        3,
+        null
+      ],
+      "head": 0
+    },
+    {
+      "t": 3.333,
+      "caption": "先保存 next = #1，再将 #0.next 指向 null。未处理的后缀仍可从 next 找回。",
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "curr",
+          "index": 0
+        },
+        {
+          "label": "next",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "null"
+        },
+        {
+          "label": "curr",
+          "value": "#0"
+        },
+        {
+          "label": "next",
+          "value": "#1"
+        }
+      ],
+      "links": [
+        null,
+        2,
+        3,
+        null
+      ],
+      "head": 0
+    },
+    {
+      "t": 6.667,
+      "caption": "prev 前进至 #0，curr 前进至 #1，继续处理下一个节点。",
+      "highlight": [
+        1
+      ],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 0
+        },
+        {
+          "label": "curr",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#0"
+        },
+        {
+          "label": "curr",
+          "value": "#1"
+        }
+      ],
+      "links": [
+        null,
+        2,
+        3,
+        null
+      ],
+      "head": 0
+    },
+    {
+      "t": 10,
+      "caption": "先保存 next = #2，再将 #1.next 指向 #0。未处理的后缀仍可从 next 找回。",
+      "highlight": [
+        1
+      ],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 0
+        },
+        {
+          "label": "curr",
+          "index": 1
+        },
+        {
+          "label": "next",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#0"
+        },
+        {
+          "label": "curr",
+          "value": "#1"
+        },
+        {
+          "label": "next",
+          "value": "#2"
+        }
+      ],
+      "links": [
+        null,
+        0,
+        3,
+        null
+      ],
+      "head": 0
+    },
+    {
+      "t": 13.333,
+      "caption": "prev 前进至 #1，curr 前进至 #2，继续处理下一个节点。",
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 1
+        },
+        {
+          "label": "curr",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#1"
+        },
+        {
+          "label": "curr",
+          "value": "#2"
+        }
+      ],
+      "links": [
+        null,
+        0,
+        3,
+        null
+      ],
+      "head": 0
+    },
+    {
+      "t": 16.667,
+      "caption": "先保存 next = #3，再将 #2.next 指向 #1。未处理的后缀仍可从 next 找回。",
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 1
+        },
+        {
+          "label": "curr",
+          "index": 2
+        },
+        {
+          "label": "next",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#1"
+        },
+        {
+          "label": "curr",
+          "value": "#2"
+        },
+        {
+          "label": "next",
+          "value": "#3"
+        }
+      ],
+      "links": [
+        null,
+        0,
+        1,
+        null
+      ],
+      "head": 0
+    },
+    {
+      "t": 20,
+      "caption": "prev 前进至 #2，curr 前进至 #3，继续处理下一个节点。",
+      "highlight": [
+        3
+      ],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 2
+        },
+        {
+          "label": "curr",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#2"
+        },
+        {
+          "label": "curr",
+          "value": "#3"
+        }
+      ],
+      "links": [
+        null,
+        0,
+        1,
+        null
+      ],
+      "head": 0
+    },
+    {
+      "t": 23.333,
+      "caption": "先保存 next = null，再将 #3.next 指向 #2。未处理的后缀仍可从 next 找回。",
+      "highlight": [
+        3
+      ],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 2
+        },
+        {
+          "label": "curr",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#2"
+        },
+        {
+          "label": "curr",
+          "value": "#3"
+        },
+        {
+          "label": "next",
+          "value": "null"
+        }
+      ],
+      "links": [
+        null,
+        0,
+        1,
+        2
+      ],
+      "head": 0
+    },
+    {
+      "t": 26.667,
+      "caption": "prev 前进至 #3，curr 前进至 null，继续处理下一个节点。",
+      "highlight": [],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#3"
+        },
+        {
+          "label": "curr",
+          "value": "null"
+        }
+      ],
+      "links": [
+        null,
+        0,
+        1,
+        2
+      ],
+      "head": 0
+    },
+    {
+      "t": 30,
+      "caption": "curr = null，返回 prev = #3 作为新 head。沿箭头得到 [4, 3, 2, 1]，时间 O(n)，额外空间 O(1)。",
+      "highlight": [],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#3"
+        },
+        {
+          "label": "curr",
+          "value": "null"
+        }
+      ],
+      "links": [
+        null,
+        0,
+        1,
+        2
+      ],
+      "head": 3,
+      "result": [
+        4,
+        3,
+        2,
+        1
+      ]
+    }
+  ],
+  "problem": "reverse-linked-list",
+  "remix": "iterative",
+  "scene": "LinkedList",
+  "input": {
+    "nums": [
+      1,
+      2,
+      3,
+      4
+    ]
+  }
+}

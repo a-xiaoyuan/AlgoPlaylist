@@ -1,0 +1,230 @@
+{
+  "id": "best-time-stock",
+  "steps": [
+    {
+      "t": 0,
+      "caption": "第 0 天先记下最低价。只允许先买后卖；不交易时利润为 0。",
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "今日",
+          "index": 0
+        }
+      ],
+      "marks": [
+        {
+          "label": "最低价",
+          "index": 0
+        }
+      ],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "最低价",
+          "value": 7
+        },
+        {
+          "label": "最大利润",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "t": 5,
+      "caption": "第 1 天：1 − 先前最低价 7 = -6。最大利润仍为 0。最低价更新为 1，留给后续日期。",
+      "highlight": [
+        1
+      ],
+      "pointers": [
+        {
+          "label": "今日",
+          "index": 1
+        }
+      ],
+      "marks": [
+        {
+          "label": "最低价",
+          "index": 1
+        }
+      ],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "最低价",
+          "value": 1
+        },
+        {
+          "label": "最大利润",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "t": 10,
+      "caption": "第 2 天：5 − 先前最低价 1 = 4。刷新最大利润为 4。",
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "今日",
+          "index": 2
+        }
+      ],
+      "marks": [
+        {
+          "label": "最低价",
+          "index": 1
+        }
+      ],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "最低价",
+          "value": 1
+        },
+        {
+          "label": "最大利润",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "t": 15,
+      "caption": "第 3 天：3 − 先前最低价 1 = 2。最大利润仍为 4。",
+      "highlight": [
+        3
+      ],
+      "pointers": [
+        {
+          "label": "今日",
+          "index": 3
+        }
+      ],
+      "marks": [
+        {
+          "label": "最低价",
+          "index": 1
+        }
+      ],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "最低价",
+          "value": 1
+        },
+        {
+          "label": "最大利润",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "t": 20,
+      "caption": "第 4 天：6 − 先前最低价 1 = 5。刷新最大利润为 5。",
+      "highlight": [
+        4
+      ],
+      "pointers": [
+        {
+          "label": "今日",
+          "index": 4
+        }
+      ],
+      "marks": [
+        {
+          "label": "最低价",
+          "index": 1
+        }
+      ],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "最低价",
+          "value": 1
+        },
+        {
+          "label": "最大利润",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "t": 25,
+      "caption": "第 5 天：4 − 先前最低价 1 = 3。最大利润仍为 5。",
+      "highlight": [
+        5
+      ],
+      "pointers": [
+        {
+          "label": "今日",
+          "index": 5
+        }
+      ],
+      "marks": [
+        {
+          "label": "最低价",
+          "index": 1
+        }
+      ],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "最低价",
+          "value": 1
+        },
+        {
+          "label": "最大利润",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "t": 30,
+      "caption": "返回 5。第 1 天买入，第 4 天卖出。一趟扫描，时间 O(n)，空间 O(1)。",
+      "highlight": [
+        1,
+        4
+      ],
+      "pointers": [
+        {
+          "label": "今日",
+          "index": 5
+        }
+      ],
+      "marks": [
+        {
+          "label": "最低价",
+          "index": 1
+        }
+      ],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "最低价",
+          "value": 1
+        },
+        {
+          "label": "最大利润",
+          "value": 5
+        }
+      ],
+      "result": 5
+    }
+  ],
+  "problem": "best-time-to-buy-and-sell-stock",
+  "remix": "one-pass",
+  "scene": "Array1D",
+  "input": {
+    "nums": [
+      7,
+      1,
+      5,
+      3,
+      6,
+      4
+    ]
+  }
+}

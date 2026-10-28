@@ -1,0 +1,283 @@
+{
+  "id": "valid-parentheses",
+  "steps": [
+    {
+      "t": 0,
+      "caption": "从左向右扫描，左括号入栈；右括号只能与栈顶配对，遵循后进先出。",
+      "highlight": [],
+      "pointers": [],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "栈深度",
+          "value": 0
+        }
+      ],
+      "stack": []
+    },
+    {
+      "t": 3,
+      "caption": "i = 0，左括号 ( 入栈，等待之后对应的右括号。",
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "栈深度",
+          "value": 1
+        }
+      ],
+      "stack": [
+        {
+          "value": "(",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "t": 6,
+      "caption": "i = 1，左括号 [ 入栈，等待之后对应的右括号。",
+      "highlight": [
+        1
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "栈深度",
+          "value": 2
+        }
+      ],
+      "stack": [
+        {
+          "value": "(",
+          "index": 0
+        },
+        {
+          "value": "[",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "t": 9,
+      "caption": "i = 2，右括号 ] 需要栈顶 [；当前栈顶为 [。",
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "栈深度",
+          "value": 2
+        }
+      ],
+      "stack": [
+        {
+          "value": "(",
+          "index": 0
+        },
+        {
+          "value": "[",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "t": 12,
+      "caption": "[] 配对成功，弹出栈顶，继续扫描。",
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "栈深度",
+          "value": 1
+        }
+      ],
+      "stack": [
+        {
+          "value": "(",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "t": 15,
+      "caption": "i = 3，右括号 ) 需要栈顶 (；当前栈顶为 (。",
+      "highlight": [
+        3
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "栈深度",
+          "value": 1
+        }
+      ],
+      "stack": [
+        {
+          "value": "(",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "t": 18,
+      "caption": "() 配对成功，弹出栈顶，继续扫描。",
+      "highlight": [
+        3
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "栈深度",
+          "value": 0
+        }
+      ],
+      "stack": []
+    },
+    {
+      "t": 21,
+      "caption": "i = 4，左括号 { 入栈，等待之后对应的右括号。",
+      "highlight": [
+        4
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 4
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "栈深度",
+          "value": 1
+        }
+      ],
+      "stack": [
+        {
+          "value": "{",
+          "index": 4
+        }
+      ]
+    },
+    {
+      "t": 24,
+      "caption": "i = 5，右括号 } 需要栈顶 {；当前栈顶为 {。",
+      "highlight": [
+        5
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "栈深度",
+          "value": 1
+        }
+      ],
+      "stack": [
+        {
+          "value": "{",
+          "index": 4
+        }
+      ]
+    },
+    {
+      "t": 27,
+      "caption": "{} 配对成功，弹出栈顶，继续扫描。",
+      "highlight": [
+        5
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "栈深度",
+          "value": 0
+        }
+      ],
+      "stack": []
+    },
+    {
+      "t": 30,
+      "caption": "扫描结束且栈为空，返回 true。时间 O(n)，空间 O(n)。",
+      "highlight": [],
+      "pointers": [],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "栈深度",
+          "value": 0
+        }
+      ],
+      "stack": [],
+      "result": true
+    }
+  ],
+  "problem": "valid-parentheses",
+  "remix": "stack",
+  "scene": "Stack",
+  "input": {
+    "text": "([]){}"
+  }
+}
