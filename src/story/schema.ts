@@ -17,6 +17,7 @@ export const kadaneInputSchema = z.object({ nums: numbers.min(1) }).strict()
 export const moveZeroesInputSchema = z.object({ nums: numbers }).strict()
 export const reverseListInputSchema = z.object({ nums: numbers }).strict()
 const sorted = (nums: number[]) => nums.every((value, i) => i === 0 || nums[i - 1] <= value)
+export const twoSumSortedInputSchema = z.object({ nums: numbers.min(2).refine(sorted, '数组必须升序排列。'), target }).strict()
 export const binarySearchInputSchema = z.object({ nums: numbers.refine(sorted, '数组必须升序排列。'), target }).strict()
 export const bracketsInputSchema = z.object({ text: z.string().max(12).regex(/^[()[\]{}]*$/, '只支持括号 ()[]{}。') }).strict()
 export const mergeInputSchema = z.object({ nums: numbers, m: z.number().int().nonnegative(), nums2: numbers }).strict().superRefine((input, ctx) => {
@@ -51,6 +52,7 @@ export const arraySceneSchema = z.enum(['Array1D', 'array-2ptrs'])
 export const storySchema = z.discriminatedUnion('problem', [
   z.object({ ...base, problem: z.literal('minimum-window-substring'), remix: z.literal('sliding-window'), scene: z.literal('array-2ptrs'), input: minWindowInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('longest-substring-without-repeating-characters'), remix: z.literal('sliding-window'), scene: z.literal('array-2ptrs'), input: longestSubstringInputSchema }).strict(),
+  z.object({ ...base, problem: z.literal('two-sum-ii'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: twoSumSortedInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('three-sum'), remix: z.literal('sort-two-pointers'), scene: z.literal('array-2ptrs'), input: threeSumInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('container-with-most-water'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: containerInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('trapping-rain-water'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: trappingRainWaterInputSchema }).strict(),
@@ -97,6 +99,10 @@ export const storySchema = z.discriminatedUnion('problem', [
       if (step.values || !step.bounds || step.bounds.left > step.bounds.right + 1) issue('最小覆盖子串需要有效的字符窗口区间快照。')
       if (typeof step.result !== 'string' || (step.result !== '' && !story.input.s.includes(step.result))) issue('结果必须是输入字符串的子串。')
     } else if (typeof step.result === 'string') issue('当前题目不支持字符串结果。')
+    if (story.problem === 'two-sum-ii') {
+      const result = step.result
+      if (!Array.isArray(result) || (result.length !== 0 && (result.length !== 2 || typeof result[0] !== 'number' || typeof result[1] !== 'number' || !Number.isInteger(result[0]) || !Number.isInteger(result[1]) || result[0] < 1 || result[0] >= result[1] || result[1] > length || story.input.nums[result[0] - 1] + story.input.nums[result[1] - 1] !== story.input.target))) issue('结果必须为空或为满足目标值的两个升序一基下标。')
+    }
     if (story.problem === 'three-sum') {
       if (!step.values || step.values.some((value, index) => value !== sortedInput![index])) issue('三数之和需要完整的排序数组快照。')
       const result = threeSumResultSchema.safeParse(step.result)
@@ -121,6 +127,7 @@ export const storySchema = z.discriminatedUnion('problem', [
   })
 })
 
+export type TwoSumSortedInput = z.infer<typeof twoSumSortedInputSchema>
 export type TwoSumInput = z.infer<typeof twoSumInputSchema>
 export type ContainerInput = z.infer<typeof containerInputSchema>
 export type TrappingRainWaterInput = z.infer<typeof trappingRainWaterInputSchema>

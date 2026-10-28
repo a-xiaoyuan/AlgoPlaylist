@@ -6,6 +6,13 @@ export type Track = Playlist['tracks'][number]
 
 // Adapt the new playlist metadata to the existing page/queue model.
 const pointerTracks: Track[] = [{
+  id: 'two-sum-ii',
+  title: '167 两数之和 II',
+  subtitle: '利用升序数组，从两端收缩寻找目标和。',
+  duration: '00:36',
+  complexity: '时间 O(n) · 空间 O(1)',
+  remix: '双指针',
+}, {
   id: 'container-with-most-water',
   title: '11 盛最多水的容器',
   subtitle: '计算两端面积，移动短板，保留扫描中的最大值。',
@@ -47,7 +54,7 @@ const pointerPlaylist: Playlist = {
   title: pointerNight.titleZh,
   description: pointerNight.subtitle,
   category: pointerNight.tags.join(' / '),
-  duration: '3 分 10 秒',
+  duration: '3 分 46 秒',
   tracks: pointerNight.trackIds.map((id: string) => {
     const track = tracks.get(id)
     if (!track) throw new Error(`歌单引用了未登记曲目：${id}`)

@@ -10,8 +10,8 @@ import { findTrack } from '@/lib/catalog'
 import type { Playlist, Track } from '@/lib/catalog'
 import { NotFound } from '@/pages/not-found'
 import { recordStory, stories } from '@/story/catalog'
-import { containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema } from '@/story/schema'
-import type { ContainerInput, LongestSubstringInput, MinWindowInput, Story, ThreeSumInput, TwoSumInput } from '@/story/schema'
+import { containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
+import type { ContainerInput, LongestSubstringInput, MinWindowInput, Story, ThreeSumInput, TwoSumInput, TwoSumSortedInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
 import { frameAtProgress, replaceProblemRecordings } from '@/player/remix'
@@ -86,6 +86,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
           </section>
           <Separator />
           {story.problem === 'two-sum' ? <TwoSumParameters input={story.input} onRecord={rerecord} />
+            : story.problem === 'two-sum-ii' ? <SortedArrayParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'longest-substring-without-repeating-characters' ? <StringParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'minimum-window-substring' ? <MinWindowParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'container-with-most-water' || story.problem === 'trapping-rain-water' || story.problem === 'three-sum' ? <ArrayParameters key={story.id} problem={story.problem} input={story.input} onRecord={rerecord} /> : <section className="space-y-3">
@@ -193,7 +194,44 @@ function TwoSumParameters({ input, onRecord }: { input: TwoSumInput, onRecord: (
   </form>
 }
 
-function ArrayParameters({ problem, input, onRecord }: { problem: 'container-with-most-water' | 'trapping-rain-water' | 'three-sum', input: ContainerInput | ThreeSumInput, onRecord: (input: ContainerInput | ThreeSumInput) => void }) {
+export function SortedArrayParameters({ input, onRecord }: { input: TwoSumSortedInput, onRecord: (input: TwoSumSortedInput) => void }) {
+  const [nums, setNums] = useState(JSON.stringify(input.nums))
+  const [target, setTarget] = useState(String(input.target))
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
+  function submit(event: React.FormEvent) {
+    event.preventDefault()
+    let parsedNums: unknown
+    try { parsedNums = JSON.parse(nums) } catch {
+      setError('数组格式不正确，请输入 JSON 数组，例如 [2, 7, 11, 15]。')
+      setNotice('')
+      return
+    }
+    const result = twoSumSortedInputSchema.safeParse({ nums: parsedNums, target: target.trim() ? Number(target) : NaN })
+    if (!result.success) {
+      setError('请输入 2–12 个升序整数（每个在 ±1000000 内），target 为 ±2000000 内的整数。')
+      setNotice('')
+      return
+    }
+    onRecord(result.data)
+    setError('')
+    setNotice('已重录本曲，播放位置已归零并暂停。')
+  }
+  return <form aria-labelledby="params-title" onSubmit={submit} noValidate>
+    <h2 id="params-title" className="mb-3">修改参数</h2>
+    <fieldset className="space-y-4" aria-describedby="params-note params-error">
+      <legend className="sr-only">两数之和 II 参数</legend>
+      <label>升序数组 nums<input name="nums" value={nums} onChange={(event) => setNums(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
+      <label>目标值 target<input name="target" type="number" step="1" value={target} onChange={(event) => setTarget(event.target.value)} aria-invalid={!!error} /></label>
+      <Button type="submit" className="w-full">重录本曲</Button>
+    </fieldset>
+    <p id="params-note" className="muted mt-3">2–12 个升序整数，允许重复；无解时返回空数组。本曲 36 秒；非法输入保留现有录制，离开歌单或刷新恢复默认。</p>
+    <p id="params-error" role="alert" className="form-error">{error}</p>
+    <p role="status" className="muted mt-3">{notice}</p>
+  </form>
+}
+
+export function ArrayParameters({ problem, input, onRecord }: { problem: 'container-with-most-water' | 'trapping-rain-water' | 'three-sum', input: ContainerInput | ThreeSumInput, onRecord: (input: ContainerInput | ThreeSumInput) => void }) {
   const isThreeSum = problem === 'three-sum'
   const isRain = problem === 'trapping-rain-water'
   const [nums, setNums] = useState(JSON.stringify(input.nums))

@@ -1,0 +1,236 @@
+{
+  "id": "two-sum-ii",
+  "steps": [
+    {
+      "caption": "数组已升序排列，从两端开始比较；画面下标从 0 开始，返回下标从 1 开始。",
+      "highlight": [
+        0,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 3
+      },
+      "sfx": "none",
+      "result": [],
+      "stats": [
+        {
+          "label": "目标值",
+          "value": 9
+        },
+        {
+          "label": "当前和",
+          "value": 17
+        },
+        {
+          "label": "一基下标",
+          "value": "未找到"
+        }
+      ],
+      "t": 0
+    },
+    {
+      "caption": "2 + 15 = 17，大于 9；升序数组中需要更小的和，right 左移。",
+      "highlight": [
+        0,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 3
+      },
+      "sfx": "compare",
+      "result": [],
+      "stats": [
+        {
+          "label": "目标值",
+          "value": 9
+        },
+        {
+          "label": "当前和",
+          "value": 17
+        },
+        {
+          "label": "一基下标",
+          "value": "未找到"
+        }
+      ],
+      "t": 9
+    },
+    {
+      "caption": "2 + 11 = 13，大于 9；升序数组中需要更小的和，right 左移。",
+      "highlight": [
+        0,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 2
+      },
+      "sfx": "compare",
+      "result": [],
+      "stats": [
+        {
+          "label": "目标值",
+          "value": 9
+        },
+        {
+          "label": "当前和",
+          "value": 13
+        },
+        {
+          "label": "一基下标",
+          "value": "未找到"
+        }
+      ],
+      "t": 18
+    },
+    {
+      "caption": "2 + 7 = 9，找到目标和，返回一基下标 [1, 2]。",
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 1
+        }
+      ],
+      "marks": [
+        {
+          "label": "答案",
+          "index": 0
+        },
+        {
+          "label": "答案",
+          "index": 1
+        }
+      ],
+      "bounds": {
+        "left": 0,
+        "right": 1
+      },
+      "sfx": "match",
+      "result": [
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "目标值",
+          "value": 9
+        },
+        {
+          "label": "当前和",
+          "value": 9
+        },
+        {
+          "label": "一基下标",
+          "value": "[1, 2]"
+        }
+      ],
+      "t": 27
+    },
+    {
+      "caption": "搜索结束，答案为 [1, 2]。时间 O(n)，额外空间 O(1)。",
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 1
+        }
+      ],
+      "marks": [
+        {
+          "label": "答案",
+          "index": 0
+        },
+        {
+          "label": "答案",
+          "index": 1
+        }
+      ],
+      "bounds": {
+        "left": 0,
+        "right": 1
+      },
+      "sfx": "none",
+      "result": [
+        1,
+        2
+      ],
+      "stats": [
+        {
+          "label": "目标值",
+          "value": 9
+        },
+        {
+          "label": "当前和",
+          "value": 9
+        },
+        {
+          "label": "一基下标",
+          "value": "[1, 2]"
+        }
+      ],
+      "t": 36
+    }
+  ],
+  "problem": "two-sum-ii",
+  "remix": "two-pointers",
+  "scene": "array-2ptrs",
+  "input": {
+    "nums": [
+      2,
+      7,
+      11,
+      15
+    ],
+    "target": 9
+  }
+}
