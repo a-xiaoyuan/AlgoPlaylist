@@ -9,8 +9,8 @@ import { findTrack } from '@/lib/catalog'
 import type { Playlist, Track } from '@/lib/catalog'
 import { NotFound } from '@/pages/not-found'
 import { recordStory, stories } from '@/story/catalog'
-import { twoSumInputSchema } from '@/story/schema'
-import type { Story, TwoSumInput } from '@/story/schema'
+import { containerInputSchema, twoSumInputSchema } from '@/story/schema'
+import type { ContainerInput, Story, TwoSumInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
 import { StoryScene } from '@/scenes/StoryScene'
@@ -33,8 +33,8 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
   const navigate = useNavigate()
   const remixes = playlist.tracks.filter((item) => recordings[item.id].problem === story.problem)
 
-  function rerecord(input: TwoSumInput) {
-    // Preserve every other track; only these two remixes share input.
+  function rerecord(input: TwoSumInput | ContainerInput) {
+    // Only remixes of the current problem share the new recording input.
     const next = Object.fromEntries(remixes.map((item) => [item.id, recordStory(item.id, input)]))
     setRecordings((previous) => ({ ...previous, ...next }))
   }
@@ -87,10 +87,11 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
                 {remixes.map((item) => <option key={item.id} value={item.id}>{item.remix}</option>)}
               </select>
             </label> : <p className="muted">{track.remix}</p>}
-            <p id="remix-note" className="muted">切换曲目后归零并暂停；两数之和保留已重录的参数。</p>
+            <p id="remix-note" className="muted">切换曲目后归零并暂停；同一歌单内保留已重录的参数。</p>
           </section>
           <Separator />
-          {story.problem === 'two-sum' ? <TwoSumParameters input={story.input} onRecord={rerecord} /> : <section className="space-y-3">
+          {story.problem === 'two-sum' ? <TwoSumParameters input={story.input} onRecord={rerecord} />
+            : story.problem === 'container-with-most-water' ? <ContainerParameters input={story.input} onRecord={rerecord} /> : <section className="space-y-3">
             <h2>示例分镜</h2>
             <p className="muted">本曲使用内置示例。播放或拖动进度，观察每一步的完整状态；用队列或上一曲、下一曲切换。</p>
           </section>}
@@ -138,6 +139,41 @@ function TwoSumParameters({ input, onRecord }: { input: TwoSumInput, onRecord: (
       <Button type="submit" className="w-full">重录两个 Remix</Button>
     </fieldset>
     <p id="params-note" className="muted mt-3">2–12 个整数；重录后两种解法使用同一输入。长数组可横向滚动，时长随步骤增加。</p>
+    <p id="params-error" role="alert" className="form-error">{error}</p>
+    <p role="status" className="muted mt-3">{notice}</p>
+  </form>
+}
+
+function ContainerParameters({ input, onRecord }: { input: ContainerInput, onRecord: (input: ContainerInput) => void }) {
+  const [nums, setNums] = useState(JSON.stringify(input.nums))
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
+  function submit(event: React.FormEvent) {
+    event.preventDefault()
+    let parsedNums: unknown
+    try { parsedNums = JSON.parse(nums) } catch {
+      setError('数组格式不正确，请输入 JSON 数组，例如 [1, 8, 6, 2, 5, 4, 8, 3, 7]。')
+      setNotice('')
+      return
+    }
+    const result = containerInputSchema.safeParse({ nums: parsedNums })
+    if (!result.success) {
+      setError('请输入 2–12 个非负整数，每个高度在 0–1000000 内。')
+      setNotice('')
+      return
+    }
+    onRecord(result.data)
+    setError('')
+    setNotice('已重录本曲，播放位置已归零并暂停。')
+  }
+  return <form aria-labelledby="params-title" onSubmit={submit} noValidate>
+    <h2 id="params-title" className="mb-3">修改参数</h2>
+    <fieldset className="space-y-4" aria-describedby="params-note params-error">
+      <legend className="sr-only">盛最多水的容器参数</legend>
+      <label>高度数组 nums<input name="nums" value={nums} onChange={(event) => setNums(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
+      <Button type="submit" className="w-full">重录本曲</Button>
+    </fieldset>
+    <p id="params-note" className="muted mt-3">2–12 个非负整数；本曲录制为 36 秒。非法输入不会替换现有录制；离开歌单或刷新后恢复默认。</p>
     <p id="params-error" role="alert" className="form-error">{error}</p>
     <p role="status" className="muted mt-3">{notice}</p>
   </form>

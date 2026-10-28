@@ -1,0 +1,451 @@
+{
+  "id": "container-with-most-water",
+  "steps": [
+    {
+      "t": 0,
+      "caption": "两端出发：面积 = 距离 × 较矮高度。只移高板，宽度减小且短板不增，所以每轮应移动短板。",
+      "highlight": [
+        0,
+        8
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 8
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "宽度",
+          "value": 8
+        },
+        {
+          "label": "短板高度",
+          "value": 1
+        },
+        {
+          "label": "当前面积",
+          "value": 8
+        },
+        {
+          "label": "最大面积",
+          "value": 0
+        }
+      ],
+      "bounds": {
+        "left": 0,
+        "right": 8
+      }
+    },
+    {
+      "t": 4,
+      "caption": "下标 0、8：8 × 1 = 8。更新最大面积 8。左侧是短板，left 右移。",
+      "highlight": [
+        0,
+        8
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 8
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "宽度",
+          "value": 8
+        },
+        {
+          "label": "短板高度",
+          "value": 1
+        },
+        {
+          "label": "当前面积",
+          "value": 8
+        },
+        {
+          "label": "最大面积",
+          "value": 8
+        }
+      ],
+      "bounds": {
+        "left": 0,
+        "right": 8
+      }
+    },
+    {
+      "t": 8,
+      "caption": "下标 1、8：7 × 7 = 49。更新最大面积 49。右侧是短板，right 左移。",
+      "highlight": [
+        1,
+        8
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 8
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "宽度",
+          "value": 7
+        },
+        {
+          "label": "短板高度",
+          "value": 7
+        },
+        {
+          "label": "当前面积",
+          "value": 49
+        },
+        {
+          "label": "最大面积",
+          "value": 49
+        }
+      ],
+      "bounds": {
+        "left": 1,
+        "right": 8
+      }
+    },
+    {
+      "t": 12,
+      "caption": "下标 1、7：6 × 3 = 18。保留最大面积 49。右侧是短板，right 左移。",
+      "highlight": [
+        1,
+        7
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 7
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "宽度",
+          "value": 6
+        },
+        {
+          "label": "短板高度",
+          "value": 3
+        },
+        {
+          "label": "当前面积",
+          "value": 18
+        },
+        {
+          "label": "最大面积",
+          "value": 49
+        }
+      ],
+      "bounds": {
+        "left": 1,
+        "right": 7
+      }
+    },
+    {
+      "t": 16,
+      "caption": "下标 1、6：5 × 8 = 40。保留最大面积 49。两端等高，约定 left 右移。",
+      "highlight": [
+        1,
+        6
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 6
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "宽度",
+          "value": 5
+        },
+        {
+          "label": "短板高度",
+          "value": 8
+        },
+        {
+          "label": "当前面积",
+          "value": 40
+        },
+        {
+          "label": "最大面积",
+          "value": 49
+        }
+      ],
+      "bounds": {
+        "left": 1,
+        "right": 6
+      }
+    },
+    {
+      "t": 20,
+      "caption": "下标 2、6：4 × 6 = 24。保留最大面积 49。左侧是短板，left 右移。",
+      "highlight": [
+        2,
+        6
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 6
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "宽度",
+          "value": 4
+        },
+        {
+          "label": "短板高度",
+          "value": 6
+        },
+        {
+          "label": "当前面积",
+          "value": 24
+        },
+        {
+          "label": "最大面积",
+          "value": 49
+        }
+      ],
+      "bounds": {
+        "left": 2,
+        "right": 6
+      }
+    },
+    {
+      "t": 24,
+      "caption": "下标 3、6：3 × 2 = 6。保留最大面积 49。左侧是短板，left 右移。",
+      "highlight": [
+        3,
+        6
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 3
+        },
+        {
+          "label": "right",
+          "index": 6
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "宽度",
+          "value": 3
+        },
+        {
+          "label": "短板高度",
+          "value": 2
+        },
+        {
+          "label": "当前面积",
+          "value": 6
+        },
+        {
+          "label": "最大面积",
+          "value": 49
+        }
+      ],
+      "bounds": {
+        "left": 3,
+        "right": 6
+      }
+    },
+    {
+      "t": 28,
+      "caption": "下标 4、6：2 × 5 = 10。保留最大面积 49。左侧是短板，left 右移。",
+      "highlight": [
+        4,
+        6
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 4
+        },
+        {
+          "label": "right",
+          "index": 6
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "宽度",
+          "value": 2
+        },
+        {
+          "label": "短板高度",
+          "value": 5
+        },
+        {
+          "label": "当前面积",
+          "value": 10
+        },
+        {
+          "label": "最大面积",
+          "value": 49
+        }
+      ],
+      "bounds": {
+        "left": 4,
+        "right": 6
+      }
+    },
+    {
+      "t": 32,
+      "caption": "下标 5、6：1 × 4 = 4。保留最大面积 49。左侧是短板，left 右移。",
+      "highlight": [
+        5,
+        6
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 5
+        },
+        {
+          "label": "right",
+          "index": 6
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "宽度",
+          "value": 1
+        },
+        {
+          "label": "短板高度",
+          "value": 4
+        },
+        {
+          "label": "当前面积",
+          "value": 4
+        },
+        {
+          "label": "最大面积",
+          "value": 49
+        }
+      ],
+      "bounds": {
+        "left": 5,
+        "right": 6
+      }
+    },
+    {
+      "t": 36,
+      "caption": "指针相遇，扫描结束。返回最大面积 49，最优边界下标为 1 和 8；画面回看这对边界。时间 O(n)，额外空间 O(1)。",
+      "highlight": [
+        1,
+        8
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 8
+        }
+      ],
+      "marks": [
+        {
+          "label": "最优左边界",
+          "index": 1
+        },
+        {
+          "label": "最优右边界",
+          "index": 8
+        }
+      ],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "宽度",
+          "value": 7
+        },
+        {
+          "label": "短板高度",
+          "value": 7
+        },
+        {
+          "label": "当前面积",
+          "value": 49
+        },
+        {
+          "label": "最大面积",
+          "value": 49
+        }
+      ],
+      "bounds": {
+        "left": 1,
+        "right": 8
+      },
+      "result": 49
+    }
+  ],
+  "problem": "container-with-most-water",
+  "remix": "two-pointers",
+  "scene": "array-2ptrs",
+  "input": {
+    "nums": [
+      1,
+      8,
+      6,
+      2,
+      5,
+      4,
+      8,
+      3,
+      7
+    ]
+  }
+}

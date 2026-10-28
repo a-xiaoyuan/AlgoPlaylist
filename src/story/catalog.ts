@@ -7,10 +7,12 @@ import merge from '../../data/stories/merge-sorted-array.json'
 import binary from '../../data/stories/binary-search.json'
 import brackets from '../../data/stories/valid-parentheses.json'
 import reverse from '../../data/stories/reverse-linked-list.json'
-import { storySchema } from './schema'
-import type { Story, TwoSumInput } from './schema'
+import container from '../../data/stories/container-with-most-water.json'
+import { containerInputSchema, storySchema, twoSumInputSchema } from './schema'
+import type { Story } from './schema'
 import { twoSumHash } from '../steppers/twoSumHash'
 import { twoSumBrute } from '../steppers/twoSumBrute'
+import { containerWithMostWater } from '../steppers/containerWithMostWater'
 
 export const stories: Record<string, Story> = {
   'two-sum-hash': storySchema.parse(hash),
@@ -22,11 +24,19 @@ export const stories: Record<string, Story> = {
   'binary-search': storySchema.parse(binary),
   'valid-parentheses': storySchema.parse(brackets),
   'reverse-linked-list': storySchema.parse(reverse),
+  'container-with-most-water': storySchema.parse(container),
 }
 
-export function recordStory(id: string, input: TwoSumInput): Story {
+export function recordStory(id: string, rawInput: unknown): Story {
   const source = stories[id]
   if (!source) throw new Error('没有找到这首曲目的分镜。')
-  if (source.problem !== 'two-sum') throw new Error('改参重录仅用于两数之和的两个 Remix。')
-  return storySchema.parse({ ...source, input, steps: source.remix === 'hash' ? twoSumHash(input) : twoSumBrute(input) })
+  if (source.problem === 'two-sum') {
+    const input = twoSumInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: source.remix === 'hash' ? twoSumHash(input) : twoSumBrute(input) })
+  }
+  if (source.problem === 'container-with-most-water') {
+    const input = containerInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: containerWithMostWater(input) })
+  }
+  throw new Error('此曲目暂不支持改参重录。')
 }

@@ -5,6 +5,7 @@ const numbers = z.array(integer).max(12)
 const target = z.number().int().min(-2_000_000).max(2_000_000)
 export const twoSumInputSchema = z.object({ nums: numbers.min(2), target }).strict()
 export const stockInputSchema = z.object({ nums: z.array(integer.nonnegative()).min(1).max(12) }).strict()
+export const containerInputSchema = z.object({ nums: z.array(integer.nonnegative()).min(2).max(12) }).strict()
 export const kadaneInputSchema = z.object({ nums: numbers.min(1) }).strict()
 export const moveZeroesInputSchema = z.object({ nums: numbers }).strict()
 export const reverseListInputSchema = z.object({ nums: numbers }).strict()
@@ -41,6 +42,7 @@ const base = { id: z.string().min(1), steps: z.array(stepSchema).min(2) }
 // Numeric array stories may opt into the shared two-pointer renderer.
 export const arraySceneSchema = z.enum(['Array1D', 'array-2ptrs'])
 export const storySchema = z.discriminatedUnion('problem', [
+  z.object({ ...base, problem: z.literal('container-with-most-water'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: containerInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('two-sum'), remix: z.enum(['hash', 'brute']), scene: arraySceneSchema, input: twoSumInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('best-time-to-buy-and-sell-stock'), remix: z.literal('one-pass'), scene: arraySceneSchema, input: stockInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('maximum-subarray'), remix: z.literal('kadane'), scene: arraySceneSchema, input: kadaneInputSchema }).strict(),
@@ -73,6 +75,7 @@ export const storySchema = z.discriminatedUnion('problem', [
 })
 
 export type TwoSumInput = z.infer<typeof twoSumInputSchema>
+export type ContainerInput = z.infer<typeof containerInputSchema>
 export type StoryStep = z.infer<typeof stepSchema>
 export type Story = z.infer<typeof storySchema>
 export type StepFrame = Omit<StoryStep, 't'>

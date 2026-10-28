@@ -36,8 +36,8 @@ test('two-pointer schema accepts optional/empty windows and rejects invalid scen
   }
 })
 
-test('B1 catalog renders an empty album and StoryScene selects the shared two-pointer SVG', async () => {
-  const server = await createServer({ server: { middlewareMode: true }, appType: 'custom' })
+test('B1 links LC11, empty playlists remain safe and StoryScene selects the two-pointer SVG', async () => {
+  const server = await createServer({ cacheDir: 'node_modules/.tmp/b1-test-vite', server: { middlewareMode: true, hmr: false, ws: false }, appType: 'custom' })
   try {
     const [{ playlists, findTrack }, { Home }, { PlaylistPage }, { StoryScene }] = await Promise.all([
       server.ssrLoadModule('/src/lib/catalog.ts'),
@@ -49,8 +49,9 @@ test('B1 catalog renders an empty album and StoryScene selects the shared two-po
     const b1 = playlists.filter((playlist) => playlist.id === 'B1')
     assert.equal(b1.length, 1)
     assert.equal(b1[0].title, '指针夜跑')
-    assert.deepEqual(metadata.trackIds, [])
-    assert.deepEqual(b1[0].tracks, [])
+    assert.deepEqual(metadata.trackIds, ['container-with-most-water'])
+    assert.deepEqual(b1[0].tracks.map((track) => track.id), metadata.trackIds)
+    assert.equal(findTrack(metadata.trackIds[0]).playlist.id, 'B1')
     assert.equal(findTrack(undefined), undefined)
     const home = renderToStaticMarkup(React.createElement(StaticRouter, {}, React.createElement(Home)))
     assert.match(home, /href="\/playlist\/B1"/)
@@ -58,9 +59,14 @@ test('B1 catalog renders an empty album and StoryScene selects the shared two-po
     const album = renderToStaticMarkup(React.createElement(StaticRouter, { location: '/playlist/B1' },
       React.createElement(Routes, {}, React.createElement(Route, { path: '/playlist/:id', element: React.createElement(PlaylistPage) }))))
     assert.match(album, /指针夜跑/)
-    assert.match(album, /0 首曲目/)
-    assert.match(album, /暂无曲目/)
-    assert.doesNotMatch(album, /进入播放页|href="\/play\//)
+    assert.match(album, /1 首曲目/)
+    assert.match(album, /href="\/play\/container-with-most-water"/)
+    assert.match(album, /进入播放页/)
+    const emptyAlbum = renderToStaticMarkup(React.createElement(StaticRouter, { location: '/playlist/B2' },
+      React.createElement(Routes, {}, React.createElement(Route, { path: '/playlist/:id', element: React.createElement(PlaylistPage) }))))
+    assert.match(emptyAlbum, /0 首曲目/)
+    assert.match(emptyAlbum, /暂无曲目/)
+    assert.doesNotMatch(emptyAlbum, /进入播放页|href="\/play\//)
 
     const story = sceneStory()
     story.steps[0].pointers = [{ label: 'left', index: 1 }, { label: 'right', index: 1 }]
