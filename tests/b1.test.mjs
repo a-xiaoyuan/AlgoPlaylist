@@ -36,7 +36,7 @@ test('two-pointer schema accepts optional/empty windows and rejects invalid scen
   }
 })
 
-test('B1 links LC11, LC15, LC42, LC3, LC76, LC209, LC167, LC26, LC75 and LC438, empty playlists remain safe and StoryScene selects the two-pointer SVG', async () => {
+test('B1 links LC11, LC15, LC42, LC3, LC76, LC209, LC167, LC26, LC75, LC438 and LC125, empty playlists remain safe and StoryScene selects the two-pointer SVG', async () => {
   const server = await createServer({ cacheDir: 'node_modules/.tmp/b1-test-vite', server: { middlewareMode: true, hmr: false, ws: false }, appType: 'custom' })
   try {
     const [{ playlists, findTrack }, { Home }, { PlaylistPage }, { StoryScene }] = await Promise.all([
@@ -49,7 +49,7 @@ test('B1 links LC11, LC15, LC42, LC3, LC76, LC209, LC167, LC26, LC75 and LC438, 
     const b1 = playlists.filter((playlist) => playlist.id === 'B1')
     assert.equal(b1.length, 1)
     assert.equal(b1[0].title, '指针夜跑')
-    assert.deepEqual(metadata.trackIds, ['container-with-most-water', 'three-sum', 'trapping-rain-water', 'longest-substring', 'min-window', 'find-anagrams', 'min-subarray-sum', 'two-sum-ii', 'remove-duplicates', 'sort-colors'])
+    assert.deepEqual(metadata.trackIds, ['container-with-most-water', 'three-sum', 'trapping-rain-water', 'longest-substring', 'min-window', 'find-anagrams', 'min-subarray-sum', 'two-sum-ii', 'remove-duplicates', 'sort-colors', 'valid-palindrome'])
     assert.deepEqual(b1[0].tracks.map((track) => track.id), metadata.trackIds)
     assert.equal(findTrack(metadata.trackIds[0]).playlist.id, 'B1')
     assert.equal(findTrack(undefined), undefined)
@@ -59,8 +59,8 @@ test('B1 links LC11, LC15, LC42, LC3, LC76, LC209, LC167, LC26, LC75 and LC438, 
     const album = renderToStaticMarkup(React.createElement(StaticRouter, { location: '/playlist/B1' },
       React.createElement(Routes, {}, React.createElement(Route, { path: '/playlist/:id', element: React.createElement(PlaylistPage) }))))
     assert.match(album, /指针夜跑/)
-    assert.match(album, /10 首曲目/)
-    assert.equal(b1[0].duration, '6 分 00 秒')
+    assert.match(album, /11 首曲目/)
+    assert.equal(b1[0].duration, '6 分 32 秒')
     assert.match(album, /href="\/play\/container-with-most-water"/)
     assert.match(album, /href="\/play\/three-sum"/)
     assert.match(album, /href="\/play\/trapping-rain-water"/)
@@ -71,6 +71,7 @@ test('B1 links LC11, LC15, LC42, LC3, LC76, LC209, LC167, LC26, LC75 and LC438, 
     assert.match(album, /href="\/play\/two-sum-ii"/)
     assert.match(album, /href="\/play\/remove-duplicates"/)
     assert.match(album, /href="\/play\/sort-colors"/)
+    assert.match(album, /href="\/play\/valid-palindrome"/)
     assert.match(album, /进入播放页/)
     const emptyAlbum = renderToStaticMarkup(React.createElement(StaticRouter, { location: '/playlist/B2' },
       React.createElement(Routes, {}, React.createElement(Route, { path: '/playlist/:id', element: React.createElement(PlaylistPage) }))))

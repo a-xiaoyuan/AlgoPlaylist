@@ -11,6 +11,7 @@ export const sortColorsInputSchema = z.object({ nums: z.array(z.number().int().m
 export const threeSumInputSchema = z.object({ nums: numbers.min(3) }).strict()
 const unicodeText = z.string().max(24).refine((text) => Array.from(text).length <= 12, '最多支持 12 个 Unicode 码点。')
   .regex(/^[^\p{Cc}\p{Cs}]*$/u, '不支持控制字符或不完整的 Unicode 字符。')
+export const validPalindromeInputSchema = z.object({ text: unicodeText }).strict()
 export const longestSubstringInputSchema = z.object({ text: unicodeText }).strict()
 export const findAnagramsInputSchema = z.object({ s: unicodeText, p: unicodeText }).strict()
 export const minWindowInputSchema = z.object({ s: unicodeText, t: unicodeText }).strict()
@@ -54,6 +55,7 @@ const base = { id: z.string().min(1), steps: z.array(stepSchema).min(2) }
 // Numeric array stories may opt into the shared two-pointer renderer.
 export const arraySceneSchema = z.enum(['Array1D', 'array-2ptrs'])
 export const storySchema = z.discriminatedUnion('problem', [
+  z.object({ ...base, problem: z.literal('valid-palindrome'), remix: z.literal('two-pointers'), scene: z.literal('array-2ptrs'), input: validPalindromeInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('find-all-anagrams'), remix: z.literal('sliding-window'), scene: z.literal('array-2ptrs'), input: findAnagramsInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('minimum-size-subarray-sum'), remix: z.literal('sliding-window'), scene: z.literal('array-2ptrs'), input: minSubarraySumInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('minimum-window-substring'), remix: z.literal('sliding-window'), scene: z.literal('array-2ptrs'), input: minWindowInputSchema }).strict(),
@@ -103,6 +105,9 @@ export const storySchema = z.discriminatedUnion('problem', [
     if (story.scene === 'BinarySearch' && !step.bounds) issue('二分需要区间快照。')
     if (story.scene === 'Stack' && !step.stack) issue('括号需要栈快照。')
     if (story.scene === 'LinkedList' && (!step.links || step.head === undefined)) issue('链表需要连线和头指针快照。')
+    if (story.problem === 'valid-palindrome') {
+      if (step.values || (step.result !== undefined && typeof step.result !== 'boolean') || (i === story.steps.length - 1 && typeof step.result !== 'boolean')) issue('验证回文串需要字符场景和布尔结果。')
+    }
     if (story.problem === 'longest-substring-without-repeating-characters') {
       if (step.values) issue('字符场景读取原字符串，不接受数值数组快照。')
       if (!step.bounds) issue('最长无重复子串需要窗口区间快照。')
@@ -161,6 +166,7 @@ export type ContainerInput = z.infer<typeof containerInputSchema>
 export type TrappingRainWaterInput = z.infer<typeof trappingRainWaterInputSchema>
 export type SortColorsInput = z.infer<typeof sortColorsInputSchema>
 export type ThreeSumInput = z.infer<typeof threeSumInputSchema>
+export type ValidPalindromeInput = z.infer<typeof validPalindromeInputSchema>
 export type LongestSubstringInput = z.infer<typeof longestSubstringInputSchema>
 export type FindAnagramsInput = z.infer<typeof findAnagramsInputSchema>
 export type MinWindowInput = z.infer<typeof minWindowInputSchema>

@@ -10,7 +10,7 @@ import { findTrack } from '@/lib/catalog'
 import type { Playlist, Track } from '@/lib/catalog'
 import { NotFound } from '@/pages/not-found'
 import { recordStory, stories } from '@/story/catalog'
-import { findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
+import { validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
 import type { FindAnagramsInput, ContainerInput, LongestSubstringInput, MinWindowInput, MinSubarraySumInput, Story, ThreeSumInput, TwoSumInput, TwoSumSortedInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
@@ -87,7 +87,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
           <Separator />
           {story.problem === 'two-sum' ? <TwoSumParameters input={story.input} onRecord={rerecord} />
             : story.problem === 'two-sum-ii' ? <SortedArrayParameters key={story.id} input={story.input} onRecord={rerecord} />
-            : story.problem === 'longest-substring-without-repeating-characters' ? <StringParameters key={story.id} input={story.input} onRecord={rerecord} />
+            : story.problem === 'longest-substring-without-repeating-characters' || story.problem === 'valid-palindrome' ? <StringParameters key={story.id} problem={story.problem} input={story.input} onRecord={rerecord} />
             : story.problem === 'find-all-anagrams' ? <FindAnagramsParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'minimum-window-substring' ? <MinWindowParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'minimum-size-subarray-sum' ? <MinSubarraySumParameters key={story.id} input={story.input} onRecord={rerecord} />
@@ -340,13 +340,13 @@ export function ArrayParameters({ problem, input, onRecord }: { problem: 'contai
   </form>
 }
 
-function StringParameters({ input, onRecord }: { input: LongestSubstringInput, onRecord: (input: LongestSubstringInput) => void }) {
+export function StringParameters({ problem, input, onRecord }: { problem: 'longest-substring-without-repeating-characters' | 'valid-palindrome', input: LongestSubstringInput, onRecord: (input: LongestSubstringInput) => void }) {
   const [text, setText] = useState(input.text)
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
   function submit(event: React.FormEvent) {
     event.preventDefault()
-    const result = longestSubstringInputSchema.safeParse({ text })
+    const result = (problem === 'valid-palindrome' ? validPalindromeInputSchema : longestSubstringInputSchema).safeParse({ text })
     if (!result.success) {
       setError('请输入最多 12 个 Unicode 码点；允许空串，不支持控制字符或不完整的 Unicode 字符。')
       setNotice('')
@@ -359,11 +359,11 @@ function StringParameters({ input, onRecord }: { input: LongestSubstringInput, o
   return <form aria-labelledby="params-title" onSubmit={submit} noValidate>
     <h2 id="params-title" className="mb-3">修改参数</h2>
     <fieldset className="space-y-4" aria-describedby="params-note params-error">
-      <legend className="sr-only">最长无重复子串参数</legend>
+      <legend className="sr-only">{problem === 'valid-palindrome' ? '验证回文串参数' : '最长无重复子串参数'}</legend>
       <label>字符串 text<input name="text" value={text} onChange={(event) => setText(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
       <Button type="submit" className="w-full">重录本曲</Button>
     </fieldset>
-    <p id="params-note" className="muted mt-3">直接输入文本，无需 JSON 引号。最多 12 个 Unicode 码点，空格显示为 ␠；组合字符按多个码点计数。本曲 36 秒；非法输入保留现有录制，离开歌单或刷新恢复默认。</p>
+    <p id="params-note" className="muted mt-3">直接输入文本，无需 JSON 引号。最多 12 个 Unicode 码点，空格显示为 ␠；组合字符按多个码点计数。{problem === 'valid-palindrome' ? '只比较英文字母和数字，忽略大小写；例如 A man, a ma 为真，race a car 为假。本曲 32 秒。' : '本曲 36 秒。'}非法输入保留现有录制，离开歌单或刷新恢复默认。</p>
     <p id="params-error" role="alert" className="form-error">{error}</p>
     <p role="status" className="muted mt-3">{notice}</p>
   </form>

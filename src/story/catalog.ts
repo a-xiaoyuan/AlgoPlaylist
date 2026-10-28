@@ -1,3 +1,4 @@
+import validPalindromeStory from '../../data/stories/valid-palindrome.json'
 import sortColorsStory from '../../data/stories/sort-colors.json'
 import removeDuplicatesStory from '../../data/stories/remove-duplicates.json'
 import sortedStory from '../../data/stories/two-sum-ii.json'
@@ -17,8 +18,9 @@ import longestSubstringStory from '../../data/stories/longest-substring.json'
 import findAnagramsStory from '../../data/stories/find-anagrams.json'
 import minWindowStory from '../../data/stories/min-window.json'
 import minSubarraySumStory from '../../data/stories/min-subarray-sum.json'
-import { findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
+import { validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
 import type { Story } from './schema'
+import { validPalindrome } from '../steppers/validPalindrome'
 import { sortColors } from '../steppers/sortColors'
 import { removeDuplicatesSorted } from '../steppers/removeDuplicates'
 import { twoSumSorted } from '../steppers/twoSumSorted'
@@ -33,6 +35,7 @@ import { minWindow } from '../steppers/minWindow'
 import { minSubarraySum } from '../steppers/minSubarraySum'
 
 export const stories: Record<string, Story> = {
+  'valid-palindrome': storySchema.parse(validPalindromeStory),
   'sort-colors': storySchema.parse(sortColorsStory),
   'remove-duplicates': storySchema.parse(removeDuplicatesStory),
   'two-sum-ii': storySchema.parse(sortedStory),
@@ -57,6 +60,10 @@ export const stories: Record<string, Story> = {
 export function recordStory(id: string, rawInput: unknown): Story {
   const source = stories[id]
   if (!source) throw new Error('没有找到这首曲目的分镜。')
+  if (source.problem === 'valid-palindrome') {
+    const input = validPalindromeInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: validPalindrome(input) })
+  }
   if (source.problem === 'sort-colors') {
     const input = sortColorsInputSchema.parse(rawInput)
     return storySchema.parse({ ...source, input, steps: sortColors(input) })

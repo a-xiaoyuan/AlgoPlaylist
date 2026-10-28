@@ -6,6 +6,13 @@ export type Track = Playlist['tracks'][number]
 
 // Adapt the new playlist metadata to the existing page/queue model.
 const pointerTracks: Track[] = [{
+  id: 'valid-palindrome',
+  title: '125 验证回文串',
+  subtitle: '从两端跳过非字母数字字符，忽略大小写比较。',
+  duration: '00:32',
+  complexity: '时间 O(n) · 空间 O(n)，用于码点数组',
+  remix: '双指针',
+}, {
   id: 'find-anagrams',
   title: '438 找到字符串中所有字母异位词',
   subtitle: '固定长度的滑动窗口比较字符频次，收集所有匹配起点。',
@@ -82,7 +89,7 @@ const pointerPlaylist: Playlist = {
   title: pointerNight.titleZh,
   description: pointerNight.subtitle,
   category: pointerNight.tags.join(' / '),
-  duration: '6 分 00 秒',
+  duration: '6 分 32 秒',
   tracks: pointerNight.trackIds.map((id: string) => {
     const track = tracks.get(id)
     if (!track) throw new Error(`歌单引用了未登记曲目：${id}`)
