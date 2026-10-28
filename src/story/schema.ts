@@ -27,6 +27,11 @@ export const linkedCycleIIInputSchema = z.object({ nums: z.array(z.number().int(
 export const reverseListInputSchema = z.object({ nums: numbers }).strict()
 const sorted = (nums: number[]) => nums.every((value, i) => i === 0 || nums[i - 1] <= value)
 export const mergeTwoListsInputSchema = z.object({ list1: numbers.refine(sorted, '链表必须升序排列。'), list2: numbers.refine(sorted, '链表必须升序排列。') }).strict().refine((input) => input.list1.length + input.list2.length >= 1 && input.list1.length + input.list2.length <= 12, '两个链表的节点总数须为 1–12。')
+export const intersectTwoListsInputSchema = z.object({ listA: numbers, listB: numbers, skipA: z.number().int().nonnegative(), skipB: z.number().int().nonnegative() }).strict().refine(({ listA, listB, skipA, skipB }) => {
+  if (skipA > listA.length || skipB > listB.length) return false
+  const shared = listA.length - skipA
+  return shared === listB.length - skipB && skipA + skipB + shared <= 12 && listA.slice(skipA).every((value, i) => value === listB[skipB + i])
+}, '前缀长度必须有效，共享后缀长度和数值须一致，唯一节点不超过 12。')
 export const removeDuplicatesSortedInputSchema = z.object({ nums: numbers.min(1).refine(sorted, '数组必须升序排列。') }).strict()
 export const twoSumSortedInputSchema = z.object({ nums: numbers.min(2).refine(sorted, '数组必须升序排列。'), target }).strict()
 export const binarySearchInputSchema = z.object({ nums: numbers.refine(sorted, '数组必须升序排列。'), target }).strict()
@@ -54,6 +59,8 @@ export const stepSchema = z.object({
   stack: z.array(z.object({ value: z.enum(['(', '[', '{']), index: indexSchema }).strict()).optional(),
   links: z.array(indexSchema.nullable()).max(12).optional(),
   head: indexSchema.nullable().optional(),
+  headA: indexSchema.nullable().optional(),
+  headB: indexSchema.nullable().optional(),
   result: z.union([z.number().finite(), z.boolean(), z.string(), z.array(z.number().finite()).max(12), threeSumResultSchema, z.null()]).optional(),
 }).strict()
 
@@ -84,10 +91,11 @@ export const storySchema = z.discriminatedUnion('problem', [
   z.object({ ...base, problem: z.literal('remove-nth-from-end'), remix: z.literal('two-pointers'), scene: z.literal('LinkedList'), input: removeNthInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('linked-list-cycle-ii'), remix: z.literal('floyd'), scene: z.literal('LinkedList'), input: linkedCycleIIInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('linked-list-cycle'), remix: z.enum(['floyd', 'two-pointers']), scene: z.literal('LinkedList'), input: linkedCycleInputSchema }).strict(),
+  z.object({ ...base, problem: z.literal('intersect-two-lists'), remix: z.literal('two-pointers'), scene: z.literal('LinkedList'), input: intersectTwoListsInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('merge-two-lists'), remix: z.enum(['two-pointers', 'iterative']), scene: z.literal('LinkedList'), input: mergeTwoListsInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('reverse-linked-list'), remix: z.literal('iterative'), scene: z.literal('LinkedList'), input: reverseListInputSchema }).strict(),
 ]).superRefine((story, ctx) => {
-  const length = 'list1' in story.input ? story.input.list1.length + story.input.list2.length : 'nums' in story.input ? story.input.nums.length : Array.from('s' in story.input ? story.input.s : story.input.text).length
+  const length = 'listA' in story.input ? story.input.skipA + story.input.listB.length : 'list1' in story.input ? story.input.list1.length + story.input.list2.length : 'nums' in story.input ? story.input.nums.length : Array.from('s' in story.input ? story.input.s : story.input.text).length
   const sortedInput = story.problem === 'three-sum' ? [...story.input.nums].sort((a, b) => a - b) : undefined
   story.steps.forEach((step, i) => {
     const issue = (message: string) => ctx.addIssue({ code: 'custom', path: ['steps', i], message })
@@ -101,6 +109,17 @@ export const storySchema = z.discriminatedUnion('problem', [
     if (step.bounds && (!['BinarySearch', 'array-2ptrs'].includes(story.scene) || step.bounds.left < 0 || step.bounds.left > length || step.bounds.right < -1 || step.bounds.right >= length)) issue('区间越界或不适用于当前场景。')
     if (step.stack && (story.scene !== 'Stack' || step.stack.some((item) => item.index >= length || ('text' in story.input && story.input.text[item.index] !== item.value)))) issue('栈快照无效。')
     if (step.links && (story.scene !== 'LinkedList' || step.links.length !== length || step.links.some((index) => index !== null && index >= length))) issue('链表快照无效。')
+    if ([step.headA, step.headB].some((head) => head !== undefined && (story.problem !== 'intersect-two-lists' || (head !== null && head >= length)))) issue('双链表头指针无效。')
+    if (story.problem === 'intersect-two-lists') {
+      const { listA, listB, skipA, skipB } = story.input
+      const shared = listA.length - skipA
+      const headA = listA.length ? (skipA ? 0 : skipA + skipB) : null
+      const headB = listB.length ? (skipB ? skipA : skipA + skipB) : null
+      const expectedLinks = Array.from({ length }, (_, index) => index === skipA - 1 || index === skipA + skipB - 1 ? (shared ? skipA + skipB : null) : index + 1 < length ? index + 1 : null)
+      if (step.head !== headA || step.headA !== headA || step.headB !== headB || !step.links || step.links.some((link, index) => link !== expectedLinks[index])) issue('双链表快照必须保留两个头和共享连线。')
+      const expected = shared ? skipA + skipB : null
+      if ((step.result !== undefined && step.result !== expected) || (i === story.steps.length - 1 && step.result !== expected)) issue('相交链表结果必须为首个共享节点下标或 null。')
+    }
     if (step.head !== undefined && (story.scene !== 'LinkedList' || (step.head !== null && step.head >= length))) issue('链表头指针无效。')
     if (story.problem === 'remove-duplicates-sorted') {
       const unique = [...new Set(story.input.nums)]
@@ -135,7 +154,7 @@ export const storySchema = z.discriminatedUnion('problem', [
     }
     if (story.problem === 'palindrome-linked-list' && ((step.result !== undefined && typeof step.result !== 'boolean') || (i === story.steps.length - 1 && typeof step.result !== 'boolean'))) issue('回文链表需要布尔结果。')
     if (story.problem === 'linked-list-cycle' && ((step.result !== undefined && typeof step.result !== 'boolean') || (i === story.steps.length - 1 && typeof step.result !== 'boolean'))) issue('环形链表需要布尔结果。')
-    if (story.problem === 'linked-list-cycle-ii') {
+    if (story.problem === 'linked-list-cycle-ii' || story.problem === 'intersect-two-lists') {
       const result = step.result
       if ((result !== undefined && result !== null && (typeof result !== 'number' || !Number.isInteger(result) || result < 0 || result >= length)) || (i === story.steps.length - 1 && result === undefined)) issue('环形链表 II 的结果必须为有效入口下标或 null。')
     } else if (step.result === null) issue('当前题目不支持 null 结果。')
@@ -193,6 +212,7 @@ export const storySchema = z.discriminatedUnion('problem', [
   })
 })
 
+export type IntersectTwoListsInput = z.infer<typeof intersectTwoListsInputSchema>
 export type RemoveNthInput = z.infer<typeof removeNthInputSchema>
 export type LinkedCycleInput = z.infer<typeof linkedCycleInputSchema>
 export type MergeTwoListsInput = z.infer<typeof mergeTwoListsInputSchema>

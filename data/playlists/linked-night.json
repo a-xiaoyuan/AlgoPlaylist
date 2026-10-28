@@ -4,5 +4,5 @@
   "subtitle": "用链表双指针与迭代，观察节点连线如何反转、合并与成环。",
   "tags": ["链表"],
   "cover": "placeholder",
-  "trackIds": ["reverse-linked-list", "merge-two-lists", "linked-cycle", "linked-cycle-ii", "remove-nth", "swap-pairs", "palindrome-list"]
+  "trackIds": ["reverse-linked-list", "merge-two-lists", "intersect-lists", "linked-cycle", "linked-cycle-ii", "remove-nth", "swap-pairs", "palindrome-list"]
 }

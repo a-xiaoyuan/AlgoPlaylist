@@ -1,3 +1,5 @@
+import intersectStory from '../../data/stories/intersect-lists.json'
+import { getIntersectionNode } from '../steppers/getIntersectionNode'
 import palindromeListStory from '../../data/stories/palindrome-list.json'
 import { palindromeList } from '../steppers/palindromeList'
 import validPalindromeStory from '../../data/stories/valid-palindrome.json'
@@ -25,7 +27,7 @@ import longestSubstringStory from '../../data/stories/longest-substring.json'
 import findAnagramsStory from '../../data/stories/find-anagrams.json'
 import minWindowStory from '../../data/stories/min-window.json'
 import minSubarraySumStory from '../../data/stories/min-subarray-sum.json'
-import { palindromeListInputSchema, swapPairsInputSchema, removeNthInputSchema, linkedCycleIIInputSchema, linkedCycleInputSchema, mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
+import { intersectTwoListsInputSchema, palindromeListInputSchema, swapPairsInputSchema, removeNthInputSchema, linkedCycleIIInputSchema, linkedCycleInputSchema, mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, storySchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from './schema'
 import type { Story } from './schema'
 import { swapPairs } from '../steppers/swapPairs'
 import { removeNthFromEnd } from '../steppers/removeNthFromEnd'
@@ -48,6 +50,7 @@ import { minWindow } from '../steppers/minWindow'
 import { minSubarraySum } from '../steppers/minSubarraySum'
 
 export const stories: Record<string, Story> = {
+  'intersect-lists': storySchema.parse(intersectStory),
   'palindrome-list': storySchema.parse(palindromeListStory),
   'valid-palindrome': storySchema.parse(validPalindromeStory),
   'sort-colors': storySchema.parse(sortColorsStory),
@@ -79,6 +82,10 @@ export const stories: Record<string, Story> = {
 export function recordStory(id: string, rawInput: unknown): Story {
   const source = stories[id]
   if (!source) throw new Error('没有找到这首曲目的分镜。')
+  if (source.problem === 'intersect-two-lists') {
+    const input = intersectTwoListsInputSchema.parse(rawInput)
+    return storySchema.parse({ ...source, input, steps: getIntersectionNode(input) })
+  }
   if (source.problem === 'swap-pairs') {
     const input = swapPairsInputSchema.parse(rawInput)
     return storySchema.parse({ ...source, input, steps: swapPairs(input) })

@@ -10,8 +10,8 @@ import { findTrack } from '@/lib/catalog'
 import type { Playlist, Track } from '@/lib/catalog'
 import { NotFound } from '@/pages/not-found'
 import { recordStory, stories } from '@/story/catalog'
-import { palindromeListInputSchema, swapPairsInputSchema, removeNthInputSchema, linkedCycleIIInputSchema, linkedCycleInputSchema, mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
-import type { RemoveNthInput, LinkedCycleInput, MergeTwoListsInput, FindAnagramsInput, ContainerInput, LongestSubstringInput, MinWindowInput, MinSubarraySumInput, Story, ThreeSumInput, TwoSumInput, TwoSumSortedInput } from '@/story/schema'
+import { intersectTwoListsInputSchema, palindromeListInputSchema, swapPairsInputSchema, removeNthInputSchema, linkedCycleIIInputSchema, linkedCycleInputSchema, mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
+import type { IntersectTwoListsInput, RemoveNthInput, LinkedCycleInput, MergeTwoListsInput, FindAnagramsInput, ContainerInput, LongestSubstringInput, MinWindowInput, MinSubarraySumInput, Story, ThreeSumInput, TwoSumInput, TwoSumSortedInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
 import { frameAtProgress, replaceProblemRecordings } from '@/player/remix'
@@ -38,7 +38,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
   const [compareProblem, setCompareProblem] = useState<string | null>(null)
   const remixes = playlist.tracks.filter((item) => recordings[item.id].problem === story.problem)
 
-  function rerecord(input: RemoveNthInput | LinkedCycleInput | MergeTwoListsInput | TwoSumInput | ContainerInput | ThreeSumInput | LongestSubstringInput | MinWindowInput | FindAnagramsInput | MinSubarraySumInput) {
+  function rerecord(input: IntersectTwoListsInput | RemoveNthInput | LinkedCycleInput | MergeTwoListsInput | TwoSumInput | ContainerInput | ThreeSumInput | LongestSubstringInput | MinWindowInput | FindAnagramsInput | MinSubarraySumInput) {
     // Only remixes of the current problem share the new recording input.
     setRecordings((previous) => replaceProblemRecordings(previous, track.id, input, recordStory))
   }
@@ -86,7 +86,8 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
             <p id="remix-note" className="muted">切换曲目后归零并暂停；同一歌单内保留已重录的参数。</p>
           </section>
           <Separator />
-          {story.problem === 'remove-nth-from-end' ? <RemoveNthParameters key={story.id} input={story.input} onRecord={rerecord} />
+          {story.problem === 'intersect-two-lists' ? <IntersectListsParameters key={story.id} input={story.input} onRecord={rerecord} />
+            : story.problem === 'remove-nth-from-end' ? <RemoveNthParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'linked-list-cycle' || story.problem === 'linked-list-cycle-ii' ? <LinkedCycleParameters key={story.id} entrance={story.problem === 'linked-list-cycle-ii'} input={story.input} onRecord={rerecord} />
             : story.problem === 'merge-two-lists' ? <MergeTwoListsParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'two-sum' ? <TwoSumParameters input={story.input} onRecord={rerecord} />
@@ -126,6 +127,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
 }
 
 function inputDescription(story: Story) {
+  if ('listA' in story.input) return `listA = [${story.input.listA.join(', ')}]，listB = [${story.input.listB.join(', ')}]，skipA = ${story.input.skipA}，skipB = ${story.input.skipB}`
   if ('list1' in story.input) return `list1 = [${story.input.list1.join(', ')}]，list2 = [${story.input.list2.join(', ')}]`
   if ('s' in story.input) return `s = ${JSON.stringify(story.input.s)}，${'p' in story.input ? `p = ${JSON.stringify(story.input.p)}` : `t = ${JSON.stringify(story.input.t)}`}`
   if ('text' in story.input) return `text = ${JSON.stringify(story.input.text)}`
@@ -202,6 +204,47 @@ export function LinkedCycleParameters({ input, onRecord, entrance = false }: { i
       <Button type="submit" className="w-full">重录本曲</Button>
     </fieldset>
     <p id="params-note" className="muted mt-3">pos 从 0 开始；-1 表示尾节点指向 null，无环。本曲录制为 {entrance ? 34 : 32} 秒。</p>
+    <p id="params-error" role="alert" className="form-error">{error}</p>
+    <p role="status" className="muted mt-3">{notice}</p>
+  </form>
+}
+
+export function IntersectListsParameters({ input, onRecord }: { input: IntersectTwoListsInput, onRecord: (input: IntersectTwoListsInput) => void }) {
+  const [listA, setListA] = useState(JSON.stringify(input.listA))
+  const [listB, setListB] = useState(JSON.stringify(input.listB))
+  const [skipA, setSkipA] = useState(String(input.skipA))
+  const [skipB, setSkipB] = useState(String(input.skipB))
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
+  function submit(event: React.FormEvent) {
+    event.preventDefault()
+    let parsedA: unknown, parsedB: unknown, parsedSkipA: unknown, parsedSkipB: unknown
+    try { parsedA = JSON.parse(listA); parsedB = JSON.parse(listB); parsedSkipA = JSON.parse(skipA); parsedSkipB = JSON.parse(skipB) } catch {
+      setError('请输入两个 JSON 数组和两个整数前缀长度。')
+      setNotice('')
+      return
+    }
+    const result = intersectTwoListsInputSchema.safeParse({ listA: parsedA, listB: parsedB, skipA: parsedSkipA, skipB: parsedSkipB })
+    if (!result.success) {
+      setError('前缀长度须在各链表范围内，共享后缀长度和数值须一致，唯一节点不超过 12；节点为 ±1000000 内的整数。')
+      setNotice('')
+      return
+    }
+    onRecord(result.data)
+    setError('')
+    setNotice('已重录本曲，播放位置已归零并暂停。')
+  }
+  return <form aria-labelledby="params-title" onSubmit={submit} noValidate>
+    <h2 id="params-title" className="mb-3">修改参数</h2>
+    <fieldset className="space-y-4" aria-describedby="params-note params-error">
+      <legend className="sr-only">相交链表参数</legend>
+      <label>链表 listA<input name="listA" value={listA} onChange={(event) => setListA(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
+      <label>链表 listB<input name="listB" value={listB} onChange={(event) => setListB(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
+      <label>A 独有前缀长度 skipA<input name="skipA" type="number" min="0" step="1" value={skipA} onChange={(event) => setSkipA(event.target.value)} aria-invalid={!!error} /></label>
+      <label>B 独有前缀长度 skipB<input name="skipB" type="number" min="0" step="1" value={skipB} onChange={(event) => setSkipB(event.target.value)} aria-invalid={!!error} /></label>
+      <Button type="submit" className="w-full">重录本曲</Button>
+    </fieldset>
+    <p id="params-note" className="muted mt-3">skipA、skipB 为共享后缀前各自独有的节点数；剩余后缀长度和数值须相同。后缀为空表示不相交，两个链表均可为空；唯一节点最多 12 个。本曲 36 秒。</p>
     <p id="params-error" role="alert" className="form-error">{error}</p>
     <p role="status" className="muted mt-3">{notice}</p>
   </form>

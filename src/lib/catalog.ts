@@ -85,6 +85,13 @@ const pointerTracks: Track[] = [{
   remix: '滑动窗口',
 }]
 const linkedTracks: Track[] = [{
+  id: 'intersect-lists',
+  title: '160 相交链表',
+  subtitle: '双指针走到末尾后交换链表，从节点身份找到共享后缀的起点。',
+  duration: '00:36',
+  complexity: '时间 O(m+n) · 空间 O(1)',
+  remix: '双指针',
+}, {
   id: 'palindrome-list',
   title: '234 回文链表',
   subtitle: '快慢指针寻找中点，反转后半段并逐一比较节点值。',
@@ -146,7 +153,7 @@ const linkedPlaylist: Playlist = {
   title: linkedNight.titleZh,
   description: linkedNight.subtitle,
   category: linkedNight.tags.join(' / '),
-  duration: '3 分 54 秒',
+  duration: '4 分 30 秒',
   tracks: linkedNight.trackIds.map((id: string) => {
     const track = tracks.get(id)
     if (!track) throw new Error(`歌单引用了未登记曲目：${id}`)
