@@ -1,0 +1,273 @@
+{
+  "id": "linked-cycle-ii",
+  "steps": [
+    {
+      "caption": "第一阶段：slow 和 fast 从 head 出发，尾节点指向 #1；初始重合不算相遇。",
+      "links": [
+        1,
+        2,
+        3,
+        1
+      ],
+      "head": 0,
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 0
+        },
+        {
+          "label": "fast",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#0"
+        },
+        {
+          "label": "fast",
+          "value": "#0"
+        }
+      ],
+      "t": 0
+    },
+    {
+      "caption": "slow 走一步到 #1，fast 走两步到 #2；两者尚未相遇。",
+      "links": [
+        1,
+        2,
+        3,
+        1
+      ],
+      "head": 0,
+      "highlight": [
+        1,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 1
+        },
+        {
+          "label": "fast",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#1"
+        },
+        {
+          "label": "fast",
+          "value": "#2"
+        }
+      ],
+      "t": 5.667
+    },
+    {
+      "caption": "slow 走一步到 #2，fast 走两步到 #1；两者尚未相遇。",
+      "links": [
+        1,
+        2,
+        3,
+        1
+      ],
+      "head": 0,
+      "highlight": [
+        2,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 2
+        },
+        {
+          "label": "fast",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#2"
+        },
+        {
+          "label": "fast",
+          "value": "#1"
+        }
+      ],
+      "t": 11.333
+    },
+    {
+      "caption": "slow 走一步到 #3，fast 走两步到 #3；两者相遇，确认有环。",
+      "links": [
+        1,
+        2,
+        3,
+        1
+      ],
+      "head": 0,
+      "highlight": [
+        3
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 3
+        },
+        {
+          "label": "fast",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#3"
+        },
+        {
+          "label": "fast",
+          "value": "#3"
+        }
+      ],
+      "t": 17
+    },
+    {
+      "caption": "第二阶段：slow 回到 head，fast 留在相遇点 #3；两者每次各走一步。",
+      "links": [
+        1,
+        2,
+        3,
+        1
+      ],
+      "head": 0,
+      "highlight": [
+        0,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 0
+        },
+        {
+          "label": "fast",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#0"
+        },
+        {
+          "label": "fast",
+          "value": "#3"
+        }
+      ],
+      "t": 22.667
+    },
+    {
+      "caption": "slow 和 fast 各走一步，分别到 #1 和 #1；两者在入口相遇。",
+      "links": [
+        1,
+        2,
+        3,
+        1
+      ],
+      "head": 0,
+      "highlight": [
+        1
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 1
+        },
+        {
+          "label": "fast",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#1"
+        },
+        {
+          "label": "fast",
+          "value": "#1"
+        }
+      ],
+      "t": 28.333
+    },
+    {
+      "caption": "两者相遇于环的入口 #1，返回入口下标 1。时间 O(n)，额外空间 O(1)。",
+      "links": [
+        1,
+        2,
+        3,
+        1
+      ],
+      "head": 0,
+      "highlight": [
+        1
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 1
+        },
+        {
+          "label": "fast",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#1"
+        },
+        {
+          "label": "fast",
+          "value": "#1"
+        }
+      ],
+      "result": 1,
+      "t": 34
+    }
+  ],
+  "problem": "linked-list-cycle-ii",
+  "remix": "floyd",
+  "scene": "LinkedList",
+  "input": {
+    "nums": [
+      3,
+      2,
+      0,
+      -4
+    ],
+    "pos": 1
+  }
+}

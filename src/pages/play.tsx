@@ -10,7 +10,7 @@ import { findTrack } from '@/lib/catalog'
 import type { Playlist, Track } from '@/lib/catalog'
 import { NotFound } from '@/pages/not-found'
 import { recordStory, stories } from '@/story/catalog'
-import { linkedCycleInputSchema, mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
+import { linkedCycleIIInputSchema, linkedCycleInputSchema, mergeTwoListsInputSchema, reverseListInputSchema, validPalindromeInputSchema, findAnagramsInputSchema, sortColorsInputSchema, removeDuplicatesSortedInputSchema, containerInputSchema, longestSubstringInputSchema, minWindowInputSchema, minSubarraySumInputSchema, threeSumInputSchema, trappingRainWaterInputSchema, twoSumInputSchema, twoSumSortedInputSchema } from '@/story/schema'
 import type { LinkedCycleInput, MergeTwoListsInput, FindAnagramsInput, ContainerInput, LongestSubstringInput, MinWindowInput, MinSubarraySumInput, Story, ThreeSumInput, TwoSumInput, TwoSumSortedInput } from '@/story/schema'
 import { usePlayer } from '@/player/usePlayer'
 import { useSound } from '@/player/useSound'
@@ -86,7 +86,7 @@ function PlayerSession({ playlist, track }: { playlist: Playlist, track: Track }
             <p id="remix-note" className="muted">切换曲目后归零并暂停；同一歌单内保留已重录的参数。</p>
           </section>
           <Separator />
-          {story.problem === 'linked-list-cycle' ? <LinkedCycleParameters key={story.id} input={story.input} onRecord={rerecord} />
+          {story.problem === 'linked-list-cycle' || story.problem === 'linked-list-cycle-ii' ? <LinkedCycleParameters key={story.id} entrance={story.problem === 'linked-list-cycle-ii'} input={story.input} onRecord={rerecord} />
             : story.problem === 'merge-two-lists' ? <MergeTwoListsParameters key={story.id} input={story.input} onRecord={rerecord} />
             : story.problem === 'two-sum' ? <TwoSumParameters input={story.input} onRecord={rerecord} />
             : story.problem === 'two-sum-ii' ? <SortedArrayParameters key={story.id} input={story.input} onRecord={rerecord} />
@@ -132,7 +132,7 @@ function inputDescription(story: Story) {
   return `nums = [${input.nums.join(', ')}]${'pos' in input ? `，pos = ${input.pos}` : ''}${'target' in input ? `，target = ${input.target}` : ''}${'nums2' in input ? `，m = ${input.m}，nums2 = [${input.nums2.join(', ')}]` : ''}`
 }
 
-export function LinkedCycleParameters({ input, onRecord }: { input: LinkedCycleInput, onRecord: (input: LinkedCycleInput) => void }) {
+export function LinkedCycleParameters({ input, onRecord, entrance = false }: { input: LinkedCycleInput, onRecord: (input: LinkedCycleInput) => void, entrance?: boolean }) {
   const [nums, setNums] = useState(JSON.stringify(input.nums))
   const [pos, setPos] = useState(String(input.pos))
   const [error, setError] = useState('')
@@ -145,9 +145,9 @@ export function LinkedCycleParameters({ input, onRecord }: { input: LinkedCycleI
       setNotice('')
       return
     }
-    const result = linkedCycleInputSchema.safeParse({ nums: parsedNums, pos: parsedPos })
+    const result = (entrance ? linkedCycleIIInputSchema : linkedCycleInputSchema).safeParse({ nums: parsedNums, pos: parsedPos })
     if (!result.success) {
-      setError('请输入 1–12 个数字；pos 必须为 -1 或有效的节点下标。')
+      setError(`请输入 1–12 个${entrance ? '整数' : '数字'}；pos 必须为 -1 或有效的节点下标。`)
       setNotice('')
       return
     }
@@ -163,7 +163,7 @@ export function LinkedCycleParameters({ input, onRecord }: { input: LinkedCycleI
       <label>尾节点连接下标 pos<input name="pos" value={pos} onChange={(event) => setPos(event.target.value)} aria-invalid={!!error} spellCheck={false} /></label>
       <Button type="submit" className="w-full">重录本曲</Button>
     </fieldset>
-    <p id="params-note" className="muted mt-3">pos 从 0 开始；-1 表示尾节点指向 null，无环。本曲录制为 32 秒。</p>
+    <p id="params-note" className="muted mt-3">pos 从 0 开始；-1 表示尾节点指向 null，无环。本曲录制为 {entrance ? 34 : 32} 秒。</p>
     <p id="params-error" role="alert" className="form-error">{error}</p>
     <p role="status" className="muted mt-3">{notice}</p>
   </form>
