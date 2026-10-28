@@ -1,0 +1,18 @@
+:root {
+  --bg:#0A0A0B;
+  --surface:#141416;
+  --surface-2:#1C1C1F;
+  --border:#FFFFFF14;
+  --text:#F5F5F7;
+  --text-2:#A1A1A6;
+  --text-3:#6E6E73;
+  --accent:#3DDC97;
+  --accent-muted:#3DDC9729;
+  --danger:#FF6B6B;
+  --radius-sm:12px;
+  --radius-md:16px;
+  --space:8px;
+  --font: system-ui,-apple-system,"Segoe UI",Roboto,"PingFang SC","Noto Sans SC",sans-serif;
+  --ease: cubic-bezier(0.25,0.1,0.25,1);
+  --dur:240ms;
+}

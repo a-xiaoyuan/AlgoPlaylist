@@ -1,0 +1,45 @@
+{
+  "playlists": [
+    {
+      "id": "B0",
+      "title": "开场八分钟 · 数组热身",
+      "description": "从两数之和出发，对比哈希查找与暴力枚举两种解法。",
+      "category": "数组 / 入门",
+      "duration": "48 秒",
+      "tracks": [
+        {
+          "id": "two-sum-hash",
+          "title": "两数之和 · 哈希",
+          "subtitle": "用空间换时间，一次遍历查找补数。",
+          "duration": "00:24",
+          "complexity": "时间 O(n) · 空间 O(n)",
+          "remix": "哈希查找"
+        },
+        {
+          "id": "two-sum-brute",
+          "title": "两数之和 · 暴力",
+          "subtitle": "逐对枚举，理解最直接的解法。",
+          "duration": "00:24",
+          "complexity": "时间 O(n²) · 空间 O(1)",
+          "remix": "暴力枚举"
+        }
+      ]
+    },
+    {
+      "id": "B1",
+      "title": "指针练习 · 双向靠近",
+      "description": "双指针主题的歌单位置，等待后续曲目。",
+      "category": "数组 / 双指针",
+      "duration": null,
+      "tracks": []
+    },
+    {
+      "id": "B2",
+      "title": "窗口练习 · 一段区间",
+      "description": "滑动窗口主题的歌单位置，等待后续曲目。",
+      "category": "数组 / 滑动窗口",
+      "duration": null,
+      "tracks": []
+    }
+  ]
+}

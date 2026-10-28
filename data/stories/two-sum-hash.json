@@ -1,0 +1,186 @@
+{
+  "id": "two-sum-hash",
+  "problem": "two-sum",
+  "remix": "hash",
+  "scene": "Array1D",
+  "input": {
+    "nums": [
+      3,
+      2,
+      4,
+      7
+    ],
+    "target": 6
+  },
+  "steps": [
+    {
+      "caption": "寻找两个不同下标，使它们的和等于 6。先准备一个空哈希表。",
+      "highlight": [],
+      "pointers": [],
+      "marks": [],
+      "sfx": "none",
+      "t": 0
+    },
+    {
+      "caption": "i = 0，当前值 3，需要补数 6 − (3) = 3。",
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "t": 3.429
+    },
+    {
+      "caption": "补数 3 尚未出现，把 3 → 下标 0 存入哈希表，继续向右。",
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 0
+        }
+      ],
+      "marks": [
+        {
+          "index": 0,
+          "label": "已入表"
+        }
+      ],
+      "sfx": "none",
+      "t": 6.857
+    },
+    {
+      "caption": "i = 1，当前值 2，需要补数 6 − (2) = 4。",
+      "highlight": [
+        1
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 1
+        }
+      ],
+      "marks": [
+        {
+          "index": 0,
+          "label": "已入表"
+        }
+      ],
+      "sfx": "compare",
+      "t": 10.286
+    },
+    {
+      "caption": "补数 4 尚未出现，把 2 → 下标 1 存入哈希表，继续向右。",
+      "highlight": [
+        1
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 1
+        }
+      ],
+      "marks": [
+        {
+          "index": 0,
+          "label": "已入表"
+        },
+        {
+          "index": 1,
+          "label": "已入表"
+        }
+      ],
+      "sfx": "none",
+      "t": 13.714
+    },
+    {
+      "caption": "i = 2，当前值 4，需要补数 6 − (4) = 2。",
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "i",
+          "index": 2
+        }
+      ],
+      "marks": [
+        {
+          "index": 0,
+          "label": "已入表"
+        },
+        {
+          "index": 1,
+          "label": "已入表"
+        }
+      ],
+      "sfx": "compare",
+      "t": 17.143
+    },
+    {
+      "caption": "哈希表中找到 2，它的下标是 1。先查再存，不会重复使用当前元素。",
+      "highlight": [
+        1,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "已见",
+          "index": 1
+        },
+        {
+          "label": "i",
+          "index": 2
+        }
+      ],
+      "marks": [
+        {
+          "index": 0,
+          "label": "已入表"
+        },
+        {
+          "index": 1,
+          "label": "已入表"
+        }
+      ],
+      "sfx": "match",
+      "t": 20.571
+    },
+    {
+      "caption": "返回下标 [1, 2]：2 + 4 = 6。时间 O(n)，空间 O(n)。",
+      "highlight": [
+        1,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "答案",
+          "index": 1
+        },
+        {
+          "label": "答案",
+          "index": 2
+        }
+      ],
+      "marks": [
+        {
+          "index": 0,
+          "label": "已入表"
+        },
+        {
+          "index": 1,
+          "label": "已入表"
+        }
+      ],
+      "sfx": "none",
+      "t": 24
+    }
+  ]
+}

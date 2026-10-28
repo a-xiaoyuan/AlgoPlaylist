@@ -1,0 +1,79 @@
+@import './design-tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root { color-scheme: dark; }
+  body {
+    margin: 0;
+    min-width: 320px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+  }
+  * { border-color: var(--border); }
+  h1, h2, h3 { line-height: 1.3; text-wrap: balance; }
+  h1 { @apply text-3xl font-semibold; }
+  h2 { @apply text-lg font-semibold; }
+  h3 { @apply font-medium; }
+  a, button, input, select { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  button:disabled, input:disabled, select:disabled { cursor: not-allowed; }
+  input, select { @apply w-full min-w-0 rounded-sm border border-border bg-bg px-3 py-2 text-sm text-text-2; }
+  label { @apply flex flex-col gap-2 text-sm text-text-2; }
+  ::selection { background: var(--accent-muted); color: var(--text); }
+}
+
+@layer components {
+  .app-header { @apply flex min-h-20 flex-wrap items-center justify-between gap-4 border-b border-border px-6 py-4; }
+  .brand { @apply text-lg font-semibold; }
+  .nav-link { @apply rounded-sm px-4 py-2 text-sm text-text-2 hover:bg-surface-2 hover:text-text; }
+  .nav-link[aria-current='page'] { @apply bg-surface-2 text-text; }
+  .page { @apply mx-auto w-full max-w-6xl px-6 py-10; }
+  .page-heading { @apply mb-8 flex flex-col gap-3; }
+  .muted { @apply text-sm text-text-2; }
+  .card { @apply min-w-0 rounded-md border border-border bg-surface; }
+  .button { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-sm border border-border px-4 py-2 text-sm font-medium; }
+  .button-primary { @apply border-accent bg-accent text-bg enabled:hover:bg-accent-muted enabled:hover:text-accent; }
+  .button-secondary { @apply bg-surface-2 text-text enabled:hover:bg-surface; }
+  .button:disabled { @apply border-border bg-surface-2 text-text-3; }
+  a.button:hover { @apply border-accent; }
+  .separator { @apply border-0 border-t border-border; }
+  .cover { @apply flex aspect-square items-center justify-center rounded-sm border border-border bg-surface-2; }
+  .cover-mark { @apply flex h-2/3 w-2/3 flex-col items-center justify-center gap-2 border border-border; }
+  .cover-code { @apply text-4xl font-medium text-text-2; }
+  .cover-caption { @apply text-sm text-text-2; }
+  .playlist-grid { @apply grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3; }
+  .playlist-link { @apply block h-full rounded-md p-4 hover:bg-surface-2; }
+  .album-heading { @apply mb-10 mt-6 grid items-end gap-8 sm:grid-cols-[224px_minmax(0,1fr)]; }
+  .track-link { @apply grid grid-cols-[24px_minmax(0,1fr)_24px] items-center gap-4 rounded-sm px-4 py-4 hover:bg-surface-2; }
+  .player-page { @apply mx-auto w-full max-w-[1600px] px-6 py-8; }
+  .player-layout { @apply grid grid-cols-1 items-start gap-6 xl:grid-cols-[224px_minmax(0,1fr)_288px]; }
+  .panel-heading { @apply mb-4 flex items-center justify-between gap-3; }
+  .queue-link { @apply flex items-start gap-3 rounded-sm px-3 py-4 text-text-2 hover:bg-surface-2; }
+  .queue-link[aria-current='page'] { @apply bg-accent-muted text-text; }
+  .queue-panel { @apply order-2 xl:order-1; }
+  .playback-panel { @apply order-1 xl:order-2; }
+  .info-panel { @apply order-3; }
+  .queue-list { @apply max-h-96 overflow-y-auto xl:max-h-none; }
+  .stage-frame { @apply aspect-[4/3] w-full rounded-sm border border-border bg-bg; }
+  .transport { @apply flex flex-wrap items-center justify-center gap-3 py-4; }
+  .transport .button { @apply px-3; }
+  .progress-row { @apply flex items-center gap-3 text-xs text-text-2; }
+  .progress-row input { @apply h-6 flex-1 cursor-pointer p-0; accent-color: var(--accent); }
+  .array-scroll { @apply max-w-full overflow-x-auto rounded-sm; }
+  .array-scene { @apply block max-h-[432px] aspect-auto; }
+  .caption-slot { @apply flex min-h-32 items-center justify-center px-2 py-5 text-center; }
+  .caption-slot p { max-width: 65ch; }
+  .complexity-badge { @apply inline-block rounded-sm border border-border bg-surface-2 px-3 py-2 text-sm text-text-2; }
+  .playback-options { @apply mt-4 flex flex-wrap items-center justify-between gap-4; }
+  .rate-control { @apply flex-row items-center; }
+  .rate-control select { @apply w-auto; }
+  .sound-control { @apply min-h-11 cursor-pointer flex-row items-center; }
+  .sound-control input { @apply h-4 w-4; accent-color: var(--accent); }
+  .form-error { @apply mt-3 text-sm; color: var(--danger); }
+  .skip-link { @apply fixed left-4 top-4 z-10 -translate-y-24 rounded-sm bg-accent px-4 py-2 text-bg focus:translate-y-0; }
+}
