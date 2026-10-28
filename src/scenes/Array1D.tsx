@@ -1,7 +1,7 @@
 import { useId } from 'react'
 import type { StoryStep } from '../story/schema'
 
-export function Array1D({ nums, frame }: { nums: number[], frame: StoryStep }) {
+export function Array1D({ nums, frame, boundsMode = 'exclude' }: { nums: number[], frame: StoryStep, boundsMode?: 'exclude' | 'mark' }) {
   nums = frame.values ?? nums
   const titleId = useId()
   const cellWidth = 96
@@ -11,12 +11,16 @@ export function Array1D({ nums, frame }: { nums: number[], frame: StoryStep }) {
     <svg className="stage-frame array-scene" style={{ minWidth: Math.max(320, nums.length * 80 + 32) }} viewBox={`0 0 ${width} ${frame.secondary ? 480 : 360}`} role="img" aria-labelledby={titleId}>
       <title id={titleId}>{`数组 [${nums.join(', ')}]。${frame.caption}`}</title>
       {frame.secondary && <text x="16" y="36" fill="var(--text-2)" fontSize="16">nums · 写入区</text>}
-      {frame.bounds && <text x="16" y="36" fill="var(--text-2)" fontSize="16">候选闭区间 [{frame.bounds.left}, {frame.bounds.right}] · 区间外已排除</text>}
+      {frame.bounds && <text x="16" y="36" fill="var(--text-2)" fontSize="16">{boundsMode === 'exclude' ? '候选闭区间' : '闭区间'} [{frame.bounds.left}, {frame.bounds.right}]{boundsMode === 'exclude' ? ' · 区间外已排除' : frame.bounds.left > frame.bounds.right ? ' · 空区间' : ''}</text>}
+      {boundsMode === 'mark' && frame.bounds && frame.bounds.left <= frame.bounds.right && <path
+        d={`M${start + frame.bounds.left * cellWidth + 4} 220v7H${start + frame.bounds.right * cellWidth + 84}v-7`}
+        fill="none" stroke="var(--text-2)"
+      />}
       {nums.length === 0 && <text x={width / 2} y="180" textAnchor="middle" fill="var(--text-2)" fontSize="18">空数组</text>}
       {nums.map((value, index) => {
         const x = start + index * cellWidth
         const active = frame.highlight.includes(index)
-        const excluded = frame.bounds && (index < frame.bounds.left || index > frame.bounds.right)
+        const excluded = boundsMode === 'exclude' && frame.bounds && (index < frame.bounds.left || index > frame.bounds.right)
         const pointers = frame.pointers.filter((pointer) => pointer.index === index)
         const marks = frame.marks.filter((mark) => mark.index === index)
         return <g key={index}>

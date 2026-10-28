@@ -82,14 +82,6 @@
       ]
     },
     {
-      "id": "B1",
-      "title": "指针练习 · 双向靠近",
-      "description": "双指针主题的歌单位置，等待后续曲目。",
-      "category": "数组 / 双指针",
-      "duration": null,
-      "tracks": []
-    },
-    {
       "id": "B2",
       "title": "窗口练习 · 一段区间",
       "description": "滑动窗口主题的歌单位置，等待后续曲目。",

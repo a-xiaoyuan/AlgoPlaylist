@@ -28,6 +28,14 @@ pnpm build
 - 音效默认关闭；可选的极简正弦短音由浏览器 Web Audio 本地生成，可随时关闭。听感未做主观验收。
 - 桌面保留三栏；窄屏先显示播放器，再显示可滚动队列与信息。SVG 内部可横向滚动，页面不随长数组变宽。
 
+## B1 指针夜跑：壳就位，曲目待填
+
+`data/playlists/pointer-night.json` 保存 B1 的中文名称、副标题、双指针 / 滑窗标签和占位封面声明；`trackIds: []`。catalog 将它接入现有歌单墙与 `/playlist/B1`，沿用单色占位封面和空歌单提示，不提供播放入口。
+
+共享场景 `scene: "array-2ptrs"` 已接入 schema 与播放页的 `StoryScene`；`Array2Ptrs` 薄封装 `Array1D`，读取 `pointers`（例如 left / right，同格时分行）、`highlight` 和可选的闭区间 `bounds: { left, right }`。区间只作标记，不将区间外元素视为已排除；left > right 表示空区间。沿用现有 token，无新增动画、依赖或颜色。现有数值数组分镜可选择此场景，专用场景约束保持不变；后续题目的输入 schema 仍需随曲目另行接入。
+
+规划 11 首：11 盛最多水的容器、15 三数之和、3 无重复字符的最长子串、42 接雨水、76 最小覆盖子串、167 两数之和 II、26 删除有序数组中的重复项、75 颜色分类、209 长度最小的子数组、438 找到字符串中所有字母异位词、125 验证回文串。不包含 344。本轮未新增或登记任何单题 track、remix、story JSON 或 stepper。
+
 ## 新增七首与文件
 
 以下 JSON 均在 `data/stories/`，stepper 均在 `src/steppers/`；播放地址为 `/play/<曲目 ID>`。

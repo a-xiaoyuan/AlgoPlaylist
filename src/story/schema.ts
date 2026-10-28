@@ -38,12 +38,14 @@ export const stepSchema = z.object({
 }).strict()
 
 const base = { id: z.string().min(1), steps: z.array(stepSchema).min(2) }
+// Numeric array stories may opt into the shared two-pointer renderer.
+export const arraySceneSchema = z.enum(['Array1D', 'array-2ptrs'])
 export const storySchema = z.discriminatedUnion('problem', [
-  z.object({ ...base, problem: z.literal('two-sum'), remix: z.enum(['hash', 'brute']), scene: z.literal('Array1D'), input: twoSumInputSchema }).strict(),
-  z.object({ ...base, problem: z.literal('best-time-to-buy-and-sell-stock'), remix: z.literal('one-pass'), scene: z.literal('Array1D'), input: stockInputSchema }).strict(),
-  z.object({ ...base, problem: z.literal('maximum-subarray'), remix: z.literal('kadane'), scene: z.literal('Array1D'), input: kadaneInputSchema }).strict(),
-  z.object({ ...base, problem: z.literal('move-zeroes'), remix: z.literal('two-pointers'), scene: z.literal('Array1D'), input: moveZeroesInputSchema }).strict(),
-  z.object({ ...base, problem: z.literal('merge-sorted-array'), remix: z.literal('backward'), scene: z.literal('Array1D'), input: mergeInputSchema }).strict(),
+  z.object({ ...base, problem: z.literal('two-sum'), remix: z.enum(['hash', 'brute']), scene: arraySceneSchema, input: twoSumInputSchema }).strict(),
+  z.object({ ...base, problem: z.literal('best-time-to-buy-and-sell-stock'), remix: z.literal('one-pass'), scene: arraySceneSchema, input: stockInputSchema }).strict(),
+  z.object({ ...base, problem: z.literal('maximum-subarray'), remix: z.literal('kadane'), scene: arraySceneSchema, input: kadaneInputSchema }).strict(),
+  z.object({ ...base, problem: z.literal('move-zeroes'), remix: z.literal('two-pointers'), scene: arraySceneSchema, input: moveZeroesInputSchema }).strict(),
+  z.object({ ...base, problem: z.literal('merge-sorted-array'), remix: z.literal('backward'), scene: arraySceneSchema, input: mergeInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('binary-search'), remix: z.literal('closed-interval'), scene: z.literal('BinarySearch'), input: binarySearchInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('valid-parentheses'), remix: z.literal('stack'), scene: z.literal('Stack'), input: bracketsInputSchema }).strict(),
   z.object({ ...base, problem: z.literal('reverse-linked-list'), remix: z.literal('iterative'), scene: z.literal('LinkedList'), input: reverseListInputSchema }).strict(),
@@ -58,7 +60,7 @@ export const storySchema = z.discriminatedUnion('problem', [
     if (indices.some((index) => index >= length)) issue('高亮、指针和标记必须引用输入内的下标。')
     if (step.values && step.values.length !== length) issue('快照必须保留原数组长度。')
     if (step.secondary && (story.problem !== 'merge-sorted-array' || step.secondary.values.length !== story.input.nums2.length || step.secondary.pointers.some((p) => p.index >= step.secondary!.values.length))) issue('副数组或指针无效。')
-    if (step.bounds && (story.scene !== 'BinarySearch' || step.bounds.left < 0 || step.bounds.left > length || step.bounds.right < -1 || step.bounds.right >= length)) issue('二分区间越界。')
+    if (step.bounds && (!['BinarySearch', 'array-2ptrs'].includes(story.scene) || step.bounds.left < 0 || step.bounds.left > length || step.bounds.right < -1 || step.bounds.right >= length)) issue('区间越界或不适用于当前场景。')
     if (step.stack && (story.scene !== 'Stack' || step.stack.some((item) => item.index >= length || ('text' in story.input && story.input.text[item.index] !== item.value)))) issue('栈快照无效。')
     if (step.links && (story.scene !== 'LinkedList' || step.links.length !== length || step.links.some((index) => index !== null && index >= length))) issue('链表快照无效。')
     if (step.head !== undefined && (story.scene !== 'LinkedList' || (step.head !== null && step.head >= length))) issue('链表头指针无效。')
