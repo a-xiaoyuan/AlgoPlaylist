@@ -37,7 +37,7 @@ test('B0 has all nine playable fixtures in priority order and truthful duration'
     if (steppers[track.id]) assert.deepEqual(run(track.id, story.input), story.steps)
   }
   assert.equal(b0.duration, `${Math.floor(seconds / 60)} 分 ${seconds % 60} 秒`)
-  assert.ok(catalog.playlists.slice(1).every((playlist) => playlist.tracks.length === 0))
+  assert.deepEqual(catalog.playlists.map((playlist) => playlist.id), ['B0'])
 })
 
 test('every new fixture can seek backwards, skip frames, complete and replay with exact snapshots', () => {

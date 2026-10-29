@@ -1,0 +1,489 @@
+{
+  "id": "intersect-lists",
+  "steps": [
+    {
+      "caption": "节点池依次为 A 独有前缀、B 独有前缀、共享后缀；headA = #0，headB = #2。前缀为空时头直接指向共享节点，空链表头为 null。",
+      "links": [
+        1,
+        5,
+        3,
+        4,
+        5,
+        6,
+        7,
+        null
+      ],
+      "head": 0,
+      "headA": 0,
+      "headB": 2,
+      "highlight": [
+        0,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "pA",
+          "index": 0
+        },
+        {
+          "label": "pB",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "pA",
+          "value": "#0"
+        },
+        {
+          "label": "pB",
+          "value": "#2"
+        }
+      ],
+      "t": 0
+    },
+    {
+      "caption": "指针比较的是节点身份：pA #0 沿 next 前进至 #1；pB #2 沿 next 前进至 #3。",
+      "links": [
+        1,
+        5,
+        3,
+        4,
+        5,
+        6,
+        7,
+        null
+      ],
+      "head": 0,
+      "headA": 0,
+      "headB": 2,
+      "highlight": [
+        1,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "pA",
+          "index": 1
+        },
+        {
+          "label": "pB",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "pA",
+          "value": "#1"
+        },
+        {
+          "label": "pB",
+          "value": "#3"
+        }
+      ],
+      "t": 3.6
+    },
+    {
+      "caption": "指针比较的是节点身份：pA #1 沿 next 前进至 #5；pB #3 沿 next 前进至 #4。",
+      "links": [
+        1,
+        5,
+        3,
+        4,
+        5,
+        6,
+        7,
+        null
+      ],
+      "head": 0,
+      "headA": 0,
+      "headB": 2,
+      "highlight": [
+        5,
+        4
+      ],
+      "pointers": [
+        {
+          "label": "pA",
+          "index": 5
+        },
+        {
+          "label": "pB",
+          "index": 4
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "pA",
+          "value": "#5"
+        },
+        {
+          "label": "pB",
+          "value": "#4"
+        }
+      ],
+      "t": 7.2
+    },
+    {
+      "caption": "指针比较的是节点身份：pA #5 沿 next 前进至 #6；pB #4 沿 next 前进至 #5。",
+      "links": [
+        1,
+        5,
+        3,
+        4,
+        5,
+        6,
+        7,
+        null
+      ],
+      "head": 0,
+      "headA": 0,
+      "headB": 2,
+      "highlight": [
+        6,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "pA",
+          "index": 6
+        },
+        {
+          "label": "pB",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "pA",
+          "value": "#6"
+        },
+        {
+          "label": "pB",
+          "value": "#5"
+        }
+      ],
+      "t": 10.8
+    },
+    {
+      "caption": "指针比较的是节点身份：pA #6 沿 next 前进至 #7；pB #5 沿 next 前进至 #6。",
+      "links": [
+        1,
+        5,
+        3,
+        4,
+        5,
+        6,
+        7,
+        null
+      ],
+      "head": 0,
+      "headA": 0,
+      "headB": 2,
+      "highlight": [
+        7,
+        6
+      ],
+      "pointers": [
+        {
+          "label": "pA",
+          "index": 7
+        },
+        {
+          "label": "pB",
+          "index": 6
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "pA",
+          "value": "#7"
+        },
+        {
+          "label": "pB",
+          "value": "#6"
+        }
+      ],
+      "t": 14.4
+    },
+    {
+      "caption": "指针比较的是节点身份：pA #7 沿 next 前进至 null；pB #6 沿 next 前进至 #7。",
+      "links": [
+        1,
+        5,
+        3,
+        4,
+        5,
+        6,
+        7,
+        null
+      ],
+      "head": 0,
+      "headA": 0,
+      "headB": 2,
+      "highlight": [
+        7
+      ],
+      "pointers": [
+        {
+          "label": "pB",
+          "index": 7
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "pA",
+          "value": "null"
+        },
+        {
+          "label": "pB",
+          "value": "#7"
+        }
+      ],
+      "t": 18
+    },
+    {
+      "caption": "指针比较的是节点身份：pA null 切换到 headB至 #2；pB #7 沿 next 前进至 null。",
+      "links": [
+        1,
+        5,
+        3,
+        4,
+        5,
+        6,
+        7,
+        null
+      ],
+      "head": 0,
+      "headA": 0,
+      "headB": 2,
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "pA",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "pA",
+          "value": "#2"
+        },
+        {
+          "label": "pB",
+          "value": "null"
+        }
+      ],
+      "t": 21.6
+    },
+    {
+      "caption": "指针比较的是节点身份：pA #2 沿 next 前进至 #3；pB null 切换到 headA至 #0。",
+      "links": [
+        1,
+        5,
+        3,
+        4,
+        5,
+        6,
+        7,
+        null
+      ],
+      "head": 0,
+      "headA": 0,
+      "headB": 2,
+      "highlight": [
+        3,
+        0
+      ],
+      "pointers": [
+        {
+          "label": "pA",
+          "index": 3
+        },
+        {
+          "label": "pB",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "pA",
+          "value": "#3"
+        },
+        {
+          "label": "pB",
+          "value": "#0"
+        }
+      ],
+      "t": 25.2
+    },
+    {
+      "caption": "指针比较的是节点身份：pA #3 沿 next 前进至 #4；pB #0 沿 next 前进至 #1。",
+      "links": [
+        1,
+        5,
+        3,
+        4,
+        5,
+        6,
+        7,
+        null
+      ],
+      "head": 0,
+      "headA": 0,
+      "headB": 2,
+      "highlight": [
+        4,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "pA",
+          "index": 4
+        },
+        {
+          "label": "pB",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "pA",
+          "value": "#4"
+        },
+        {
+          "label": "pB",
+          "value": "#1"
+        }
+      ],
+      "t": 28.8
+    },
+    {
+      "caption": "指针比较的是节点身份：pA #4 沿 next 前进至 #5；pB #1 沿 next 前进至 #5。",
+      "links": [
+        1,
+        5,
+        3,
+        4,
+        5,
+        6,
+        7,
+        null
+      ],
+      "head": 0,
+      "headA": 0,
+      "headB": 2,
+      "highlight": [
+        5
+      ],
+      "pointers": [
+        {
+          "label": "pA",
+          "index": 5
+        },
+        {
+          "label": "pB",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "pA",
+          "value": "#5"
+        },
+        {
+          "label": "pB",
+          "value": "#5"
+        }
+      ],
+      "t": 32.4
+    },
+    {
+      "caption": "两指针在同一个节点 #5（值 8）相遇，返回节点池下标 5。时间 O(m+n)，额外空间 O(1)。",
+      "links": [
+        1,
+        5,
+        3,
+        4,
+        5,
+        6,
+        7,
+        null
+      ],
+      "head": 0,
+      "headA": 0,
+      "headB": 2,
+      "highlight": [
+        5
+      ],
+      "pointers": [
+        {
+          "label": "pA",
+          "index": 5
+        },
+        {
+          "label": "pB",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "pA",
+          "value": "#5"
+        },
+        {
+          "label": "pB",
+          "value": "#5"
+        }
+      ],
+      "result": 5,
+      "t": 36
+    }
+  ],
+  "problem": "intersect-two-lists",
+  "remix": "two-pointers",
+  "scene": "LinkedList",
+  "input": {
+    "listA": [
+      4,
+      1,
+      8,
+      4,
+      5
+    ],
+    "listB": [
+      5,
+      6,
+      1,
+      8,
+      4,
+      5
+    ],
+    "skipA": 2,
+    "skipB": 3
+  }
+}

@@ -1,0 +1,383 @@
+{
+  "id": "palindrome-list",
+  "problem": "palindrome-linked-list",
+  "remix": "two-pointers",
+  "scene": "LinkedList",
+  "input": {
+    "nums": [
+      1,
+      2,
+      2,
+      1
+    ]
+  },
+  "steps": [
+    {
+      "caption": "第一阶段：slow 和 fast 从头节点出发，分别每次走一步和两步，寻找中点。",
+      "links": [
+        1,
+        2,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 0
+        },
+        {
+          "label": "fast",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#0"
+        },
+        {
+          "label": "fast",
+          "value": "#0"
+        }
+      ],
+      "t": 0
+    },
+    {
+      "caption": "slow 走一步到 #1，fast 走两步到 #2。",
+      "links": [
+        1,
+        2,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        1,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 1
+        },
+        {
+          "label": "fast",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#1"
+        },
+        {
+          "label": "fast",
+          "value": "#2"
+        }
+      ],
+      "t": 4
+    },
+    {
+      "caption": "slow 走一步到 #2，fast 走两步到 null。",
+      "links": [
+        1,
+        2,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#2"
+        },
+        {
+          "label": "fast",
+          "value": "null"
+        }
+      ],
+      "t": 8
+    },
+    {
+      "caption": "fast 到达 null，长度为偶数；第二阶段从 #2 开始反转后半段。",
+      "links": [
+        1,
+        2,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 2
+        },
+        {
+          "label": "curr",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#2"
+        },
+        {
+          "label": "curr",
+          "value": "#2"
+        }
+      ],
+      "t": 12
+    },
+    {
+      "caption": "保存 next = #3，将 #2.next 指向 null，原地反转连线。",
+      "links": [
+        1,
+        2,
+        null,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "curr",
+          "index": 2
+        },
+        {
+          "label": "next",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "null"
+        },
+        {
+          "label": "curr",
+          "value": "#2"
+        },
+        {
+          "label": "next",
+          "value": "#3"
+        }
+      ],
+      "t": 16
+    },
+    {
+      "caption": "保存 next = null，将 #3.next 指向 #2，原地反转连线。",
+      "links": [
+        1,
+        2,
+        null,
+        2
+      ],
+      "head": 0,
+      "highlight": [
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "prev",
+          "index": 2
+        },
+        {
+          "label": "curr",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "prev",
+          "value": "#2"
+        },
+        {
+          "label": "curr",
+          "value": "#3"
+        },
+        {
+          "label": "next",
+          "value": "null"
+        }
+      ],
+      "t": 20
+    },
+    {
+      "caption": "后半段反转完成，第三阶段从 head 和 #3 同步比较节点值。",
+      "links": [
+        1,
+        2,
+        null,
+        2
+      ],
+      "head": 0,
+      "highlight": [
+        0,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "front",
+          "index": 0
+        },
+        {
+          "label": "back",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "front",
+          "value": "#0"
+        },
+        {
+          "label": "back",
+          "value": "#3"
+        }
+      ],
+      "t": 24
+    },
+    {
+      "caption": "比较 #0 的 1 与 #3 的 1：相等，继续前进。",
+      "links": [
+        1,
+        2,
+        null,
+        2
+      ],
+      "head": 0,
+      "highlight": [
+        0,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "front",
+          "index": 0
+        },
+        {
+          "label": "back",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "front",
+          "value": "#0"
+        },
+        {
+          "label": "back",
+          "value": "#3"
+        }
+      ],
+      "t": 28
+    },
+    {
+      "caption": "比较 #1 的 2 与 #2 的 2：相等，继续前进。",
+      "links": [
+        1,
+        2,
+        null,
+        2
+      ],
+      "head": 0,
+      "highlight": [
+        1,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "front",
+          "index": 1
+        },
+        {
+          "label": "back",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "front",
+          "value": "#1"
+        },
+        {
+          "label": "back",
+          "value": "#2"
+        }
+      ],
+      "t": 32
+    },
+    {
+      "caption": "后半段全部比较完毕，链表是回文，返回 true。时间 O(n)，算法额外空间 O(1)。",
+      "links": [
+        1,
+        2,
+        null,
+        2
+      ],
+      "head": 0,
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "front",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "front",
+          "value": "#2"
+        },
+        {
+          "label": "back",
+          "value": "null"
+        }
+      ],
+      "result": true,
+      "t": 36
+    }
+  ]
+}

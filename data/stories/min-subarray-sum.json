@@ -1,0 +1,730 @@
+{
+  "id": "min-subarray-sum",
+  "problem": "minimum-size-subarray-sum",
+  "remix": "sliding-window",
+  "scene": "array-2ptrs",
+  "input": {
+    "target": 7,
+    "nums": [
+      2,
+      3,
+      1,
+      2,
+      4,
+      3
+    ]
+  },
+  "steps": [
+    {
+      "caption": "从空窗口开始，right 向右扩展；窗口和达到目标后移动 left，寻找更短的子数组。",
+      "highlight": [],
+      "pointers": [],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": -1
+      },
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 0
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": "尚无"
+        }
+      ],
+      "result": 0,
+      "t": 0
+    },
+    {
+      "caption": "right = 0，加入 2，窗口和为 2；与目标 7 比较。",
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 0
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 2
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": "尚无"
+        }
+      ],
+      "result": 0,
+      "t": 2
+    },
+    {
+      "caption": "right = 1，加入 3，窗口和为 5；与目标 7 比较。",
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 1
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 5
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": "尚无"
+        }
+      ],
+      "result": 0,
+      "t": 4
+    },
+    {
+      "caption": "right = 2，加入 1，窗口和为 6；与目标 7 比较。",
+      "highlight": [
+        0,
+        1,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 2
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 6
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": "尚无"
+        }
+      ],
+      "result": 0,
+      "t": 6
+    },
+    {
+      "caption": "right = 3，加入 2，窗口和为 8；与目标 7 比较。",
+      "highlight": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 3
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 8
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": "尚无"
+        }
+      ],
+      "result": 0,
+      "t": 8
+    },
+    {
+      "caption": "窗口和 8 达到目标，长度为 4；更新最短长度，继续收缩。",
+      "highlight": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 3
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 8
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": 4
+        }
+      ],
+      "result": 4,
+      "t": 10
+    },
+    {
+      "caption": "移出 2，left 移到 1，窗口和为 6。",
+      "highlight": [
+        1,
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 1,
+        "right": 3
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 6
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": 4
+        }
+      ],
+      "result": 4,
+      "t": 12
+    },
+    {
+      "caption": "right = 4，加入 4，窗口和为 10；与目标 7 比较。",
+      "highlight": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 4
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 1,
+        "right": 4
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 10
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": 4
+        }
+      ],
+      "result": 4,
+      "t": 14
+    },
+    {
+      "caption": "窗口和 10 达到目标，长度为 4；保留已有最短长度，继续收缩。",
+      "highlight": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 4
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 1,
+        "right": 4
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 10
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": 4
+        }
+      ],
+      "result": 4,
+      "t": 16
+    },
+    {
+      "caption": "移出 3，left 移到 2，窗口和为 7。",
+      "highlight": [
+        2,
+        3,
+        4
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 4
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 2,
+        "right": 4
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 7
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": 4
+        }
+      ],
+      "result": 4,
+      "t": 18
+    },
+    {
+      "caption": "窗口和 7 达到目标，长度为 3；更新最短长度，继续收缩。",
+      "highlight": [
+        2,
+        3,
+        4
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 4
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 2,
+        "right": 4
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 7
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": 3
+        }
+      ],
+      "result": 3,
+      "t": 20
+    },
+    {
+      "caption": "移出 1，left 移到 3，窗口和为 6。",
+      "highlight": [
+        3,
+        4
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 3
+        },
+        {
+          "label": "right",
+          "index": 4
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 3,
+        "right": 4
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 6
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": 3
+        }
+      ],
+      "result": 3,
+      "t": 22
+    },
+    {
+      "caption": "right = 5，加入 3，窗口和为 9；与目标 7 比较。",
+      "highlight": [
+        3,
+        4,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 3
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 3,
+        "right": 5
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 9
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": 3
+        }
+      ],
+      "result": 3,
+      "t": 24
+    },
+    {
+      "caption": "窗口和 9 达到目标，长度为 3；保留已有最短长度，继续收缩。",
+      "highlight": [
+        3,
+        4,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 3
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 3,
+        "right": 5
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 9
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": 3
+        }
+      ],
+      "result": 3,
+      "t": 26
+    },
+    {
+      "caption": "移出 2，left 移到 4，窗口和为 7。",
+      "highlight": [
+        4,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 4
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 4,
+        "right": 5
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 7
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": 3
+        }
+      ],
+      "result": 3,
+      "t": 28
+    },
+    {
+      "caption": "窗口和 7 达到目标，长度为 2；更新最短长度，继续收缩。",
+      "highlight": [
+        4,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 4
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 4,
+        "right": 5
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 7
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": 2
+        }
+      ],
+      "result": 2,
+      "t": 30
+    },
+    {
+      "caption": "移出 4，left 移到 5，窗口和为 3。",
+      "highlight": [
+        5
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 5
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 5,
+        "right": 5
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 3
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": 2
+        }
+      ],
+      "result": 2,
+      "t": 32
+    },
+    {
+      "caption": "扫描结束，最短子数组为 [4, 3]，返回长度 2。时间 O(n)，空间 O(1)。",
+      "highlight": [
+        4,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 4
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [
+        {
+          "label": "最优左边界",
+          "index": 4
+        },
+        {
+          "label": "最优右边界",
+          "index": 5
+        }
+      ],
+      "bounds": {
+        "left": 4,
+        "right": 5
+      },
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "窗口和",
+          "value": 7
+        },
+        {
+          "label": "目标值",
+          "value": 7
+        },
+        {
+          "label": "最短长度",
+          "value": 2
+        }
+      ],
+      "result": 2,
+      "t": 34
+    }
+  ]
+}

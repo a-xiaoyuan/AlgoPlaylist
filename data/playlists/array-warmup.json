@@ -80,14 +80,6 @@
           "remix": "迭代反转"
         }
       ]
-    },
-    {
-      "id": "B2",
-      "title": "窗口练习 · 一段区间",
-      "description": "滑动窗口主题的歌单位置，等待后续曲目。",
-      "category": "数组 / 滑动窗口",
-      "duration": null,
-      "tracks": []
     }
   ]
 }

@@ -1,0 +1,395 @@
+{
+  "id": "remove-nth",
+  "steps": [
+    {
+      "caption": "创建虚拟头节点 dummy，dummy.next 指向 head；slow 和 fast 都从 dummy 出发。",
+      "links": [
+        1,
+        2,
+        3,
+        4,
+        null
+      ],
+      "head": 0,
+      "highlight": [],
+      "pointers": [],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "dummy"
+        },
+        {
+          "label": "fast",
+          "value": "dummy"
+        },
+        {
+          "label": "n",
+          "value": 2
+        }
+      ],
+      "t": 0
+    },
+    {
+      "caption": "fast 先走第 1 步，到达 #0；建立 n+1 步的间距。",
+      "links": [
+        1,
+        2,
+        3,
+        4,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "fast",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "dummy"
+        },
+        {
+          "label": "fast",
+          "value": "#0"
+        },
+        {
+          "label": "n",
+          "value": 2
+        }
+      ],
+      "t": 3.778
+    },
+    {
+      "caption": "fast 先走第 2 步，到达 #1；建立 n+1 步的间距。",
+      "links": [
+        1,
+        2,
+        3,
+        4,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        1
+      ],
+      "pointers": [
+        {
+          "label": "fast",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "dummy"
+        },
+        {
+          "label": "fast",
+          "value": "#1"
+        },
+        {
+          "label": "n",
+          "value": 2
+        }
+      ],
+      "t": 7.556
+    },
+    {
+      "caption": "fast 先走第 3 步，到达 #2；建立 n+1 步的间距。",
+      "links": [
+        1,
+        2,
+        3,
+        4,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "fast",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "dummy"
+        },
+        {
+          "label": "fast",
+          "value": "#2"
+        },
+        {
+          "label": "n",
+          "value": 2
+        }
+      ],
+      "t": 11.333
+    },
+    {
+      "caption": "slow 和 fast 同步前进，分别到达 #0 和 #3。",
+      "links": [
+        1,
+        2,
+        3,
+        4,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        0,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 0
+        },
+        {
+          "label": "fast",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#0"
+        },
+        {
+          "label": "fast",
+          "value": "#3"
+        },
+        {
+          "label": "n",
+          "value": 2
+        }
+      ],
+      "t": 15.111
+    },
+    {
+      "caption": "slow 和 fast 同步前进，分别到达 #1 和 #4。",
+      "links": [
+        1,
+        2,
+        3,
+        4,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        1,
+        4
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 1
+        },
+        {
+          "label": "fast",
+          "index": 4
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#1"
+        },
+        {
+          "label": "fast",
+          "value": "#4"
+        },
+        {
+          "label": "n",
+          "value": 2
+        }
+      ],
+      "t": 18.889
+    },
+    {
+      "caption": "slow 和 fast 同步前进，分别到达 #2 和 null。",
+      "links": [
+        1,
+        2,
+        3,
+        4,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#2"
+        },
+        {
+          "label": "fast",
+          "value": "null"
+        },
+        {
+          "label": "n",
+          "value": 2
+        }
+      ],
+      "t": 22.667
+    },
+    {
+      "caption": "fast 到达 null，slow 的下一个节点 #3 是倒数第 2 个。",
+      "links": [
+        1,
+        2,
+        3,
+        4,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        3
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#2"
+        },
+        {
+          "label": "fast",
+          "value": "null"
+        },
+        {
+          "label": "n",
+          "value": 2
+        }
+      ],
+      "t": 26.444
+    },
+    {
+      "caption": "令 #2.next 跳过 #3，完成删除。",
+      "links": [
+        1,
+        2,
+        4,
+        4,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        3
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#2"
+        },
+        {
+          "label": "fast",
+          "value": "null"
+        },
+        {
+          "label": "n",
+          "value": 2
+        }
+      ],
+      "t": 30.222
+    },
+    {
+      "caption": "返回 dummy.next，结果为 [1, 2, 3, 5]。时间 O(n)，额外空间 O(1)。",
+      "links": [
+        1,
+        2,
+        4,
+        4,
+        null
+      ],
+      "head": 0,
+      "highlight": [],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#2"
+        },
+        {
+          "label": "fast",
+          "value": "null"
+        },
+        {
+          "label": "n",
+          "value": 2
+        }
+      ],
+      "result": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "t": 34
+    }
+  ],
+  "problem": "remove-nth-from-end",
+  "remix": "two-pointers",
+  "scene": "LinkedList",
+  "input": {
+    "nums": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "n": 2
+  }
+}

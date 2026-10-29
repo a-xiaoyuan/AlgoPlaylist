@@ -1,0 +1,222 @@
+{
+  "id": "find-anagrams",
+  "problem": "find-all-anagrams",
+  "remix": "sliding-window",
+  "scene": "array-2ptrs",
+  "input": {
+    "s": "abab",
+    "p": "ab"
+  },
+  "steps": [
+    {
+      "caption": "从空窗口开始，保持窗口长度与 p 相同，比较字符频次。下标按 Unicode 码点计数。",
+      "highlight": [],
+      "pointers": [],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": -1
+      },
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 0
+        },
+        {
+          "label": "结果下标",
+          "value": "[]"
+        }
+      ],
+      "result": [],
+      "t": 0
+    },
+    {
+      "caption": "加入 \"a\"；窗口尚未填满。",
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 0
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 1
+        },
+        {
+          "label": "结果下标",
+          "value": "[]"
+        }
+      ],
+      "result": [],
+      "t": 6.8
+    },
+    {
+      "caption": "加入 \"b\"；频次相同，记录起点 0。",
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 1
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 2
+        },
+        {
+          "label": "结果下标",
+          "value": "[0]"
+        }
+      ],
+      "result": [
+        0
+      ],
+      "t": 13.6
+    },
+    {
+      "caption": "加入 \"a\"，移出 \"a\"；频次相同，记录起点 1。",
+      "highlight": [
+        1,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 1,
+        "right": 2
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 2
+        },
+        {
+          "label": "结果下标",
+          "value": "[0, 1]"
+        }
+      ],
+      "result": [
+        0,
+        1
+      ],
+      "t": 20.4
+    },
+    {
+      "caption": "加入 \"b\"，移出 \"b\"；频次相同，记录起点 2。",
+      "highlight": [
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 2,
+        "right": 3
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 2
+        },
+        {
+          "label": "结果下标",
+          "value": "[0, 1, 2]"
+        }
+      ],
+      "result": [
+        0,
+        1,
+        2
+      ],
+      "t": 27.2
+    },
+    {
+      "caption": "扫描结束，返回起点 [0, 1, 2]。时间 O(|s| + |p|)，空间 O(|p|)，不含结果。",
+      "highlight": [
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 2,
+        "right": 3
+      },
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 2
+        },
+        {
+          "label": "结果下标",
+          "value": "[0, 1, 2]"
+        }
+      ],
+      "result": [
+        0,
+        1,
+        2
+      ],
+      "t": 34
+    }
+  ]
+}

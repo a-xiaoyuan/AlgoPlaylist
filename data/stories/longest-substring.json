@@ -1,0 +1,361 @@
+{
+  "id": "longest-substring",
+  "problem": "longest-substring-without-repeating-characters",
+  "remix": "sliding-window",
+  "scene": "array-2ptrs",
+  "input": {
+    "text": "abcabcbb"
+  },
+  "steps": [
+    {
+      "caption": "从空窗口开始，right 向右扫描；遇到窗口内的重复字符时，将 left 移到上次出现位置之后。",
+      "highlight": [],
+      "pointers": [],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": -1
+      },
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 0
+        },
+        {
+          "label": "最长长度",
+          "value": 0
+        }
+      ],
+      "result": 0,
+      "t": 0
+    },
+    {
+      "caption": "right = 0，字符 \"a\"。窗口内没有重复，left 不变。当前长度 1，更新最长长度 1。",
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 0
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 1
+        },
+        {
+          "label": "最长长度",
+          "value": 1
+        }
+      ],
+      "result": 1,
+      "t": 4
+    },
+    {
+      "caption": "right = 1，字符 \"b\"。窗口内没有重复，left 不变。当前长度 2，更新最长长度 2。",
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 1
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 2
+        },
+        {
+          "label": "最长长度",
+          "value": 2
+        }
+      ],
+      "result": 2,
+      "t": 8
+    },
+    {
+      "caption": "right = 2，字符 \"c\"。窗口内没有重复，left 不变。当前长度 3，更新最长长度 3。",
+      "highlight": [
+        0,
+        1,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 0,
+        "right": 2
+      },
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 3
+        },
+        {
+          "label": "最长长度",
+          "value": 3
+        }
+      ],
+      "result": 3,
+      "t": 12
+    },
+    {
+      "caption": "right = 3，字符 \"a\"。窗口内上次出现在 0，left 移到 1。当前长度 3，保留最长长度 3。",
+      "highlight": [
+        1,
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 1,
+        "right": 3
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 3
+        },
+        {
+          "label": "最长长度",
+          "value": 3
+        }
+      ],
+      "result": 3,
+      "t": 16
+    },
+    {
+      "caption": "right = 4，字符 \"b\"。窗口内上次出现在 1，left 移到 2。当前长度 3，保留最长长度 3。",
+      "highlight": [
+        2,
+        3,
+        4
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 4
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 2,
+        "right": 4
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 3
+        },
+        {
+          "label": "最长长度",
+          "value": 3
+        }
+      ],
+      "result": 3,
+      "t": 20
+    },
+    {
+      "caption": "right = 5，字符 \"c\"。窗口内上次出现在 2，left 移到 3。当前长度 3，保留最长长度 3。",
+      "highlight": [
+        3,
+        4,
+        5
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 3
+        },
+        {
+          "label": "right",
+          "index": 5
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 3,
+        "right": 5
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 3
+        },
+        {
+          "label": "最长长度",
+          "value": 3
+        }
+      ],
+      "result": 3,
+      "t": 24
+    },
+    {
+      "caption": "right = 6，字符 \"b\"。窗口内上次出现在 4，left 移到 5。当前长度 2，保留最长长度 3。",
+      "highlight": [
+        5,
+        6
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 5
+        },
+        {
+          "label": "right",
+          "index": 6
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 5,
+        "right": 6
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 2
+        },
+        {
+          "label": "最长长度",
+          "value": 3
+        }
+      ],
+      "result": 3,
+      "t": 28
+    },
+    {
+      "caption": "right = 7，字符 \"b\"。窗口内上次出现在 6，left 移到 7。当前长度 1，保留最长长度 3。",
+      "highlight": [
+        7
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 7
+        },
+        {
+          "label": "right",
+          "index": 7
+        }
+      ],
+      "marks": [],
+      "bounds": {
+        "left": 7,
+        "right": 7
+      },
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 1
+        },
+        {
+          "label": "最长长度",
+          "value": 3
+        }
+      ],
+      "result": 3,
+      "t": 32
+    },
+    {
+      "caption": "扫描结束，返回最长长度 3。画面回看一个最优窗口。时间 O(n)，空间 O(min(n, 字符集大小))。",
+      "highlight": [
+        0,
+        1,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 2
+        }
+      ],
+      "marks": [
+        {
+          "label": "最优左边界",
+          "index": 0
+        },
+        {
+          "label": "最优右边界",
+          "index": 2
+        }
+      ],
+      "bounds": {
+        "left": 0,
+        "right": 2
+      },
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "窗口长度",
+          "value": 3
+        },
+        {
+          "label": "最长长度",
+          "value": 3
+        }
+      ],
+      "result": 3,
+      "t": 36
+    }
+  ]
+}

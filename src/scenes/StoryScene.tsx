@@ -7,9 +7,9 @@ import { LinkedList } from './LinkedList'
 
 export function StoryScene({ story, frame }: { story: Story, frame: StoryStep }) {
   const scene = story.scene === 'Stack' ? <Stack text={story.input.text} frame={frame} />
-    : story.scene === 'LinkedList' ? <LinkedList nums={story.input.nums} frame={frame} />
+    : story.scene === 'LinkedList' ? <LinkedList nums={'listA' in story.input ? [...story.input.listA.slice(0, story.input.skipA), ...story.input.listB.slice(0, story.input.skipB), ...story.input.listA.slice(story.input.skipA)] : 'list1' in story.input ? [...story.input.list1, ...story.input.list2] : story.input.nums} frame={frame} />
     : story.scene === 'BinarySearch' ? <BinarySearch nums={story.input.nums} frame={frame} />
-    : story.scene === 'array-2ptrs' ? <Array2Ptrs nums={story.input.nums} frame={frame} />
+    : story.scene === 'array-2ptrs' ? <Array2Ptrs nums={'nums' in story.input ? story.input.nums : Array.from('s' in story.input ? story.input.s : story.input.text)} frame={frame} />
     : <Array1D nums={story.input.nums} frame={frame} />
   return <>
     {scene}

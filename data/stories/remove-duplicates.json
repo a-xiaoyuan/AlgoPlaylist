@@ -1,0 +1,231 @@
+{
+  "id": "remove-duplicates",
+  "problem": "remove-duplicates-sorted",
+  "remix": "two-pointers",
+  "scene": "array-2ptrs",
+  "input": {
+    "nums": [
+      1,
+      1,
+      2
+    ]
+  },
+  "steps": [
+    {
+      "caption": "数组已升序，slow 指向唯一前缀末尾，fast 从下一项开始扫描。",
+      "values": [
+        1,
+        1,
+        2
+      ],
+      "highlight": [],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 0
+        }
+      ],
+      "marks": [
+        {
+          "label": "唯一前缀",
+          "index": 0
+        }
+      ],
+      "stats": [
+        {
+          "label": "唯一前缀长度 k",
+          "value": 1
+        }
+      ],
+      "sfx": "none",
+      "result": 1,
+      "t": 0
+    },
+    {
+      "caption": "比较 nums[slow] = 1 和 nums[fast] = 1。",
+      "values": [
+        1,
+        1,
+        2
+      ],
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 0
+        },
+        {
+          "label": "fast",
+          "index": 1
+        }
+      ],
+      "marks": [
+        {
+          "label": "唯一前缀",
+          "index": 0
+        }
+      ],
+      "stats": [
+        {
+          "label": "唯一前缀长度 k",
+          "value": 1
+        }
+      ],
+      "sfx": "compare",
+      "result": 1,
+      "t": 6.4
+    },
+    {
+      "caption": "两者相同，跳过重复值 1，slow 不动。",
+      "values": [
+        1,
+        1,
+        2
+      ],
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 0
+        },
+        {
+          "label": "fast",
+          "index": 1
+        }
+      ],
+      "marks": [
+        {
+          "label": "唯一前缀",
+          "index": 0
+        }
+      ],
+      "stats": [
+        {
+          "label": "唯一前缀长度 k",
+          "value": 1
+        }
+      ],
+      "sfx": "match",
+      "result": 1,
+      "t": 12.8
+    },
+    {
+      "caption": "比较 nums[slow] = 1 和 nums[fast] = 2。",
+      "values": [
+        1,
+        1,
+        2
+      ],
+      "highlight": [
+        0,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 0
+        },
+        {
+          "label": "fast",
+          "index": 2
+        }
+      ],
+      "marks": [
+        {
+          "label": "唯一前缀",
+          "index": 0
+        }
+      ],
+      "stats": [
+        {
+          "label": "唯一前缀长度 k",
+          "value": 1
+        }
+      ],
+      "sfx": "compare",
+      "result": 1,
+      "t": 19.2
+    },
+    {
+      "caption": "发现新值 2，slow 前进并将它写入下标 1。",
+      "values": [
+        1,
+        2,
+        2
+      ],
+      "highlight": [
+        1,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 1
+        },
+        {
+          "label": "fast",
+          "index": 2
+        }
+      ],
+      "marks": [
+        {
+          "label": "唯一前缀",
+          "index": 0
+        },
+        {
+          "label": "唯一前缀",
+          "index": 1
+        }
+      ],
+      "stats": [
+        {
+          "label": "唯一前缀长度 k",
+          "value": 2
+        }
+      ],
+      "sfx": "match",
+      "result": 2,
+      "t": 25.6
+    },
+    {
+      "caption": "扫描结束，返回 k = 2；前 2 项是唯一值，后面的内容无需考虑。时间 O(n)，额外空间 O(1)。",
+      "values": [
+        1,
+        2,
+        2
+      ],
+      "highlight": [],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 1
+        }
+      ],
+      "marks": [
+        {
+          "label": "唯一前缀",
+          "index": 0
+        },
+        {
+          "label": "唯一前缀",
+          "index": 1
+        }
+      ],
+      "stats": [
+        {
+          "label": "唯一前缀长度 k",
+          "value": 2
+        }
+      ],
+      "sfx": "none",
+      "result": 2,
+      "t": 32
+    }
+  ]
+}

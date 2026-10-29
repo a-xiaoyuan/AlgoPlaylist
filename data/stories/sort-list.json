@@ -1,0 +1,1059 @@
+{
+  "id": "sort-list",
+  "problem": "sort-list",
+  "remix": "merge-sort",
+  "scene": "LinkedList",
+  "input": {
+    "nums": [
+      4,
+      2,
+      1,
+      3
+    ]
+  },
+  "steps": [
+    {
+      "caption": "自顶向下归并排序：快慢指针拆分链表，再递归排序并合并。",
+      "links": [
+        1,
+        2,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [],
+      "pointers": [],
+      "marks": [],
+      "sfx": "none",
+      "stats": [],
+      "t": 0
+    },
+    {
+      "caption": "从 #0 寻找中点：slow 走一步，fast 走两步。",
+      "links": [
+        1,
+        2,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 0
+        },
+        {
+          "label": "fast",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#0"
+        },
+        {
+          "label": "fast",
+          "value": "#1"
+        }
+      ],
+      "t": 1.429
+    },
+    {
+      "caption": "slow 到 #1，fast 到 #3。",
+      "links": [
+        1,
+        2,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        1,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 1
+        },
+        {
+          "label": "fast",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#1"
+        },
+        {
+          "label": "fast",
+          "value": "#3"
+        }
+      ],
+      "t": 2.857
+    },
+    {
+      "caption": "在 #1 后断开，递归排序左右两段，右段从 #2 开始。",
+      "links": [
+        1,
+        null,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        1,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#1"
+        },
+        {
+          "label": "right",
+          "value": "#2"
+        }
+      ],
+      "t": 4.286
+    },
+    {
+      "caption": "从 #0 寻找中点：slow 走一步，fast 走两步。",
+      "links": [
+        1,
+        null,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 0
+        },
+        {
+          "label": "fast",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#0"
+        },
+        {
+          "label": "fast",
+          "value": "#1"
+        }
+      ],
+      "t": 5.714
+    },
+    {
+      "caption": "在 #0 后断开，递归排序左右两段，右段从 #1 开始。",
+      "links": [
+        null,
+        null,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#0"
+        },
+        {
+          "label": "right",
+          "value": "#1"
+        }
+      ],
+      "t": 7.143
+    },
+    {
+      "caption": "子链表 #0 不超过一个节点，直接返回。",
+      "links": [
+        null,
+        null,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        0
+      ],
+      "pointers": [
+        {
+          "label": "head",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "head",
+          "value": "#0"
+        }
+      ],
+      "t": 8.571
+    },
+    {
+      "caption": "子链表 #1 不超过一个节点，直接返回。",
+      "links": [
+        null,
+        null,
+        3,
+        null
+      ],
+      "head": 1,
+      "highlight": [
+        1
+      ],
+      "pointers": [
+        {
+          "label": "head",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "head",
+          "value": "#1"
+        }
+      ],
+      "t": 10
+    },
+    {
+      "caption": "两段已排序，比较两段头节点，依次接到合并链表的尾部。",
+      "links": [
+        null,
+        null,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "left",
+          "value": "#0"
+        },
+        {
+          "label": "right",
+          "value": "#1"
+        }
+      ],
+      "t": 11.429
+    },
+    {
+      "caption": "比较 #0 的 4 和 #1 的 2，选择 #1。",
+      "links": [
+        null,
+        null,
+        3,
+        null
+      ],
+      "head": 0,
+      "highlight": [
+        0,
+        1
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 1
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "left",
+          "value": "#0"
+        },
+        {
+          "label": "right",
+          "value": "#1"
+        }
+      ],
+      "t": 12.857
+    },
+    {
+      "caption": "将 #1 接到合并链表尾部。",
+      "links": [
+        null,
+        null,
+        3,
+        null
+      ],
+      "head": 1,
+      "highlight": [
+        1,
+        0
+      ],
+      "pointers": [
+        {
+          "label": "tail",
+          "index": 1
+        },
+        {
+          "label": "left",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "tail",
+          "value": "#1"
+        },
+        {
+          "label": "left",
+          "value": "#0"
+        },
+        {
+          "label": "right",
+          "value": "null"
+        }
+      ],
+      "t": 14.286
+    },
+    {
+      "caption": "接上剩余有序链表 #0，返回合并后的头节点 #1。",
+      "links": [
+        null,
+        0,
+        3,
+        null
+      ],
+      "head": 1,
+      "highlight": [
+        1,
+        0
+      ],
+      "pointers": [
+        {
+          "label": "tail",
+          "index": 1
+        },
+        {
+          "label": "rest",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "tail",
+          "value": "#1"
+        },
+        {
+          "label": "rest",
+          "value": "#0"
+        }
+      ],
+      "t": 15.714
+    },
+    {
+      "caption": "从 #2 寻找中点：slow 走一步，fast 走两步。",
+      "links": [
+        null,
+        0,
+        3,
+        null
+      ],
+      "head": 2,
+      "highlight": [
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 2
+        },
+        {
+          "label": "fast",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#2"
+        },
+        {
+          "label": "fast",
+          "value": "#3"
+        }
+      ],
+      "t": 17.143
+    },
+    {
+      "caption": "在 #2 后断开，递归排序左右两段，右段从 #3 开始。",
+      "links": [
+        null,
+        0,
+        null,
+        null
+      ],
+      "head": 2,
+      "highlight": [
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "slow",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "slow",
+          "value": "#2"
+        },
+        {
+          "label": "right",
+          "value": "#3"
+        }
+      ],
+      "t": 18.571
+    },
+    {
+      "caption": "子链表 #2 不超过一个节点，直接返回。",
+      "links": [
+        null,
+        0,
+        null,
+        null
+      ],
+      "head": 2,
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "head",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "head",
+          "value": "#2"
+        }
+      ],
+      "t": 20
+    },
+    {
+      "caption": "子链表 #3 不超过一个节点，直接返回。",
+      "links": [
+        null,
+        0,
+        null,
+        null
+      ],
+      "head": 3,
+      "highlight": [
+        3
+      ],
+      "pointers": [
+        {
+          "label": "head",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "head",
+          "value": "#3"
+        }
+      ],
+      "t": 21.429
+    },
+    {
+      "caption": "两段已排序，比较两段头节点，依次接到合并链表的尾部。",
+      "links": [
+        null,
+        0,
+        null,
+        null
+      ],
+      "head": 2,
+      "highlight": [
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "left",
+          "value": "#2"
+        },
+        {
+          "label": "right",
+          "value": "#3"
+        }
+      ],
+      "t": 22.857
+    },
+    {
+      "caption": "比较 #2 的 1 和 #3 的 3，选择 #2。",
+      "links": [
+        null,
+        0,
+        null,
+        null
+      ],
+      "head": 2,
+      "highlight": [
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "left",
+          "value": "#2"
+        },
+        {
+          "label": "right",
+          "value": "#3"
+        }
+      ],
+      "t": 24.286
+    },
+    {
+      "caption": "将 #2 接到合并链表尾部。",
+      "links": [
+        null,
+        0,
+        null,
+        null
+      ],
+      "head": 2,
+      "highlight": [
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "tail",
+          "index": 2
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "tail",
+          "value": "#2"
+        },
+        {
+          "label": "left",
+          "value": "null"
+        },
+        {
+          "label": "right",
+          "value": "#3"
+        }
+      ],
+      "t": 25.714
+    },
+    {
+      "caption": "接上剩余有序链表 #3，返回合并后的头节点 #2。",
+      "links": [
+        null,
+        0,
+        3,
+        null
+      ],
+      "head": 2,
+      "highlight": [
+        2,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "tail",
+          "index": 2
+        },
+        {
+          "label": "rest",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "tail",
+          "value": "#2"
+        },
+        {
+          "label": "rest",
+          "value": "#3"
+        }
+      ],
+      "t": 27.143
+    },
+    {
+      "caption": "两段已排序，比较两段头节点，依次接到合并链表的尾部。",
+      "links": [
+        null,
+        0,
+        3,
+        null
+      ],
+      "head": 1,
+      "highlight": [
+        1,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "left",
+          "value": "#1"
+        },
+        {
+          "label": "right",
+          "value": "#2"
+        }
+      ],
+      "t": 28.571
+    },
+    {
+      "caption": "比较 #1 的 2 和 #2 的 1，选择 #2。",
+      "links": [
+        null,
+        0,
+        3,
+        null
+      ],
+      "head": 1,
+      "highlight": [
+        1,
+        2
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "left",
+          "value": "#1"
+        },
+        {
+          "label": "right",
+          "value": "#2"
+        }
+      ],
+      "t": 30
+    },
+    {
+      "caption": "将 #2 接到合并链表尾部。",
+      "links": [
+        null,
+        0,
+        null,
+        null
+      ],
+      "head": 2,
+      "highlight": [
+        2,
+        1,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "tail",
+          "index": 2
+        },
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "tail",
+          "value": "#2"
+        },
+        {
+          "label": "left",
+          "value": "#1"
+        },
+        {
+          "label": "right",
+          "value": "#3"
+        }
+      ],
+      "t": 31.429
+    },
+    {
+      "caption": "比较 #1 的 2 和 #3 的 3，选择 #1。",
+      "links": [
+        null,
+        0,
+        null,
+        null
+      ],
+      "head": 2,
+      "highlight": [
+        1,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 1
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "left",
+          "value": "#1"
+        },
+        {
+          "label": "right",
+          "value": "#3"
+        }
+      ],
+      "t": 32.857
+    },
+    {
+      "caption": "将 #1 接到合并链表尾部。",
+      "links": [
+        null,
+        null,
+        1,
+        null
+      ],
+      "head": 2,
+      "highlight": [
+        1,
+        0,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "tail",
+          "index": 1
+        },
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "tail",
+          "value": "#1"
+        },
+        {
+          "label": "left",
+          "value": "#0"
+        },
+        {
+          "label": "right",
+          "value": "#3"
+        }
+      ],
+      "t": 34.286
+    },
+    {
+      "caption": "比较 #0 的 4 和 #3 的 3，选择 #3。",
+      "links": [
+        null,
+        null,
+        1,
+        null
+      ],
+      "head": 2,
+      "highlight": [
+        0,
+        3
+      ],
+      "pointers": [
+        {
+          "label": "left",
+          "index": 0
+        },
+        {
+          "label": "right",
+          "index": 3
+        }
+      ],
+      "marks": [],
+      "sfx": "compare",
+      "stats": [
+        {
+          "label": "left",
+          "value": "#0"
+        },
+        {
+          "label": "right",
+          "value": "#3"
+        }
+      ],
+      "t": 35.714
+    },
+    {
+      "caption": "将 #3 接到合并链表尾部。",
+      "links": [
+        null,
+        3,
+        1,
+        null
+      ],
+      "head": 2,
+      "highlight": [
+        3,
+        0
+      ],
+      "pointers": [
+        {
+          "label": "tail",
+          "index": 3
+        },
+        {
+          "label": "left",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "tail",
+          "value": "#3"
+        },
+        {
+          "label": "left",
+          "value": "#0"
+        },
+        {
+          "label": "right",
+          "value": "null"
+        }
+      ],
+      "t": 37.143
+    },
+    {
+      "caption": "接上剩余有序链表 #0，返回合并后的头节点 #2。",
+      "links": [
+        null,
+        3,
+        1,
+        0
+      ],
+      "head": 2,
+      "highlight": [
+        3,
+        0
+      ],
+      "pointers": [
+        {
+          "label": "tail",
+          "index": 3
+        },
+        {
+          "label": "rest",
+          "index": 0
+        }
+      ],
+      "marks": [],
+      "sfx": "match",
+      "stats": [
+        {
+          "label": "tail",
+          "value": "#3"
+        },
+        {
+          "label": "rest",
+          "value": "#0"
+        }
+      ],
+      "t": 38.571
+    },
+    {
+      "caption": "排序完成，返回 [1, 2, 3, 4]。时间 O(n log n)，递归栈空间 O(log n)。",
+      "links": [
+        null,
+        3,
+        1,
+        0
+      ],
+      "head": 2,
+      "highlight": [
+        2
+      ],
+      "pointers": [
+        {
+          "label": "head",
+          "index": 2
+        }
+      ],
+      "marks": [],
+      "sfx": "none",
+      "stats": [
+        {
+          "label": "head",
+          "value": "#2"
+        }
+      ],
+      "result": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "t": 40
+    }
+  ]
+}
